@@ -2,10 +2,11 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
-using static iOTClient.AStarAlgorithm;
 using System.Collections.Generic;
 using WebSocketSharp;
 using System.Text;
+using Newtonsoft.Json;
+using System.Net;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -18,18 +19,29 @@ namespace iOTClient
         int gridSize = 0;
         int robotCount = 0;
 
+
         List<RobotWebSocket> robotSocketList;
+        List<PictureBox> _robotList;
+        List<PictureBox> _goalList;
+        List<List<Node>> _nodes;
+
+        GridMap _map;
 
         bool ctrlPressed = false;
         string[] pressedPanel = null;
 
-        private string _wslink = "ws://fatih.tuga.com.tr/robots/iot/";
+        private string _wslink = "ws://fatih.tuga.com.tr:8180/robots/iot/";
         private string proxyUrl;
 
         public frmMain()
         {
             InitializeComponent();
             robotSocketList = new List<RobotWebSocket>();
+            _nodes = new List<List<Node>>();
+            _robotList = new List<PictureBox>();
+            _goalList = new List<PictureBox>();
+            _map = new GridMap();
+            _map.ObstaclePoints = new List<GridPiont>();
         }
 
         public void DrawGrid(int x)
@@ -132,6 +144,8 @@ namespace iOTClient
                             picture.Draggable(true);
                         }
                     }
+
+                    SetNodes();
                 }
             }
         }
@@ -145,7 +159,36 @@ namespace iOTClient
         {
             int x = Convert.ToInt32(txtX.Text);
             DrawGrid(x);
+            _nodes = InitNodes();
+            _map.Height = pnlCenter.Height;
+            _map.Width = pnlCenter.Width;
         }
+
+        //public List<List<GridNode>> InitMap()
+        //{
+        //    List<List<GridNode>> result = new List<List<GridNode>>();
+
+        //    for (int i = 0; i < pnlCenter.Width; i++)
+        //    {
+        //        List<GridNode> _row = new List<GridNode>(); 
+        //        for (int j = 0; j < pnlCenter.Height; j++)
+        //        {
+        //            var local = new GridNode()
+        //            {
+        //                _point = new Point(i, j),
+        //                isGoal = false,
+        //                isRobot = false,
+        //                isWall = false,
+        //                isSpace = true
+        //            };
+
+        //            _row.Add(local);
+        //        }
+        //        result.Add(_row);
+        //    }
+
+        //    return result;
+        //}
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -174,6 +217,43 @@ namespace iOTClient
             pObstacle.BringToFront();
             pGoal.Draggable(true);
             pGoal.BringToFront();
+
+            GetMapList();
+        }
+        public void GetMapList()
+        {
+            try
+            {
+                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
+                req.Method = "GET";
+                req.ContentType = "application/json";
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+
+                var getResponse = (HttpWebResponse)req.GetResponse();
+                System.IO.Stream newStream = getResponse.GetResponseStream();
+                System.IO.StreamReader sr = new System.IO.StreamReader(newStream);
+                var result = sr.ReadToEnd();
+
+                var mspS = JsonConvert.DeserializeObject<string>(result);
+
+                var mspList = JsonConvert.DeserializeObject<List<ServerMap>>(mspS);
+
+                foreach (var item in mspList)
+                {
+                    ComboboxItem cmb = new ComboboxItem();
+                    cmb.Text = item.fields.Name;
+                    cmb.Value = item.pk;
+
+                    cbMap.Items.Add(cmb);
+                }
+                cbMap.SelectedIndex = 0;
+
+                // MessageBox.Show("The map has been uploaded", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Object_MouseDown(object sender, MouseEventArgs e)
@@ -260,10 +340,15 @@ namespace iOTClient
 
                         WebSocket ws = null;
 
+                        _robotList.Add(obj);
                         WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
                     }
                     else
+                    {
+                        _goalList.Add(obj);
                         obj.Size = new Size(obj.Width / 2, obj.Height / 2);
+                    }
+
 
                     obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
                     obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
@@ -272,6 +357,9 @@ namespace iOTClient
 
                     pnlCenter.Controls.Add(obj);
                     obj.BringToFront();
+
+                    SetNodes();
+                    //SendMapToServer();
 
                 }
 
@@ -443,16 +531,17 @@ namespace iOTClient
             ToolStripMenuItem menuSubmitted = sender as ToolStripMenuItem;
             if (menuSubmitted != null)
             {
-
-                Control sourceControl = ((ContextMenuStrip)menuSubmitted.Owner).SourceControl;
-
-                var obj = ((PictureBox)sourceControl);
-
-                var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First();
-                ws._ws.Close();
-                robotSocketList.Remove(ws);
+                var obj = ((PictureBox)((ContextMenuStrip)menuSubmitted.Owner).SourceControl);
+                if (robotSocketList.Count > 0)
+                {
+                    var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).FirstOrDefault();
+                    if (ws != null)
+                    {
+                        ws._ws.Close();
+                        robotSocketList.Remove(ws);
+                    }
+                }
                 obj.Dispose();
-
             }
         }
 
@@ -480,7 +569,33 @@ namespace iOTClient
         {
             int fromX = 0, fromY = 0, toX = 0, toY = 0;
 
-            var _nodes = InitNodes();
+
+            fromX = _robotList[0].Left + ((_robotList[0].Right - _robotList[0].Left) / 2);
+            fromY = _robotList[0].Top + ((_robotList[0].Bottom - _robotList[0].Top) / 2);
+
+            toX = _goalList[0].Left + ((_goalList[0].Right - _goalList[0].Left) / 2);
+            toY = _goalList[0].Top + ((_goalList[0].Bottom - _goalList[0].Top) / 2);
+
+
+            var path2 = AStar.FindPath(ref _nodes, _nodes[fromX][fromY], _nodes[toX][toY]);
+
+            pnlCenter.Invoke(new Action(() =>
+            {
+                ExtendedPanel pnl = new ExtendedPanel(path2);
+                pnl.Size = pnlCenter.Size;
+                pnl.Location = new Point(0, 0);
+
+                pnlCenter.Controls.Add(pnl);
+                pnl.BringToFront();
+            }));
+
+
+        }
+
+        public void SetNodes()
+        {
+            _map.ObstaclePoints.Clear();
+
 
             foreach (var item in pnlCenter.Controls)
             {
@@ -497,60 +612,37 @@ namespace iOTClient
                         for (int j = t; j < b; j++)
                         {
                             _nodes[l][j].isWall = true;
+
+                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = l, YPoint = j });
                         }
 
                         for (int j = t; j < b; j++)
                         {
 
                             _nodes[r - 1][j].isWall = true;
+                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = r - 1, YPoint = j });
                         }
 
+
+                        //üst çizgi
                         for (int j = l; j < r; j++)
                         {
                             _nodes[j][t].isWall = true;
+                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = j, YPoint = t });
                         }
 
                         // right line
                         for (int j = l; j < r; j++)
                         {
                             _nodes[j][b - 1].isWall = true;
+                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = j, YPoint = b - 1 });
                         }
 
-                    }
-
-                    if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
-                    {
-                        var x = obj.Left + ((obj.Right - obj.Left) / 2);
-                        var y = obj.Top + ((obj.Bottom - obj.Top) / 2);
-
-                        fromX = x;
-                        fromY = y;
-                    }
-
-                    if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
-                    {
-                        var x = obj.Left + ((obj.Right - obj.Left) / 2);
-                        var y = obj.Top + ((obj.Bottom - obj.Top) / 2);
-                        toX = x;
-                        toY = y;
                     }
 
                 }
 
             }
-            var path2 = AStar.FindPath(ref _nodes, _nodes[fromX][fromY], _nodes[toX][toY]);
-
-            pnlCenter.Invoke(new Action(() =>
-            {
-                ExtendedPanel pnl = new ExtendedPanel(path2);
-                pnl.Size = pnlCenter.Size;
-                pnl.Location = new Point(0, 0);
-
-                pnlCenter.Controls.Add(pnl);
-                pnl.BringToFront();
-            }));
-
-
         }
 
         private void btnClearPath_Click(object sender, EventArgs e)
@@ -607,6 +699,43 @@ namespace iOTClient
             return nodes;
         }
 
+        public void SendMapToServer()
+        {
+            try
+            {
+                MessageBox.Show("This will take a little time. Please wait", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SetNodes();
+
+                _map.MapId = Convert.ToInt32(((ComboboxItem)cbMap.SelectedItem).Value);
+                string json = JsonConvert.SerializeObject(_map);
+                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
+                req.Method = "POST";
+                req.ContentType = "application/json";
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+                byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                req.ContentLength = byteArray.Length;
+
+                using (System.IO.Stream requestStream = req.GetRequestStream())
+                {
+                    requestStream.Write(byteArray, 0, byteArray.Length);
+                }
+
+                using (WebResponse response = req.GetResponse())
+                {
+                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    {
+                        System.IO.StreamReader rdr = new System.IO.StreamReader(responseStream, Encoding.UTF8);
+                        string Json = rdr.ReadToEnd(); // response from server
+                    }
+                }
+                MessageBox.Show("The map has been uploaded", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
         private void WsConnectSayHi(WebSocket ws, string roomName, Point p)
         {
             try
@@ -717,11 +846,53 @@ namespace iOTClient
             // Baðlantý oluþtuðunda yapýlacaklar
         }
 
+        private void btnUploadMap_Click(object sender, EventArgs e)
+        {
+            SendMapToServer();
+        }
     }
 
     public class RobotWebSocket
     {
         public string name { get; set; }
         public WebSocket _ws { get; set; }
+    }
+
+    public class GridPiont
+    {
+        public int XPoint { get; set; }
+        public int YPoint { get; set; }
+    }
+
+    public class GridMap
+    {
+        public List<GridPiont> ObstaclePoints { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int MapId { get; set; }
+    }
+
+    public class ServerMap
+    {
+        public string model { get; set; }
+        public int pk { get; set; }
+        public ServerMapFields fields { get; set; }
+    }
+
+    public class ServerMapFields
+    {
+        public string Name { get; set; }
+        public int SubNet { get; set; }
+    }
+
+    public class ComboboxItem
+    {
+        public string Text { get; set; }
+        public object Value { get; set; }
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 }
