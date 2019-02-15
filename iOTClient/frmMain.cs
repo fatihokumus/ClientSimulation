@@ -41,7 +41,7 @@ namespace iOTClient
             _robotList = new List<PictureBox>();
             _goalList = new List<PictureBox>();
             _map = new GridMap();
-            _map.ObstaclePoints = new List<GridPiont>();
+            _map.ObstaclePoints = new List<ObstaclePiont>();
         }
 
         public void DrawGrid(int x)
@@ -162,6 +162,7 @@ namespace iOTClient
             _nodes = InitNodes();
             _map.Height = pnlCenter.Height;
             _map.Width = pnlCenter.Width;
+            _map.Distance = x;
         }
 
         //public List<List<GridNode>> InitMap()
@@ -604,6 +605,13 @@ namespace iOTClient
                     var obj = (PictureBox)item;
                     if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
                     {
+                        _map.ObstaclePoints.Add(new ObstaclePiont() {
+                            Left = obj.Left,
+                            Right = obj.Right,
+                            Bottom = obj.Bottom,
+                            Top = obj.Top
+                        });
+
                         var l = obj.Left - 15 < 0 ? 0 : obj.Left - 15;
                         var r = obj.Right + 15 >= pnlCenter.Width ? pnlCenter.Width - 1 : obj.Right + 15;
                         var t = obj.Top - 15 < 0 ? 0 : obj.Top - 15;
@@ -612,30 +620,23 @@ namespace iOTClient
                         for (int j = t; j < b; j++)
                         {
                             _nodes[l][j].isWall = true;
-
-                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = l, YPoint = j });
                         }
 
                         for (int j = t; j < b; j++)
                         {
-
                             _nodes[r - 1][j].isWall = true;
-                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = r - 1, YPoint = j });
                         }
-
 
                         //üst çizgi
                         for (int j = l; j < r; j++)
                         {
                             _nodes[j][t].isWall = true;
-                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = j, YPoint = t });
                         }
 
                         // right line
                         for (int j = l; j < r; j++)
                         {
                             _nodes[j][b - 1].isWall = true;
-                            _map.ObstaclePoints.Add(new GridPiont() { XPoint = j, YPoint = b - 1 });
                         }
 
                     }
@@ -770,7 +771,7 @@ namespace iOTClient
                         {
                             if (completed2)
                             {
-                                string textKonum = "{\"message\":\"Son Konumum: x:" + p.X + ", y:" + p.Y + "\"}";
+                                string textKonum = "{\"message\":\"Son Konumum: x:" + p.X + "; y:" + p.Y + "\"}";
                                 ws.SendAsync(textKonum, delegate (bool completed3) { });
                             }
                         });
@@ -864,12 +865,21 @@ namespace iOTClient
         public int YPoint { get; set; }
     }
 
+    public class ObstaclePiont
+    {
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+    }
+
     public class GridMap
     {
-        public List<GridPiont> ObstaclePoints { get; set; }
+        public List<ObstaclePiont> ObstaclePoints { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int MapId { get; set; }
+        public int Distance { get; set; }
     }
 
     public class ServerMap
