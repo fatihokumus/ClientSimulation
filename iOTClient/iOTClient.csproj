@@ -132,5 +132,9 @@
   <ItemGroup>
     <None Include="Resources\bos.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\archer-clipart-archery-bullseye-15.png" />
+    <Content Include="Resources\goal.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

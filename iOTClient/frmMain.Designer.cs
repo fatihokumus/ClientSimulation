@@ -31,52 +31,48 @@ namespace iOTClient
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlLeft = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pRobot = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.cmObject = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsSil = new System.Windows.Forms.ToolStripMenuItem();
             this.label5 = new System.Windows.Forms.Label();
             this.lblY = new System.Windows.Forms.Label();
             this.lblX = new System.Windows.Forms.Label();
-            this.pGoal = new System.Windows.Forms.PictureBox();
-            this.pObstacle = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnClearPath = new System.Windows.Forms.Button();
-            this.btnMotionPlan = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbMap = new System.Windows.Forms.ComboBox();
-            this.btnGridCreate = new System.Windows.Forms.Button();
             this.txtX = new System.Windows.Forms.TextBox();
-            this.btnClearPanel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnUploadMap = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.PictureBox();
-            this.cmObject = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsSil = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.bgMotionPlan = new System.ComponentModel.BackgroundWorker();
+            this.btnClearPath = new System.Windows.Forms.Button();
+            this.btnMotionPlan = new System.Windows.Forms.Button();
+            this.btnGridCreate = new System.Windows.Forms.Button();
+            this.btnClearPanel = new System.Windows.Forms.Button();
+            this.btnUploadMap = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.PictureBox();
+            this.pRobot = new System.Windows.Forms.PictureBox();
+            this.pGoal = new System.Windows.Forms.PictureBox();
+            this.pObstacle = new System.Windows.Forms.PictureBox();
             this.pnlLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).BeginInit();
+            this.cmObject.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
-            this.cmObject.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlLeft
             // 
             this.pnlLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
-            this.pnlLeft.Controls.Add(this.label3);
             this.pnlLeft.Controls.Add(this.pRobot);
-            this.pnlLeft.Controls.Add(this.label6);
             this.pnlLeft.Controls.Add(this.label5);
             this.pnlLeft.Controls.Add(this.lblY);
             this.pnlLeft.Controls.Add(this.lblX);
@@ -88,49 +84,26 @@ namespace iOTClient
             this.pnlLeft.Size = new System.Drawing.Size(91, 593);
             this.pnlLeft.TabIndex = 4;
             // 
-            // label3
+            // cmObject
             // 
-            this.label3.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(14, 95);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 17);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Robot";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cmObject.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmObject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsSil});
+            this.cmObject.Name = "contextMenuStrip1";
+            this.cmObject.Size = new System.Drawing.Size(87, 26);
             // 
-            // pRobot
+            // tsSil
             // 
-            this.pRobot.ContextMenuStrip = this.cmObject;
-            this.pRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pRobot.Image = ((System.Drawing.Image)(resources.GetObject("pRobot.Image")));
-            this.pRobot.Location = new System.Drawing.Point(22, 115);
-            this.pRobot.Name = "pRobot";
-            this.pRobot.Size = new System.Drawing.Size(50, 70);
-            this.pRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pRobot.TabIndex = 11;
-            this.pRobot.TabStop = false;
-            this.pRobot.Tag = "Robot1";
-            this.pRobot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pRobot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pRobot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
-            // 
-            // label6
-            // 
-            this.label6.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label6.Location = new System.Drawing.Point(7, 269);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 17);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Goal";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tsSil.Name = "tsSil";
+            this.tsSil.Size = new System.Drawing.Size(86, 22);
+            this.tsSil.Text = "Sil";
+            this.tsSil.Click += new System.EventHandler(this.tsSil_Click);
             // 
             // label5
             // 
-            this.label5.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.label5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(15, 191);
+            this.label5.Location = new System.Drawing.Point(13, 194);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(68, 17);
             this.label5.TabIndex = 7;
@@ -154,38 +127,6 @@ namespace iOTClient
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(0, 13);
             this.lblX.TabIndex = 3;
-            // 
-            // pGoal
-            // 
-            this.pGoal.ContextMenuStrip = this.cmObject;
-            this.pGoal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pGoal.Image = global::iOTClient.Properties.Resources.target1;
-            this.pGoal.Location = new System.Drawing.Point(22, 289);
-            this.pGoal.Name = "pGoal";
-            this.pGoal.Size = new System.Drawing.Size(50, 50);
-            this.pGoal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pGoal.TabIndex = 2;
-            this.pGoal.TabStop = false;
-            this.pGoal.Tag = "Goal";
-            this.pGoal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pGoal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pGoal.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
-            // 
-            // pObstacle
-            // 
-            this.pObstacle.BackColor = System.Drawing.Color.Black;
-            this.pObstacle.ContextMenuStrip = this.cmObject;
-            this.pObstacle.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pObstacle.Location = new System.Drawing.Point(22, 211);
-            this.pObstacle.Name = "pObstacle";
-            this.pObstacle.Size = new System.Drawing.Size(50, 50);
-            this.pObstacle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pObstacle.TabIndex = 2;
-            this.pObstacle.TabStop = false;
-            this.pObstacle.Tag = "Obstacle";
-            this.pObstacle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pObstacle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pObstacle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
             // panel1
             // 
@@ -242,39 +183,6 @@ namespace iOTClient
             this.panel3.Size = new System.Drawing.Size(320, 65);
             this.panel3.TabIndex = 10;
             // 
-            // btnClearPath
-            // 
-            this.btnClearPath.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnClearPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearPath.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnClearPath.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnClearPath.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPath.Image")));
-            this.btnClearPath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearPath.Location = new System.Drawing.Point(196, 8);
-            this.btnClearPath.Name = "btnClearPath";
-            this.btnClearPath.Size = new System.Drawing.Size(114, 48);
-            this.btnClearPath.TabIndex = 5;
-            this.btnClearPath.Text = "Clear Path";
-            this.btnClearPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClearPath.UseVisualStyleBackColor = false;
-            this.btnClearPath.Click += new System.EventHandler(this.btnClearPath_Click);
-            // 
-            // btnMotionPlan
-            // 
-            this.btnMotionPlan.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnMotionPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMotionPlan.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnMotionPlan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnMotionPlan.Image = ((System.Drawing.Image)(resources.GetObject("btnMotionPlan.Image")));
-            this.btnMotionPlan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMotionPlan.Location = new System.Drawing.Point(12, 30);
-            this.btnMotionPlan.Name = "btnMotionPlan";
-            this.btnMotionPlan.Size = new System.Drawing.Size(180, 27);
-            this.btnMotionPlan.TabIndex = 5;
-            this.btnMotionPlan.Text = "      Plan Motion";
-            this.btnMotionPlan.UseVisualStyleBackColor = false;
-            this.btnMotionPlan.Click += new System.EventHandler(this.btnMotionPlan_Click);
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -310,6 +218,72 @@ namespace iOTClient
             this.cbMap.Size = new System.Drawing.Size(181, 21);
             this.cbMap.TabIndex = 9;
             // 
+            // txtX
+            // 
+            this.txtX.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.txtX.Location = new System.Drawing.Point(13, 32);
+            this.txtX.Multiline = true;
+            this.txtX.Name = "txtX";
+            this.txtX.Size = new System.Drawing.Size(57, 24);
+            this.txtX.TabIndex = 4;
+            this.txtX.Text = "50";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(13, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Distance";
+            // 
+            // pnlCenter
+            // 
+            this.pnlCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlCenter.Location = new System.Drawing.Point(91, 75);
+            this.pnlCenter.Name = "pnlCenter";
+            this.pnlCenter.Size = new System.Drawing.Size(1012, 517);
+            this.pnlCenter.TabIndex = 7;
+            // 
+            // bgMotionPlan
+            // 
+            this.bgMotionPlan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMotionPlan_DoWork);
+            // 
+            // btnClearPath
+            // 
+            this.btnClearPath.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnClearPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearPath.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnClearPath.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnClearPath.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPath.Image")));
+            this.btnClearPath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearPath.Location = new System.Drawing.Point(196, 8);
+            this.btnClearPath.Name = "btnClearPath";
+            this.btnClearPath.Size = new System.Drawing.Size(114, 48);
+            this.btnClearPath.TabIndex = 5;
+            this.btnClearPath.Text = "Clear Path";
+            this.btnClearPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClearPath.UseVisualStyleBackColor = false;
+            this.btnClearPath.Click += new System.EventHandler(this.btnClearPath_Click);
+            // 
+            // btnMotionPlan
+            // 
+            this.btnMotionPlan.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnMotionPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMotionPlan.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnMotionPlan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnMotionPlan.Image = ((System.Drawing.Image)(resources.GetObject("btnMotionPlan.Image")));
+            this.btnMotionPlan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMotionPlan.Location = new System.Drawing.Point(12, 30);
+            this.btnMotionPlan.Name = "btnMotionPlan";
+            this.btnMotionPlan.Size = new System.Drawing.Size(180, 27);
+            this.btnMotionPlan.TabIndex = 5;
+            this.btnMotionPlan.Text = "      Plan Motion";
+            this.btnMotionPlan.UseVisualStyleBackColor = false;
+            this.btnMotionPlan.Click += new System.EventHandler(this.btnMotionPlan_Click);
+            // 
             // btnGridCreate
             // 
             this.btnGridCreate.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -327,16 +301,6 @@ namespace iOTClient
             this.btnGridCreate.UseVisualStyleBackColor = false;
             this.btnGridCreate.Click += new System.EventHandler(this.btnGridCreate_Click);
             // 
-            // txtX
-            // 
-            this.txtX.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.txtX.Location = new System.Drawing.Point(13, 32);
-            this.txtX.Multiline = true;
-            this.txtX.Name = "txtX";
-            this.txtX.Size = new System.Drawing.Size(57, 24);
-            this.txtX.TabIndex = 4;
-            this.txtX.Text = "50";
-            // 
             // btnClearPanel
             // 
             this.btnClearPanel.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -353,17 +317,6 @@ namespace iOTClient
             this.btnClearPanel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClearPanel.UseVisualStyleBackColor = false;
             this.btnClearPanel.Click += new System.EventHandler(this.btnClearPanel_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(13, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 17);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Distance";
             // 
             // btnUploadMap
             // 
@@ -395,32 +348,55 @@ namespace iOTClient
             this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
             // 
-            // cmObject
+            // pRobot
             // 
-            this.cmObject.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmObject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsSil});
-            this.cmObject.Name = "contextMenuStrip1";
-            this.cmObject.Size = new System.Drawing.Size(87, 26);
+            this.pRobot.ContextMenuStrip = this.cmObject;
+            this.pRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pRobot.Image = ((System.Drawing.Image)(resources.GetObject("pRobot.Image")));
+            this.pRobot.Location = new System.Drawing.Point(22, 115);
+            this.pRobot.Name = "pRobot";
+            this.pRobot.Size = new System.Drawing.Size(50, 70);
+            this.pRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pRobot.TabIndex = 11;
+            this.pRobot.TabStop = false;
+            this.pRobot.Tag = "Robot1";
+            this.pRobot.Paint += new System.Windows.Forms.PaintEventHandler(this.pRobot_Paint);
+            this.pRobot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pRobot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pRobot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
-            // tsSil
+            // pGoal
             // 
-            this.tsSil.Name = "tsSil";
-            this.tsSil.Size = new System.Drawing.Size(86, 22);
-            this.tsSil.Text = "Sil";
-            this.tsSil.Click += new System.EventHandler(this.tsSil_Click);
+            this.pGoal.ContextMenuStrip = this.cmObject;
+            this.pGoal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pGoal.Image = global::iOTClient.Properties.Resources.goal;
+            this.pGoal.Location = new System.Drawing.Point(22, 279);
+            this.pGoal.Name = "pGoal";
+            this.pGoal.Size = new System.Drawing.Size(50, 61);
+            this.pGoal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pGoal.TabIndex = 2;
+            this.pGoal.TabStop = false;
+            this.pGoal.Tag = "Goal1";
+            this.pGoal.Paint += new System.Windows.Forms.PaintEventHandler(this.pGoal_Paint);
+            this.pGoal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pGoal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pGoal.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
-            // pnlCenter
+            // pObstacle
             // 
-            this.pnlCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlCenter.Location = new System.Drawing.Point(91, 75);
-            this.pnlCenter.Name = "pnlCenter";
-            this.pnlCenter.Size = new System.Drawing.Size(1012, 517);
-            this.pnlCenter.TabIndex = 7;
-            // 
-            // bgMotionPlan
-            // 
-            this.bgMotionPlan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMotionPlan_DoWork);
+            this.pObstacle.BackColor = System.Drawing.Color.Black;
+            this.pObstacle.ContextMenuStrip = this.cmObject;
+            this.pObstacle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pObstacle.Location = new System.Drawing.Point(22, 211);
+            this.pObstacle.Name = "pObstacle";
+            this.pObstacle.Size = new System.Drawing.Size(50, 50);
+            this.pObstacle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pObstacle.TabIndex = 2;
+            this.pObstacle.TabStop = false;
+            this.pObstacle.Tag = "Obstacle";
+            this.pObstacle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pObstacle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pObstacle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
             // frmMain
             // 
@@ -440,16 +416,16 @@ namespace iOTClient
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).EndInit();
+            this.cmObject.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.pnlTop.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
-            this.cmObject.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -471,9 +447,7 @@ namespace iOTClient
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Label lblX;
         private System.Windows.Forms.Button btnClearPanel;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pRobot;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnMotionPlan;

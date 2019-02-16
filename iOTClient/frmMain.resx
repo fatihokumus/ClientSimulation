@@ -1289,6 +1289,9 @@
         v0sbYS3/Cg9U7B72/6grjKZVUgTSAAAAAElFTkSuQmCC
 </value>
   </data>
+  <metadata name="bgMotionPlan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>121, 17</value>
+  </metadata>
   <data name="btnClearPath.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAABohJREFUWEe1
@@ -1395,7 +1398,4 @@
         Lv1qyuiCAevX8MBarBwzuh3M2BsTUkmFI34+ZQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="bgMotionPlan.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>121, 17</value>
-  </metadata>
 </root>

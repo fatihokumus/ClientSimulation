@@ -18,11 +18,13 @@ namespace iOTClient
         bool eOlustu = false;
         int gridSize = 0;
         int robotCount = 0;
+        int goalCount = 0;
 
 
         List<RobotWebSocket> robotSocketList;
         List<PictureBox> _robotList;
         List<PictureBox> _goalList;
+        List<GoalPoint> _goalPointList;
         List<List<Node>> _nodes;
 
         GridMap _map;
@@ -40,6 +42,7 @@ namespace iOTClient
             _nodes = new List<List<Node>>();
             _robotList = new List<PictureBox>();
             _goalList = new List<PictureBox>();
+            _goalPointList = new List<GoalPoint>();
             _map = new GridMap();
             _map.ObstaclePoints = new List<ObstaclePiont>();
         }
@@ -208,6 +211,7 @@ namespace iOTClient
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+           
             pnlLeft.Height = this.Height;
             pnlTop.Width = this.Width - pnlLeft.Width;
             pnlCenter.Width = this.Width - pnlLeft.Width - 2;
@@ -276,11 +280,16 @@ namespace iOTClient
                         ((PictureBox)sender).Tag = "Robot" + robotCount.ToString();
                         picture.BackColor = Color.Transparent;
                         picture.Tag = "Robot";
+                        picture.Paint += new PaintEventHandler(this.pRobot_Paint);
                     }
                     else
                     {
+                        goalCount++;
+                        ((PictureBox)sender).Tag = "Goal" + goalCount.ToString();
                         picture.BackColor = Color.Transparent;
                         picture.Tag = "Goal";
+
+                        picture.Paint += new PaintEventHandler(this.pGoal_Paint);
                     }
 
                     picture.BorderStyle = BorderStyle.None;
@@ -324,6 +333,7 @@ namespace iOTClient
                 {
                     MessageBox.Show("Please Create Distance", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     robotCount = 0;
+                    goalCount = 0;
                     obj.Dispose();
                 }
                 else
@@ -337,7 +347,7 @@ namespace iOTClient
                     else if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
                     {
                         obj.Paint += new PaintEventHandler(picture_Paint);
-                        obj.Size = new Size(7 * obj.Width / 9, 7 * obj.Height / 9);
+                        obj.Size = new Size(9 * obj.Width / 9, 9 * obj.Height / 9);
 
                         WebSocket ws = null;
 
@@ -347,7 +357,20 @@ namespace iOTClient
                     else
                     {
                         _goalList.Add(obj);
-                        obj.Size = new Size(obj.Width / 2, obj.Height / 2);
+                        obj.Paint += new PaintEventHandler(picture_Paint);
+                        obj.Size = new Size(9 * obj.Width / 9, 9 * obj.Height / 9);
+                        _goalPointList.Add(
+                            new GoalPoint()
+                            {
+                                Code = obj.Tag.ToString(),
+                                Left = obj.Left,
+                                Bottom = obj.Bottom,
+                                Right = obj.Right,
+                                Top = obj.Top
+                            }
+                            );
+                        SendGoalToServer();
+                        WsConnectLoadGoals();
                     }
 
 
@@ -444,8 +467,31 @@ namespace iOTClient
                 {
                     var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First()._ws;
 
-                    string textKonum = "{\"message\":\"Son Konumum: x:" + obj.Location.X + ", y:" + obj.Location.Y + "\"}";
+                    string textKonum = "{\"message\":\"Son Konumum: x:" + obj.Location.X + "; y:" + obj.Location.Y + "\"}";
                     ws.SendAsync(textKonum, delegate (bool completed) { });
+                }
+
+                if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
+                {
+                    _goalPointList.Clear();
+                    foreach (var item in pnlCenter.Controls)
+                    {
+                        if (item.GetType() == typeof(PictureBox) && ((PictureBox)item).Tag.ToString().Contains("Goal"))
+                        {
+                            _goalPointList.Add(
+                                new GoalPoint()
+                                {
+                                    Code = ((PictureBox)item).Tag.ToString(),
+                                    Left = ((PictureBox)item).Left,
+                                    Bottom = ((PictureBox)item).Bottom,
+                                    Right = ((PictureBox)item).Right,
+                                    Top = ((PictureBox)item).Top
+                                }
+                            );
+                        }
+                    }
+                    SendGoalToServer();
+                    WsConnectLoadGoals();
                 }
             }
 
@@ -522,7 +568,7 @@ namespace iOTClient
         {
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
-                var text = ((PictureBox)sender).Tag.ToString().Replace("Robot", "");
+                var text = ((PictureBox)sender).Tag.ToString();
                 e.Graphics.DrawString(text, font, Brushes.Red, 0, -2);
             }
         }
@@ -556,6 +602,7 @@ namespace iOTClient
             pnlCenter.Controls.Clear();
             gridSize = 0;
             robotCount = 0;
+            goalCount = 0;
         }
 
         private void btnMotionPlan_Click(object sender, EventArgs e)
@@ -737,6 +784,7 @@ namespace iOTClient
             }
 
         }
+
         private void WsConnectSayHi(WebSocket ws, string roomName, Point p)
         {
             try
@@ -780,6 +828,72 @@ namespace iOTClient
 
 
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+
+        }
+
+        public void SendGoalToServer()
+        {
+            try
+            {
+                MapGoals mapGoals = new MapGoals();
+                mapGoals.MapId = Convert.ToInt32(((ComboboxItem)cbMap.SelectedItem).Value);
+                mapGoals.GoalPoints = _goalPointList;
+
+                string json = JsonConvert.SerializeObject(mapGoals);
+                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/goallist/");
+                req.Method = "POST";
+                req.ContentType = "application/json";
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+                byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                req.ContentLength = byteArray.Length;
+
+                using (System.IO.Stream requestStream = req.GetRequestStream())
+                {
+                    requestStream.Write(byteArray, 0, byteArray.Length);
+                }
+
+                using (WebResponse response = req.GetResponse())
+                {
+                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    {
+                        System.IO.StreamReader rdr = new System.IO.StreamReader(responseStream, Encoding.UTF8);
+                        string Json = rdr.ReadToEnd(); // response from server
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void WsConnectLoadGoals()
+        {
+            try
+            {
+                var link = _wslink +  "loadgoal/";
+                WebSocket ws = new WebSocket(link);
+
+                //ws.SetHeaders(headers);
+                proxyUrl = null;
+                ws.SetProxy(proxyUrl, string.Empty, string.Empty);
+                ws.OnError += Ws_OnError;
+                ws.OnClose += Ws_OnClose;
+                ws.OnMessage += Ws_OnMessage;
+                ws.OnOpen += Ws_OnOpen;
+
+                ws.Connect();
+
+                string textMerhaba = "{\"message\":\"Load Goals\"}";
+                ws.SendAsync(textMerhaba, delegate (bool completed){});
             }
             catch (Exception ex)
             {
@@ -851,6 +965,22 @@ namespace iOTClient
         {
             SendMapToServer();
         }
+
+        private void pRobot_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font font = new Font("Arial", 9, FontStyle.Bold))
+            {
+                e.Graphics.DrawString("Robot", font, Brushes.Black, 0, -2);
+            }
+        }
+
+        private void pGoal_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font font = new Font("Arial", 9, FontStyle.Bold))
+            {
+                e.Graphics.DrawString("Goal", font, Brushes.Black, 0, -2);
+            }
+        }
     }
 
     public class RobotWebSocket
@@ -871,6 +1001,21 @@ namespace iOTClient
         public int Right { get; set; }
         public int Top { get; set; }
         public int Bottom { get; set; }
+    }
+
+    public class GoalPoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+    }
+
+    public class MapGoals
+    {
+        public int MapId { get; set; }
+        public List<GoalPoint> GoalPoints { get; set; }
     }
 
     public class GridMap
