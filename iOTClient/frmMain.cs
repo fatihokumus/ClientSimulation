@@ -66,11 +66,12 @@ namespace iOTClient
                 for (int j = 0; j <= numY; j++)
                 {
                     Panel pnl = new Panel();
-                    var pX = i * x;
-                    var pY = j * x;
+                    var pX = (i * x) + (x / 2);
+                    var pY = (j * x) + (x / 2);
 
-                    pnl.Size = new Size(x, x);
-                    pnl.BorderStyle = BorderStyle.FixedSingle;
+                    pnl.Size = new Size(5, 5);
+                    pnl.BorderStyle = BorderStyle.None;
+                    pnl.BackColor = Color.Blue;
                     pnl.MouseDown += new MouseEventHandler(this.Panel_MouseDown);
                     pnl.Location = new Point(pX, pY);
                     pnl.Tag = "label" + i.ToString() + "_" + j.ToString();
@@ -211,7 +212,7 @@ namespace iOTClient
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-           
+
             pnlLeft.Height = this.Height;
             pnlTop.Width = this.Width - pnlLeft.Width;
             pnlCenter.Width = this.Width - pnlLeft.Width - 2;
@@ -338,52 +339,78 @@ namespace iOTClient
                 }
                 else
                 {
-                    obj.Location = new Point(obj.Left - pnlLeft.Width, obj.Top - pnlTop.Height);
 
-                    if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
+                    int x = Convert.ToInt32(txtX.Text);
+                    int carpanLeft = (obj.Left - pnlLeft.Width) / x;
+                    int carpanTop = (obj.Top - pnlTop.Height) / x;
+
+                    int leftPos = (obj.Left - pnlLeft.Width) > (carpanLeft * x + x / 2) ? x * (carpanLeft + 1) : x * carpanLeft;
+                    int topPos = (obj.Top - pnlTop.Height) > (carpanTop * x + x / 2) ? x * (carpanTop + 1) : x * carpanTop;
+
+                    if(leftPos<0 || topPos <0)
                     {
-                        obj.Size = new Size(gridSize, gridSize);
-                    }
-                    else if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
-                    {
-                        obj.Paint += new PaintEventHandler(picture_Paint);
-                        obj.Size = new Size(9 * obj.Width / 9, 9 * obj.Height / 9);
+                        if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
+                        {
+                            robotCount --;
+                            obj.Dispose();
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
+                        {
+                            goalCount--;
+                        }
 
-                        WebSocket ws = null;
-
-                        _robotList.Add(obj);
-                        WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                        obj.Dispose();
                     }
                     else
                     {
-                        _goalList.Add(obj);
-                        obj.Paint += new PaintEventHandler(picture_Paint);
-                        obj.Size = new Size(9 * obj.Width / 9, 9 * obj.Height / 9);
-                        _goalPointList.Add(
-                            new GoalPoint()
-                            {
-                                Code = obj.Tag.ToString(),
-                                Left = obj.Left,
-                                Bottom = obj.Bottom,
-                                Right = obj.Right,
-                                Top = obj.Top
-                            }
-                            );
-                        SendGoalToServer();
-                        WsConnectLoadGoals();
+                        obj.Location = new Point(leftPos, topPos);
+
+                        if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
+                        {
+                            obj.Size = new Size(gridSize, gridSize);
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
+                        {
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, x);
+
+                            WebSocket ws = null;
+
+                            _robotList.Add(obj);
+                            WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                        }
+                        else
+                        {
+                            _goalList.Add(obj);
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, x);
+                            _goalPointList.Add(
+                                new GoalPoint()
+                                {
+                                    Code = obj.Tag.ToString(),
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top
+                                }
+                                );
+                            SendGoalToServer();
+                            WsConnectLoadGoals();
+                        }
+
+
+                        obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+                        obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+                        obj.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+                        obj.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+
+                        pnlCenter.Controls.Add(obj);
+                        obj.BringToFront();
+
+                        SetNodes();
+                        //SendMapToServer();
                     }
 
-
-                    obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
-                    obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
-                    obj.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
-                    obj.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
-
-                    pnlCenter.Controls.Add(obj);
-                    obj.BringToFront();
-
-                    SetNodes();
-                    //SendMapToServer();
 
                 }
 
@@ -463,6 +490,17 @@ namespace iOTClient
             if (sender.GetType() == typeof(PictureBox))
             {
                 PictureBox obj = ((PictureBox)sender);
+
+                int x = Convert.ToInt32(txtX.Text);
+                int carpanLeft = obj.Left / x;
+                int carpanTop = obj.Top / x;
+
+                int leftPos = obj.Left > (carpanLeft * x + x / 2) ? x * (carpanLeft + 1) : x * carpanLeft;
+                int topPos = obj.Top > (carpanTop * x + x / 2) ? x * (carpanTop + 1) : x * carpanTop;
+
+                obj.Location = new Point(leftPos, topPos);
+
+
                 if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
                 {
                     var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First()._ws;
@@ -652,11 +690,15 @@ namespace iOTClient
                     var obj = (PictureBox)item;
                     if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
                     {
-                        _map.ObstaclePoints.Add(new ObstaclePiont() {
+                        int dist = Convert.ToInt32(txtX.Text);
+                        _map.ObstaclePoints.Add(new ObstaclePiont()
+                        {
                             Left = obj.Left,
                             Right = obj.Right,
                             Bottom = obj.Bottom,
-                            Top = obj.Top
+                            Top = obj.Top,
+                            CenterX = obj.Left / dist,
+                            CenterY = obj.Top / dist
                         });
 
                         var l = obj.Left - 15 < 0 ? 0 : obj.Left - 15;
@@ -879,7 +921,7 @@ namespace iOTClient
         {
             try
             {
-                var link = _wslink +  "loadgoal/";
+                var link = _wslink + "loadgoal/";
                 WebSocket ws = new WebSocket(link);
 
                 //ws.SetHeaders(headers);
@@ -893,7 +935,7 @@ namespace iOTClient
                 ws.Connect();
 
                 string textMerhaba = "{\"message\":\"Load Goals\"}";
-                ws.SendAsync(textMerhaba, delegate (bool completed){});
+                ws.SendAsync(textMerhaba, delegate (bool completed) { });
             }
             catch (Exception ex)
             {
@@ -1001,6 +1043,8 @@ namespace iOTClient
         public int Right { get; set; }
         public int Top { get; set; }
         public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
     }
 
     public class GoalPoint
