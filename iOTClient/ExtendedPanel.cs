@@ -72,25 +72,16 @@ namespace iOTClient
                             lastY = node.YPoint * _distance + rDis;
                         }
                     }
-                    //while (_node.Count > 0)
-                    //{
-                    //    matrixNode node = _node.Pop();
-                    //    if (lastX > -1)
-                    //    {
-                    //        e.Graphics.DrawLine(p, lastX, lastY, node.x, node.y);
-                    //        lastX = node.x;
-                    //        lastY = node.y;
-                    //    }
-                    //    else
-                    //    {
-                    //        lastX = node.x;
-                    //        lastY = node.y;
-                    //    }
-                    //}
                 }
 
             }
             base.OnPaint(e);
+        }
+
+        public void ClearColor(PaintEventArgs e)
+        {
+            // Clear screen with teal background.
+            e.Graphics.Clear(Color.Teal);
         }
     }
 }

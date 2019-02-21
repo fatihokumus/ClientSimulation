@@ -29,6 +29,8 @@ namespace iOTClient
         List<GoalPoint> _goalPointList;
         List<List<Node>> _nodes;
 
+        ExtendedPanel pnlPath;
+
         GridMap _map;
 
         bool ctrlPressed = false;
@@ -999,6 +1001,7 @@ namespace iOTClient
             }
             else if (e.Data.Contains("Rota"))
             {
+                
                 var data = JsonConvert.DeserializeObject<ServerMessage>(e.Data);
                 var rota = data.message.Replace("Rota:", "").Replace("[", "").Replace("]", "");
                 var list = rota.Split(',');
@@ -1011,30 +1014,31 @@ namespace iOTClient
                 int x = Convert.ToInt32(txtX.Text);
                 pnlCenter.Invoke(new Action(() =>
                 {
-                    ExtendedPanel pnl = new ExtendedPanel(pList, x);
-                    pnl.Size = pnlCenter.Size;
-                    pnl.Location = new Point(0, 0);
+                    pnlPath = new ExtendedPanel(pList, x);
+                    pnlPath.Size = pnlCenter.Size;
+                    pnlPath.Location = new Point(0, 0);
 
-                    pnlCenter.Controls.Add(pnl);
-                    pnl.BringToFront();
+                    pnlCenter.Controls.Add(pnlPath);
+                    pnlPath.BringToFront();
+                    foreach (var item in pnlCenter.Controls)
+                    {
+                        if (item.GetType() == typeof(PictureBox))
+                        {
+                            var ctrl = (PictureBox)item;
+                            if (ctrl.Tag.ToString() == "Robot1")
+                            {
+                                _currentPList = pList;
+                                _currentRobot = ctrl;
+                                BackgroundWorker bcg = new BackgroundWorker();
+                                bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
+                                bcg.RunWorkerAsync();
+                            }
+                        }
+
+                    }
                 }));
 
-                foreach (var item in pnlCenter.Controls)
-                {
-                    if (item.GetType() == typeof(PictureBox))
-                    {
-                        var ctrl = (PictureBox)item;
-                        if (ctrl.Tag.ToString() == "Robot1")
-                        {
-                            _currentPList = pList;
-                            _currentRobot = ctrl;
-                            BackgroundWorker bcg = new BackgroundWorker();
-                            bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
-                            bcg.RunWorkerAsync();
-                        }
-                    }
-
-                }
+                
                 //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
             }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
@@ -1044,15 +1048,14 @@ namespace iOTClient
         PictureBox _currentRobot = new PictureBox();
         private void bcg_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            pnlCenter.Invoke(new Action(() =>
+            Thread.Sleep(500);
+            this.Invoke(new Action(() =>
             {
                 int x = Convert.ToInt32(txtX.Text);
-                var rDis = x / 2;
-
+                _currentRobot.BringToFront();
                 for (int h = _currentPList.Count - 1; h >= 0; h--)
                 {
-                    _currentRobot.Location = new Point((_currentPList[h].XPoint * x) + rDis, (_currentPList[h].YPoint * x) + rDis);
-                    _currentRobot.BringToFront();
+                    _currentRobot.Location = new Point((_currentPList[h].XPoint * x), (_currentPList[h].YPoint * x));
                     Thread.Sleep(500);
                 }
             }));
@@ -1081,6 +1084,24 @@ namespace iOTClient
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
                 e.Graphics.DrawString("Goal", font, Brushes.Black, 0, -2);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int x = Convert.ToInt32(txtX.Text);
+            var rDis = x / 2;
+            foreach (var item in pnlCenter.Controls)
+            {
+                if (item.GetType() == typeof(PictureBox))
+                {
+                    var ctrl = (PictureBox)item;
+                    if (ctrl.Tag.ToString() == "Robot1")
+                    {
+                        ctrl.Location = new Point(ctrl.Location.X + rDis, ctrl.Location.Y  + rDis);
+                    }
+                }
+
             }
         }
     }
