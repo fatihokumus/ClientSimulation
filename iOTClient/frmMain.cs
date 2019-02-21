@@ -7,6 +7,8 @@ using WebSocketSharp;
 using System.Text;
 using Newtonsoft.Json;
 using System.Net;
+using System.Threading;
+using System.ComponentModel;
 
 // This is the code for your desktop app.
 // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
@@ -347,11 +349,11 @@ namespace iOTClient
                     int leftPos = (obj.Left - pnlLeft.Width) > (carpanLeft * x + x / 2) ? x * (carpanLeft + 1) : x * carpanLeft;
                     int topPos = (obj.Top - pnlTop.Height) > (carpanTop * x + x / 2) ? x * (carpanTop + 1) : x * carpanTop;
 
-                    if(leftPos<0 || topPos <0)
+                    if (leftPos < 0 || topPos < 0)
                     {
                         if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
                         {
-                            robotCount --;
+                            robotCount--;
                             obj.Dispose();
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
@@ -665,15 +667,15 @@ namespace iOTClient
 
             var path2 = AStar.FindPath(ref _nodes, _nodes[fromX][fromY], _nodes[toX][toY]);
 
-            pnlCenter.Invoke(new Action(() =>
-            {
-                ExtendedPanel pnl = new ExtendedPanel(path2);
-                pnl.Size = pnlCenter.Size;
-                pnl.Location = new Point(0, 0);
+            //pnlCenter.Invoke(new Action(() =>
+            //{
+            //    ExtendedPanel pnl = new ExtendedPanel(path2);
+            //    pnl.Size = pnlCenter.Size;
+            //    pnl.Location = new Point(0, 0);
 
-                pnlCenter.Controls.Add(pnl);
-                pnl.BringToFront();
-            }));
+            //    pnlCenter.Controls.Add(pnl);
+            //    pnl.BringToFront();
+            //}));
 
 
         }
@@ -995,7 +997,65 @@ namespace iOTClient
                 string textKonum = "{\"message\":\"Evet\"}";
                 ((WebSocket)sender).SendAsync(textKonum, delegate (bool completed) { });
             }
+            else if (e.Data.Contains("Rota"))
+            {
+                var data = JsonConvert.DeserializeObject<ServerMessage>(e.Data);
+                var rota = data.message.Replace("Rota:", "").Replace("[", "").Replace("]", "");
+                var list = rota.Split(',');
+
+                var pList = new List<GridPiont>();
+                for (int i = 0; i < list.Length; i += 2)
+                {
+                    pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i]), YPoint = Convert.ToInt32(list[i + 1]) });
+                }
+                int x = Convert.ToInt32(txtX.Text);
+                pnlCenter.Invoke(new Action(() =>
+                {
+                    ExtendedPanel pnl = new ExtendedPanel(pList, x);
+                    pnl.Size = pnlCenter.Size;
+                    pnl.Location = new Point(0, 0);
+
+                    pnlCenter.Controls.Add(pnl);
+                    pnl.BringToFront();
+                }));
+
+                foreach (var item in pnlCenter.Controls)
+                {
+                    if (item.GetType() == typeof(PictureBox))
+                    {
+                        var ctrl = (PictureBox)item;
+                        if (ctrl.Tag.ToString() == "Robot1")
+                        {
+                            _currentPList = pList;
+                            _currentRobot = ctrl;
+                            BackgroundWorker bcg = new BackgroundWorker();
+                            bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
+                            bcg.RunWorkerAsync();
+                        }
+                    }
+
+                }
+                //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
+            }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
+        }
+
+        List<GridPiont> _currentPList = new List<GridPiont>();
+        PictureBox _currentRobot = new PictureBox();
+        private void bcg_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            pnlCenter.Invoke(new Action(() =>
+            {
+                int x = Convert.ToInt32(txtX.Text);
+                var rDis = x / 2;
+
+                for (int h = _currentPList.Count - 1; h >= 0; h--)
+                {
+                    _currentRobot.Location = new Point((_currentPList[h].XPoint * x) + rDis, (_currentPList[h].YPoint * x) + rDis);
+                    _currentRobot.BringToFront();
+                    Thread.Sleep(500);
+                }
+            }));
         }
 
         private void Ws_OnOpen(object sender, EventArgs e)
@@ -1076,6 +1136,11 @@ namespace iOTClient
         public string model { get; set; }
         public int pk { get; set; }
         public ServerMapFields fields { get; set; }
+    }
+
+    public class ServerMessage
+    {
+        public string message { get; set; }
     }
 
     public class ServerMapFields

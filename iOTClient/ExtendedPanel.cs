@@ -12,13 +12,15 @@ namespace iOTClient
     public class ExtendedPanel : Panel
     {
         private const int WS_EX_TRANSPARENT = 0x20;
-        public ExtendedPanel(List<Node> node)
+        public ExtendedPanel(List<GridPiont> node, int distance)
         {
             SetStyle(ControlStyles.Opaque, true);
             _node = node;
+            _distance = distance;
         }
 
-        public List<Node> _node { get; set; } 
+        public List<GridPiont> _node { get; set; }
+        public int _distance { get; set; }
         private int opacity = 0;
         [DefaultValue(0)]
         public int Opacity
@@ -57,16 +59,17 @@ namespace iOTClient
                     for (int i = 0; i < list.Count; i++)
                     {
                         var node = list[i];
+                        var rDis = _distance / 2;
                         if (lastX > -1)
                         {
-                            e.Graphics.DrawLine(p, lastX, lastY, node.Pos.X, node.Pos.Y);
-                            lastX = node.Pos.X;
-                            lastY = node.Pos.Y;
+                            e.Graphics.DrawLine(p, lastX, lastY, node.XPoint * _distance + rDis, node.YPoint * _distance + rDis);
+                            lastX = node.XPoint * _distance + rDis;
+                            lastY = node.YPoint * _distance + rDis;
                         }
                         else
                         {
-                            lastX = node.Pos.X;
-                            lastY = node.Pos.Y;
+                            lastX = node.XPoint * _distance + rDis;
+                            lastY = node.YPoint * _distance + rDis;
                         }
                     }
                     //while (_node.Count > 0)
