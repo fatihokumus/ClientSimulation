@@ -57,7 +57,6 @@ namespace iOTClient
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.bgMotionPlan = new System.ComponentModel.BackgroundWorker();
-            this.button1 = new System.Windows.Forms.Button();
             this.pnlLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
             this.cmObject.SuspendLayout();
@@ -215,7 +214,6 @@ namespace iOTClient
             // pnlTop
             // 
             this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(84)))), ((int)(((byte)(115)))));
-            this.pnlTop.Controls.Add(this.button1);
             this.pnlTop.Controls.Add(this.panel3);
             this.pnlTop.Controls.Add(this.panel2);
             this.pnlTop.Controls.Add(this.btnClose);
@@ -302,6 +300,7 @@ namespace iOTClient
             this.cbMap.Name = "cbMap";
             this.cbMap.Size = new System.Drawing.Size(181, 21);
             this.cbMap.TabIndex = 9;
+            this.cbMap.SelectedIndexChanged += new System.EventHandler(this.cbMap_SelectedIndexChanged);
             // 
             // btnGridCreate
             // 
@@ -400,16 +399,6 @@ namespace iOTClient
             // 
             this.bgMotionPlan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMotionPlan_DoWork);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(860, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,7 +459,6 @@ namespace iOTClient
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox cbMap;
-        private System.Windows.Forms.Button button1;
     }
 }
 

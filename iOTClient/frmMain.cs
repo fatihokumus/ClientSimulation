@@ -22,6 +22,8 @@ namespace iOTClient
         int robotCount = 0;
         int goalCount = 0;
 
+        string wsUserName = "admin";
+        string wsPassword = "HamzAsya";
 
         List<RobotWebSocket> robotSocketList;
         List<PictureBox> _robotList;
@@ -237,7 +239,7 @@ namespace iOTClient
                 WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
                 req.Method = "GET";
                 req.ContentType = "application/json";
-                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
 
                 var getResponse = (HttpWebResponse)req.GetResponse();
                 System.IO.Stream newStream = getResponse.GetResponseStream();
@@ -253,10 +255,13 @@ namespace iOTClient
                     ComboboxItem cmb = new ComboboxItem();
                     cmb.Text = item.fields.Name;
                     cmb.Value = item.pk;
-
+                    cmb.Distance = item.fields.Distance;
+                    
                     cbMap.Items.Add(cmb);
                 }
                 cbMap.SelectedIndex = 0;
+
+                
 
                 // MessageBox.Show("The map has been uploaded", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -805,7 +810,7 @@ namespace iOTClient
                 WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
                 req.Method = "POST";
                 req.ContentType = "application/json";
-                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
                 byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 req.ContentLength = byteArray.Length;
 
@@ -896,7 +901,7 @@ namespace iOTClient
                 WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/goallist/");
                 req.Method = "POST";
                 req.ContentType = "application/json";
-                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes("admin:HamzAsya"));
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
                 byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 req.ContentLength = byteArray.Length;
 
@@ -1014,6 +1019,7 @@ namespace iOTClient
                 int x = Convert.ToInt32(txtX.Text);
                 pnlCenter.Invoke(new Action(() =>
                 {
+                    btnClearPath.PerformClick();
                     pnlPath = new ExtendedPanel(pList, x);
                     pnlPath.Size = pnlCenter.Size;
                     pnlPath.Location = new Point(0, 0);
@@ -1025,6 +1031,7 @@ namespace iOTClient
                         if (item.GetType() == typeof(PictureBox))
                         {
                             var ctrl = (PictureBox)item;
+                            ctrl.BringToFront();
                             if (ctrl.Tag.ToString() == "Robot1")
                             {
                                 _currentPList = pList;
@@ -1034,11 +1041,10 @@ namespace iOTClient
                                 bcg.RunWorkerAsync();
                             }
                         }
-
                     }
                 }));
 
-                
+
                 //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
             }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
@@ -1087,21 +1093,71 @@ namespace iOTClient
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cbMap_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int x = Convert.ToInt32(txtX.Text);
-            var rDis = x / 2;
-            foreach (var item in pnlCenter.Controls)
+            btnClearPanel.PerformClick();
+            if (((ComboboxItem)cbMap.SelectedItem).Distance != null)
             {
-                if (item.GetType() == typeof(PictureBox))
-                {
-                    var ctrl = (PictureBox)item;
-                    if (ctrl.Tag.ToString() == "Robot1")
-                    {
-                        ctrl.Location = new Point(ctrl.Location.X + rDis, ctrl.Location.Y  + rDis);
-                    }
-                }
+                ///
+                txtX.Text = ((ComboboxItem)cbMap.SelectedItem).Distance.ToString();
+                btnGridCreate.PerformClick();
+                ///
+                var mapId = ((ComboboxItem)cbMap.SelectedItem).Value.ToString();
 
+                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/getmap/" + mapId + "/");
+                req.Method = "GET";
+                req.ContentType = "application/json";
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
+
+                var getResponse = (HttpWebResponse)req.GetResponse();
+                System.IO.Stream newStream = getResponse.GetResponseStream();
+                System.IO.StreamReader sr = new System.IO.StreamReader(newStream);
+                var result = sr.ReadToEnd();
+
+                var mspS = JsonConvert.DeserializeObject<string>(result);
+
+                var mspList = JsonConvert.DeserializeObject<List<ServerMapObstacle>>(mspS);
+
+                if (mspList.Count > 0)
+                {
+                    PictureBox pObstacle = null;
+
+                    foreach (var ctrl in pnlLeft.Controls)
+                    {
+                        if (ctrl.GetType() == typeof(PictureBox))
+                        {
+                            if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("Obstacle"))
+                            {
+                                pObstacle = ((PictureBox)ctrl);
+                            }
+                        }
+                    }
+
+                    foreach (var item in mspList)
+                    {
+                        PictureBox picture = new PictureBox();
+
+                        picture.BackColor = pObstacle.BackColor;
+                        picture.Tag = pObstacle.Tag;
+
+                        picture.BorderStyle = BorderStyle.None;
+                        picture.Location = new Point(item.fields.Left, item.fields.Top);
+
+                        picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
+                        picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                        picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                        picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                        picture.ContextMenuStrip = cmObject;
+                        pnlCenter.SendToBack();
+
+                        picture.BringToFront();
+                        pnlCenter.Controls.Add(picture);
+                        picture.BringToFront();
+                        picture.Draggable(true);
+                    }
+
+                    //SetNodes();
+                }
             }
         }
     }
@@ -1159,21 +1215,45 @@ namespace iOTClient
         public ServerMapFields fields { get; set; }
     }
 
+    public class ServerMapFields
+    {
+        public string Name { get; set; }
+        public int SubNet { get; set; }
+        public int? Width { get; set; }
+        public int? Height { get; set; }
+        public int? Distance { get; set; }
+    }
+
+    public class ServerMapObstacle
+    {
+        public string model { get; set; }
+        public int pk { get; set; }
+        public ServerMapObstacleFields fields { get; set; }
+    }
+
+    public class ServerMapObstacleFields
+    {
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+        public int Map { get; set; }
+    }
+
     public class ServerMessage
     {
         public string message { get; set; }
     }
 
-    public class ServerMapFields
-    {
-        public string Name { get; set; }
-        public int SubNet { get; set; }
-    }
+
 
     public class ComboboxItem
     {
         public string Text { get; set; }
         public object Value { get; set; }
+        public object Distance { get; set; }
 
         public override string ToString()
         {
