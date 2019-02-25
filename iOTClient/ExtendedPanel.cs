@@ -12,14 +12,14 @@ namespace iOTClient
     public class ExtendedPanel : Panel
     {
         private const int WS_EX_TRANSPARENT = 0x20;
-        public ExtendedPanel(List<GridPiont> node, int distance)
+        public ExtendedPanel(List<List<GridPiont>> node, int distance)
         {
             SetStyle(ControlStyles.Opaque, true);
             _node = node;
             _distance = distance;
         }
 
-        public List<GridPiont> _node { get; set; }
+        public List<List<GridPiont>> _node { get; set; }
         public int _distance { get; set; }
         private int opacity = 0;
         [DefaultValue(0)]
@@ -51,27 +51,31 @@ namespace iOTClient
             {
                 e.Graphics.FillRectangle(brush, this.ClientRectangle);
                 Pen p = new Pen(Color.Red, 5);
-                int lastX = -1, lastY = -1;
 
                 if(_node != null)
                 {
-                    var list = _node.ToList();
-                    for (int i = 0; i < list.Count; i++)
+                    for (int j = 0; j < _node.Count; j++)
                     {
-                        var node = list[i];
-                        var rDis = _distance / 2;
-                        if (lastX > -1)
+                        int lastX = -1, lastY = -1;
+                        var list = _node[j].ToList();
+                        for (int i = 0; i < list.Count; i++)
                         {
-                            e.Graphics.DrawLine(p, lastX, lastY, node.XPoint * _distance + rDis, node.YPoint * _distance + rDis);
-                            lastX = node.XPoint * _distance + rDis;
-                            lastY = node.YPoint * _distance + rDis;
-                        }
-                        else
-                        {
-                            lastX = node.XPoint * _distance + rDis;
-                            lastY = node.YPoint * _distance + rDis;
+                            var node = list[i];
+                            var rDis = _distance / 2;
+                            if (lastX > -1)
+                            {
+                                e.Graphics.DrawLine(p, lastX, lastY, node.XPoint * _distance + rDis, node.YPoint * _distance + rDis);
+                                lastX = node.XPoint * _distance + rDis;
+                                lastY = node.YPoint * _distance + rDis;
+                            }
+                            else
+                            {
+                                lastX = node.XPoint * _distance + rDis;
+                                lastY = node.YPoint * _distance + rDis;
+                            }
                         }
                     }
+                    
                 }
 
             }

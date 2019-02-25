@@ -30,8 +30,7 @@ namespace iOTClient
         List<PictureBox> _goalList;
         List<GoalPoint> _goalPointList;
         List<List<Node>> _nodes;
-
-        ExtendedPanel pnlPath;
+        List<List<GridPiont>> points;
 
         GridMap _map;
 
@@ -51,6 +50,7 @@ namespace iOTClient
             _goalPointList = new List<GoalPoint>();
             _map = new GridMap();
             _map.ObstaclePoints = new List<ObstaclePiont>();
+            points = new List<List<GridPiont>>();
         }
 
         public void DrawGrid(int x)
@@ -256,12 +256,12 @@ namespace iOTClient
                     cmb.Text = item.fields.Name;
                     cmb.Value = item.pk;
                     cmb.Distance = item.fields.Distance;
-                    
+
                     cbMap.Items.Add(cmb);
                 }
                 cbMap.SelectedIndex = 0;
 
-                
+
 
                 // MessageBox.Show("The map has been uploaded", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -997,6 +997,7 @@ namespace iOTClient
             CloseWebSocket((WebSocket)sender);
         }
 
+
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
             if (e.Data == "{\"message\": \"Orada misin?\"}")
@@ -1006,65 +1007,97 @@ namespace iOTClient
             }
             else if (e.Data.Contains("Rota"))
             {
-                
-                var data = JsonConvert.DeserializeObject<ServerMessage>(e.Data);
-                var rota = data.message.Replace("Rota:", "").Replace("[", "").Replace("]", "");
-                var list = rota.Split(',');
-
-                var pList = new List<GridPiont>();
-                for (int i = 0; i < list.Length; i += 2)
-                {
-                    pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i]), YPoint = Convert.ToInt32(list[i + 1]) });
-                }
-                int x = Convert.ToInt32(txtX.Text);
-                pnlCenter.Invoke(new Action(() =>
-                {
-                    btnClearPath.PerformClick();
-                    pnlPath = new ExtendedPanel(pList, x);
-                    pnlPath.Size = pnlCenter.Size;
-                    pnlPath.Location = new Point(0, 0);
-
-                    pnlCenter.Controls.Add(pnlPath);
-                    pnlPath.BringToFront();
-                    foreach (var item in pnlCenter.Controls)
-                    {
-                        if (item.GetType() == typeof(PictureBox))
-                        {
-                            var ctrl = (PictureBox)item;
-                            ctrl.BringToFront();
-                            if (ctrl.Tag.ToString() == "Robot1")
-                            {
-                                _currentPList = pList;
-                                _currentRobot = ctrl;
-                                BackgroundWorker bcg = new BackgroundWorker();
-                                bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
-                                bcg.RunWorkerAsync();
-                            }
-                        }
-                    }
-                }));
-
+                BackgroundWorker bcg = new BackgroundWorker();
+                bcg.DoWork += new DoWorkEventHandler(bcmessage_DoWork);
+                bcg.RunWorkerAsync(argument: e.Data);
 
                 //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
             }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
         }
 
-        List<GridPiont> _currentPList = new List<GridPiont>();
-        PictureBox _currentRobot = new PictureBox();
-        private void bcg_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bcmessage_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            Thread.Sleep(500);
-            this.Invoke(new Action(() =>
+            var data = JsonConvert.DeserializeObject<ServerMessage>((string)e.Argument);
+            var datastring = data.message.Replace("Rota:", "");
+            var mData = datastring.Split(':');
+
+            var rota = mData[1].Replace("[", "").Replace("]", "");
+            var list = rota.Split(',');
+
+            var pList = new List<GridPiont>();
+            for (int i = 0; i < list.Length; i += 2)
             {
-                int x = Convert.ToInt32(txtX.Text);
-                _currentRobot.BringToFront();
-                for (int h = _currentPList.Count - 1; h >= 0; h--)
+                pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i]), YPoint = Convert.ToInt32(list[i + 1]) });
+            }
+
+            int x = Convert.ToInt32(txtX.Text);
+
+            PictureBox ctrl = null;
+
+            foreach (var item in pnlCenter.Controls)
+            {
+                if (item.GetType() == typeof(ExtendedPanel))
                 {
-                    _currentRobot.Location = new Point((_currentPList[h].XPoint * x), (_currentPList[h].YPoint * x));
+                    ((ExtendedPanel)item).Dispose();
+                }
+                else if (item.GetType() == typeof(PictureBox))
+                {
+                    if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[0])
+                    {
+                        ctrl = ((PictureBox)item);
+                    }
+                }
+
+            }
+            points.Add(pList);
+            var pnlPath = new ExtendedPanel(points, x);
+            pnlPath.Size = pnlCenter.Size;
+            pnlPath.Location = new Point(0, 0);
+
+            pnlCenter.Invoke(new Action(() =>
+            {
+                pnlCenter.Controls.Add(pnlPath);
+                pnlPath.BringToFront();
+            }));
+
+
+
+
+            if(ctrl != null)
+            {
+                ctrl.BringToFront();
+                for (int h = pList.Count - 1; h >= 0; h--)
+                {
+                    var currentRP = new RobotPath()
+                    {
+                        Robot = ctrl,
+                        Point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x))
+                    };
+                    //BackgroundWorker bcg = new BackgroundWorker();
+                    //bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
+                    //bcg.RunWorkerAsync(argument: currentRP);
+
+                    ctrl.Invoke(new Action(() =>
+                    {
+                        ctrl.Location = currentRP.Point;
+                        ctrl.BringToFront();
+                    }));
                     Thread.Sleep(500);
                 }
-            }));
+            }
+
+            
+
+
+
+        }
+
+
+        private void bcg_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var rp = (RobotPath)e.Argument;
+
         }
 
         private void Ws_OnOpen(object sender, EventArgs e)
@@ -1259,5 +1292,11 @@ namespace iOTClient
         {
             return Text;
         }
+    }
+
+    public class RobotPath
+    {
+        public PictureBox Robot { get; set; }
+        public Point Point { get; set; }
     }
 }
