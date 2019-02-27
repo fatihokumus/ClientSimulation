@@ -1039,7 +1039,12 @@ namespace iOTClient
             {
                 if (item.GetType() == typeof(ExtendedPanel))
                 {
-                    ((ExtendedPanel)item).Dispose();
+
+                    ((ExtendedPanel)item).Invoke(new Action(() =>
+                    {
+                        ((ExtendedPanel)item).SendToBack();
+                    }));
+
                 }
                 else if (item.GetType() == typeof(PictureBox))
                 {
@@ -1064,9 +1069,9 @@ namespace iOTClient
 
 
 
-            if(ctrl != null)
+            if (ctrl != null)
             {
-                ctrl.BringToFront();
+
                 for (int h = pList.Count - 1; h >= 0; h--)
                 {
                     var currentRP = new RobotPath()
@@ -1087,7 +1092,7 @@ namespace iOTClient
                 }
             }
 
-            
+
 
 
 
