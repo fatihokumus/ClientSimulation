@@ -1005,6 +1005,10 @@ namespace iOTClient
                 string textKonum = "{\"message\":\"Evet\"}";
                 ((WebSocket)sender).SendAsync(textKonum, delegate (bool completed) { });
             }
+            else if (e.Data.Contains("ClearPath"))
+            {
+                points.Clear();
+            }
             else if (e.Data.Contains("Rota"))
             {
                 BackgroundWorker bcg = new BackgroundWorker();
@@ -1021,8 +1025,9 @@ namespace iOTClient
             var data = JsonConvert.DeserializeObject<ServerMessage>((string)e.Argument);
             var datastring = data.message.Replace("Rota:", "");
             var mData = datastring.Split(':');
+            var algo = mData[0];
 
-            var rota = mData[1].Replace("[", "").Replace("]", "");
+            var rota = mData[2].Replace("[", "").Replace("]", "");
             var list = rota.Split(',');
 
             var pList = new List<GridPiont>();
@@ -1048,7 +1053,7 @@ namespace iOTClient
                 }
                 else if (item.GetType() == typeof(PictureBox))
                 {
-                    if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[0])
+                    if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[1])
                     {
                         ctrl = ((PictureBox)item);
                     }
@@ -1071,30 +1076,50 @@ namespace iOTClient
 
             if (ctrl != null)
             {
-
-                for (int h = pList.Count - 1; h >= 0; h--)
+                if (algo.ToLower() == "dijkstra")
                 {
-                    var currentRP = new RobotPath()
+                    for (int h = 0; h <= pList.Count - 1; h++)
                     {
-                        Robot = ctrl,
-                        Point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x))
-                    };
-                    //BackgroundWorker bcg = new BackgroundWorker();
-                    //bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
-                    //bcg.RunWorkerAsync(argument: currentRP);
+                        var currentRP = new RobotPath()
+                        {
+                            Robot = ctrl,
+                            Point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x))
+                        };
+                        //BackgroundWorker bcg = new BackgroundWorker();
+                        //bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
+                        //bcg.RunWorkerAsync(argument: currentRP);
 
-                    ctrl.Invoke(new Action(() =>
-                    {
-                        ctrl.Location = currentRP.Point;
-                        ctrl.BringToFront();
-                    }));
-                    Thread.Sleep(500);
+                        ctrl.Invoke(new Action(() =>
+                        {
+                            ctrl.Location = currentRP.Point;
+                            ctrl.BringToFront();
+                        }));
+                        Thread.Sleep(500);
+                    }
                 }
+                else
+                {
+                    for (int h = pList.Count - 1; h >= 0; h--)
+                    {
+                        var currentRP = new RobotPath()
+                        {
+                            Robot = ctrl,
+                            Point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x))
+                        };
+                        //BackgroundWorker bcg = new BackgroundWorker();
+                        //bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
+                        //bcg.RunWorkerAsync(argument: currentRP);
+
+                        ctrl.Invoke(new Action(() =>
+                        {
+                            ctrl.Location = currentRP.Point;
+                            ctrl.BringToFront();
+                        }));
+                        Thread.Sleep(500);
+                    }
+                }
+
             }
-
-
-
-
 
         }
 
