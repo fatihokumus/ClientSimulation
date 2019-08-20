@@ -16,7 +16,9 @@ namespace iOTClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            Application.Run(new frmSettings());
         }
+
+        public static string _wslink = "fatih.tuga.com.tr:8180";
     }
 }

@@ -37,7 +37,7 @@ namespace iOTClient
         bool ctrlPressed = false;
         string[] pressedPanel = null;
 
-        private string _wslink = "ws://fatih.tuga.com.tr:8180/robots/iot/";
+        private string _wslink = "ws://" + Program._wslink + "/robots/iot/";
         private string proxyUrl;
 
         public frmMain()
@@ -236,7 +236,7 @@ namespace iOTClient
         {
             try
             {
-                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
+                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/maplist/");
                 req.Method = "GET";
                 req.ContentType = "application/json";
                 req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
@@ -807,7 +807,7 @@ namespace iOTClient
 
                 _map.MapId = Convert.ToInt32(((ComboboxItem)cbMap.SelectedItem).Value);
                 string json = JsonConvert.SerializeObject(_map);
-                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/maplist/");
+                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/maplist/");
                 req.Method = "POST";
                 req.ContentType = "application/json";
                 req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
@@ -898,7 +898,7 @@ namespace iOTClient
                 mapGoals.GoalPoints = _goalPointList;
 
                 string json = JsonConvert.SerializeObject(mapGoals);
-                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/goallist/");
+                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/goallist/");
                 req.Method = "POST";
                 req.ContentType = "application/json";
                 req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
@@ -1167,7 +1167,7 @@ namespace iOTClient
                 ///
                 var mapId = ((ComboboxItem)cbMap.SelectedItem).Value.ToString();
 
-                WebRequest req = WebRequest.Create(@"http://fatih.tuga.com.tr:8180/robots/getmap/" + mapId + "/");
+                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/getmap/" + mapId + "/");
                 req.Method = "GET";
                 req.ContentType = "application/json";
                 req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
@@ -1223,6 +1223,8 @@ namespace iOTClient
                 }
             }
         }
+
+       
     }
 
     public class RobotWebSocket
