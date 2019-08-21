@@ -58,6 +58,8 @@
             this.txtAdress.Name = "txtAdress";
             this.txtAdress.Size = new System.Drawing.Size(520, 20);
             this.txtAdress.TabIndex = 2;
+            this.txtAdress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAdress_KeyDown);
+            this.txtAdress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAdress_KeyPress);
             // 
             // frmSettings
             // 

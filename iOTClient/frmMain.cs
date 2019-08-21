@@ -61,15 +61,15 @@ namespace iOTClient
             //g.Clear(Color.WhiteSmoke);
             //Pen p = new Pen(Color.Red, 1);
 
-            var width = pnlCenter.Width - 20; //Padding 10 left and 10 right pixels
-            var height = pnlCenter.Height - 20; //Padding 10 top and 10 bottom pixels
+            var width = pnlCenter.Width - 10; //Padding 10 left and 10 right pixels
+            var height = pnlCenter.Height - 10; //Padding 10 top and 10 bottom pixels
 
             int numX = width / x;
             int numY = height / x; ;
 
-            for (int i = 0; i <= numX; i++)
+            for (int i = 0; i < numX; i++)
             {
-                for (int j = 0; j <= numY; j++)
+                for (int j = 0; j < numY; j++)
                 {
                     Panel pnl = new Panel();
                     var pX = (i * x) + (x / 2);
@@ -206,23 +206,13 @@ namespace iOTClient
             Application.Exit();
         }
 
-        private void btnClose_MouseHover(object sender, EventArgs e)
-        {
-            btnClose.Image = iOTClient.Properties.Resources.close2;
-        }
-
-        private void btnClose_MouseLeave(object sender, EventArgs e)
-        {
-            btnClose.Image = iOTClient.Properties.Resources.close;
-        }
-
         private void frmMain_Load(object sender, EventArgs e)
         {
 
             pnlLeft.Height = this.Height;
             pnlTop.Width = this.Width - pnlLeft.Width;
-            pnlCenter.Width = this.Width - pnlLeft.Width - 2;
-            pnlCenter.Height = this.Height - pnlTop.Height - 2;
+            pnlCenter.Width = this.Width - pnlLeft.Width - 17;
+            pnlCenter.Height = this.Height - pnlTop.Height - pnlBottom.Height - 35;
             pRobot.Draggable(true);
             pRobot.BringToFront();
             pObstacle.Draggable(true);
@@ -1224,7 +1214,10 @@ namespace iOTClient
             }
         }
 
-       
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 
     public class RobotWebSocket

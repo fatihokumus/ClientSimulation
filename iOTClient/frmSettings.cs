@@ -29,5 +29,17 @@ namespace iOTClient
         {
             txtAdress.Text = Program._wslink;
         }
+
+        private void txtAdress_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           
+
+        }
+
+        private void txtAdress_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                btnOk.PerformClick();
+        }
     }
 }

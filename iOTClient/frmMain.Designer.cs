@@ -54,9 +54,11 @@ namespace iOTClient
             this.btnClearPanel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnUploadMap = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.PictureBox();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.bgMotionPlan = new System.ComponentModel.BackgroundWorker();
+            this.pnlBottom = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.pnlLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
             this.cmObject.SuspendLayout();
@@ -66,7 +68,7 @@ namespace iOTClient
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
+            this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlLeft
@@ -164,7 +166,7 @@ namespace iOTClient
             // 
             // pObstacle
             // 
-            this.pObstacle.BackColor = System.Drawing.Color.Black;
+            this.pObstacle.BackColor = System.Drawing.Color.Gray;
             this.pObstacle.ContextMenuStrip = this.cmObject;
             this.pObstacle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pObstacle.Location = new System.Drawing.Point(22, 211);
@@ -216,7 +218,6 @@ namespace iOTClient
             this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(84)))), ((int)(((byte)(115)))));
             this.pnlTop.Controls.Add(this.panel3);
             this.pnlTop.Controls.Add(this.panel2);
-            this.pnlTop.Controls.Add(this.btnClose);
             this.pnlTop.Location = new System.Drawing.Point(91, 0);
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1012, 80);
@@ -373,22 +374,9 @@ namespace iOTClient
             this.btnUploadMap.UseVisualStyleBackColor = false;
             this.btnUploadMap.Click += new System.EventHandler(this.btnUploadMap_Click);
             // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Image = global::iOTClient.Properties.Resources.close;
-            this.btnClose.Location = new System.Drawing.Point(979, 7);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(29, 33);
-            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnClose.TabIndex = 7;
-            this.btnClose.TabStop = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
-            this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
-            // 
             // pnlCenter
             // 
+            this.pnlCenter.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pnlCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlCenter.Location = new System.Drawing.Point(91, 75);
             this.pnlCenter.Name = "pnlCenter";
@@ -399,20 +387,51 @@ namespace iOTClient
             // 
             this.bgMotionPlan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgMotionPlan_DoWork);
             // 
+            // pnlBottom
+            // 
+            this.pnlBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
+            this.pnlBottom.Controls.Add(this.label6);
+            this.pnlBottom.Controls.Add(this.label7);
+            this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlBottom.Location = new System.Drawing.Point(0, 571);
+            this.pnlBottom.Name = "pnlBottom";
+            this.pnlBottom.Size = new System.Drawing.Size(1105, 22);
+            this.pnlBottom.TabIndex = 8;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(1065, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(0, 13);
+            this.label6.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1065, -16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(0, 13);
+            this.label7.TabIndex = 3;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1105, 593);
+            this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlCenter);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.pnlLeft);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cloud Based iOT Client Simulator";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.pnlLeft.ResumeLayout(false);
@@ -426,7 +445,8 @@ namespace iOTClient
             this.panel3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
+            this.pnlBottom.ResumeLayout(false);
+            this.pnlBottom.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -439,7 +459,6 @@ namespace iOTClient
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnGridCreate;
         private System.Windows.Forms.TextBox txtX;
-        private System.Windows.Forms.PictureBox btnClose;
         private System.Windows.Forms.PictureBox pGoal;
         private System.Windows.Forms.PictureBox pObstacle;
         private System.Windows.Forms.ContextMenuStrip cmObject;
@@ -459,6 +478,9 @@ namespace iOTClient
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox cbMap;
+        private System.Windows.Forms.Panel pnlBottom;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }
 

@@ -19,6 +19,6 @@ namespace iOTClient
             Application.Run(new frmSettings());
         }
 
-        public static string _wslink = "fatih.tuga.com.tr:8180";
+        public static string _wslink = "localhost";
     }
 }
