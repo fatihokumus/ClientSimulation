@@ -142,7 +142,22 @@
     <None Include="Resources\bos.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\turtlebot_2_lg_free.png" />
+    <None Include="Resources\machine11.png" />
+    <None Include="Resources\WaitingStationFree.png" />
+    <None Include="Resources\WaitingStation.png" />
+    <None Include="Resources\WorkSatation.png" />
+    <None Include="Resources\machine1.png" />
+    <None Include="Resources\machine.png" />
     <None Include="Resources\archer-clipart-archery-bullseye-15.png" />
+    <None Include="Resources\dok-arabasi.png" />
+    <None Include="Resources\ChargeSatation.png" />
+    <None Include="Resources\ChargeSatationFree.png" />
+    <None Include="Resources\dok-arabasi1.png" />
+    <None Include="Resources\dok-arabasi2.png" />
+    <None Include="Resources\dok-arabasi3.png" />
+    <None Include="Resources\dokarabasi_free.png" />
+    <None Include="Resources\archer-clipart-archery-bullseye-151.png" />
     <Content Include="Resources\goal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

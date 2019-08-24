@@ -31,49 +31,61 @@ namespace iOTClient
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.pnlLeft = new System.Windows.Forms.Panel();
-            this.pRobot = new System.Windows.Forms.PictureBox();
             this.cmObject = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsSil = new System.Windows.Forms.ToolStripMenuItem();
             this.label5 = new System.Windows.Forms.Label();
             this.lblY = new System.Windows.Forms.Label();
             this.lblX = new System.Windows.Forms.Label();
-            this.pGoal = new System.Windows.Forms.PictureBox();
-            this.pObstacle = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnClearPath = new System.Windows.Forms.Button();
-            this.btnMotionPlan = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbMap = new System.Windows.Forms.ComboBox();
-            this.btnGridCreate = new System.Windows.Forms.Button();
             this.txtX = new System.Windows.Forms.TextBox();
-            this.btnClearPanel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnUploadMap = new System.Windows.Forms.Button();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.bgMotionPlan = new System.ComponentModel.BackgroundWorker();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnClearPath = new System.Windows.Forms.Button();
+            this.btnMotionPlan = new System.Windows.Forms.Button();
+            this.btnGridCreate = new System.Windows.Forms.Button();
+            this.btnClearPanel = new System.Windows.Forms.Button();
+            this.btnUploadMap = new System.Windows.Forms.Button();
+            this.pWaitingS = new System.Windows.Forms.PictureBox();
+            this.pChargeS = new System.Windows.Forms.PictureBox();
+            this.pMachine = new System.Windows.Forms.PictureBox();
+            this.pDok = new System.Windows.Forms.PictureBox();
+            this.pRobot = new System.Windows.Forms.PictureBox();
+            this.pGoal = new System.Windows.Forms.PictureBox();
+            this.pObstacle = new System.Windows.Forms.PictureBox();
             this.pnlLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
             this.cmObject.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnlBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pWaitingS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pChargeS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pMachine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pDok)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlLeft
             // 
-            this.pnlLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
+            this.pnlLeft.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.pnlLeft.Controls.Add(this.pWaitingS);
+            this.pnlLeft.Controls.Add(this.pChargeS);
+            this.pnlLeft.Controls.Add(this.pMachine);
+            this.pnlLeft.Controls.Add(this.pDok);
             this.pnlLeft.Controls.Add(this.pRobot);
             this.pnlLeft.Controls.Add(this.label5);
             this.pnlLeft.Controls.Add(this.lblY);
@@ -83,25 +95,8 @@ namespace iOTClient
             this.pnlLeft.Controls.Add(this.panel1);
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(91, 593);
+            this.pnlLeft.Size = new System.Drawing.Size(91, 710);
             this.pnlLeft.TabIndex = 4;
-            // 
-            // pRobot
-            // 
-            this.pRobot.ContextMenuStrip = this.cmObject;
-            this.pRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pRobot.Image = ((System.Drawing.Image)(resources.GetObject("pRobot.Image")));
-            this.pRobot.Location = new System.Drawing.Point(22, 115);
-            this.pRobot.Name = "pRobot";
-            this.pRobot.Size = new System.Drawing.Size(50, 70);
-            this.pRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pRobot.TabIndex = 11;
-            this.pRobot.TabStop = false;
-            this.pRobot.Tag = "Robot1";
-            this.pRobot.Paint += new System.Windows.Forms.PaintEventHandler(this.pRobot_Paint);
-            this.pRobot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pRobot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pRobot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
             // cmObject
             // 
@@ -122,7 +117,7 @@ namespace iOTClient
             // 
             this.label5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(13, 194);
+            this.label5.Location = new System.Drawing.Point(13, 178);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(68, 17);
             this.label5.TabIndex = 7;
@@ -133,7 +128,7 @@ namespace iOTClient
             // 
             this.lblY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(51, 571);
+            this.lblY.Location = new System.Drawing.Point(51, 688);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(0, 13);
             this.lblY.TabIndex = 3;
@@ -142,43 +137,10 @@ namespace iOTClient
             // 
             this.lblX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(51, 555);
+            this.lblX.Location = new System.Drawing.Point(51, 672);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(0, 13);
             this.lblX.TabIndex = 3;
-            // 
-            // pGoal
-            // 
-            this.pGoal.ContextMenuStrip = this.cmObject;
-            this.pGoal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pGoal.Image = global::iOTClient.Properties.Resources.goal;
-            this.pGoal.Location = new System.Drawing.Point(22, 279);
-            this.pGoal.Name = "pGoal";
-            this.pGoal.Size = new System.Drawing.Size(50, 61);
-            this.pGoal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pGoal.TabIndex = 2;
-            this.pGoal.TabStop = false;
-            this.pGoal.Tag = "Goal1";
-            this.pGoal.Paint += new System.Windows.Forms.PaintEventHandler(this.pGoal_Paint);
-            this.pGoal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pGoal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pGoal.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
-            // 
-            // pObstacle
-            // 
-            this.pObstacle.BackColor = System.Drawing.Color.Gray;
-            this.pObstacle.ContextMenuStrip = this.cmObject;
-            this.pObstacle.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pObstacle.Location = new System.Drawing.Point(22, 211);
-            this.pObstacle.Name = "pObstacle";
-            this.pObstacle.Size = new System.Drawing.Size(50, 50);
-            this.pObstacle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pObstacle.TabIndex = 2;
-            this.pObstacle.TabStop = false;
-            this.pObstacle.Tag = "Obstacle";
-            this.pObstacle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
-            this.pObstacle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
-            this.pObstacle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
             // 
             // panel1
             // 
@@ -234,39 +196,6 @@ namespace iOTClient
             this.panel3.Size = new System.Drawing.Size(320, 65);
             this.panel3.TabIndex = 10;
             // 
-            // btnClearPath
-            // 
-            this.btnClearPath.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnClearPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearPath.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnClearPath.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnClearPath.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPath.Image")));
-            this.btnClearPath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearPath.Location = new System.Drawing.Point(196, 8);
-            this.btnClearPath.Name = "btnClearPath";
-            this.btnClearPath.Size = new System.Drawing.Size(114, 48);
-            this.btnClearPath.TabIndex = 5;
-            this.btnClearPath.Text = "Clear Path";
-            this.btnClearPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClearPath.UseVisualStyleBackColor = false;
-            this.btnClearPath.Click += new System.EventHandler(this.btnClearPath_Click);
-            // 
-            // btnMotionPlan
-            // 
-            this.btnMotionPlan.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnMotionPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMotionPlan.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnMotionPlan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnMotionPlan.Image = ((System.Drawing.Image)(resources.GetObject("btnMotionPlan.Image")));
-            this.btnMotionPlan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMotionPlan.Location = new System.Drawing.Point(12, 30);
-            this.btnMotionPlan.Name = "btnMotionPlan";
-            this.btnMotionPlan.Size = new System.Drawing.Size(180, 27);
-            this.btnMotionPlan.TabIndex = 5;
-            this.btnMotionPlan.Text = "      Plan Motion";
-            this.btnMotionPlan.UseVisualStyleBackColor = false;
-            this.btnMotionPlan.Click += new System.EventHandler(this.btnMotionPlan_Click);
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -303,23 +232,6 @@ namespace iOTClient
             this.cbMap.TabIndex = 9;
             this.cbMap.SelectedIndexChanged += new System.EventHandler(this.cbMap_SelectedIndexChanged);
             // 
-            // btnGridCreate
-            // 
-            this.btnGridCreate.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnGridCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGridCreate.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnGridCreate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnGridCreate.Image = ((System.Drawing.Image)(resources.GetObject("btnGridCreate.Image")));
-            this.btnGridCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGridCreate.Location = new System.Drawing.Point(73, 9);
-            this.btnGridCreate.Name = "btnGridCreate";
-            this.btnGridCreate.Size = new System.Drawing.Size(124, 48);
-            this.btnGridCreate.TabIndex = 5;
-            this.btnGridCreate.Text = "Create Map";
-            this.btnGridCreate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnGridCreate.UseVisualStyleBackColor = false;
-            this.btnGridCreate.Click += new System.EventHandler(this.btnGridCreate_Click);
-            // 
             // txtX
             // 
             this.txtX.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
@@ -329,23 +241,6 @@ namespace iOTClient
             this.txtX.Size = new System.Drawing.Size(57, 24);
             this.txtX.TabIndex = 4;
             this.txtX.Text = "50";
-            // 
-            // btnClearPanel
-            // 
-            this.btnClearPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnClearPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearPanel.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnClearPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnClearPanel.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPanel.Image")));
-            this.btnClearPanel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearPanel.Location = new System.Drawing.Point(202, 9);
-            this.btnClearPanel.Name = "btnClearPanel";
-            this.btnClearPanel.Size = new System.Drawing.Size(114, 48);
-            this.btnClearPanel.TabIndex = 5;
-            this.btnClearPanel.Text = "Clear Map";
-            this.btnClearPanel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClearPanel.UseVisualStyleBackColor = false;
-            this.btnClearPanel.Click += new System.EventHandler(this.btnClearPanel_Click);
             // 
             // label1
             // 
@@ -358,29 +253,13 @@ namespace iOTClient
             this.label1.TabIndex = 6;
             this.label1.Text = "Distance";
             // 
-            // btnUploadMap
-            // 
-            this.btnUploadMap.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnUploadMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUploadMap.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.btnUploadMap.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnUploadMap.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadMap.Image")));
-            this.btnUploadMap.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadMap.Location = new System.Drawing.Point(321, 31);
-            this.btnUploadMap.Name = "btnUploadMap";
-            this.btnUploadMap.Size = new System.Drawing.Size(182, 26);
-            this.btnUploadMap.TabIndex = 5;
-            this.btnUploadMap.Text = "    Upload Map";
-            this.btnUploadMap.UseVisualStyleBackColor = false;
-            this.btnUploadMap.Click += new System.EventHandler(this.btnUploadMap_Click);
-            // 
             // pnlCenter
             // 
             this.pnlCenter.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pnlCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlCenter.Location = new System.Drawing.Point(91, 75);
+            this.pnlCenter.Location = new System.Drawing.Point(91, 79);
             this.pnlCenter.Name = "pnlCenter";
-            this.pnlCenter.Size = new System.Drawing.Size(1012, 517);
+            this.pnlCenter.Size = new System.Drawing.Size(1012, 631);
             this.pnlCenter.TabIndex = 7;
             // 
             // bgMotionPlan
@@ -389,11 +268,11 @@ namespace iOTClient
             // 
             // pnlBottom
             // 
-            this.pnlBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(215)))), ((int)(((byte)(218)))));
+            this.pnlBottom.BackColor = System.Drawing.SystemColors.ControlLight;
             this.pnlBottom.Controls.Add(this.label6);
             this.pnlBottom.Controls.Add(this.label7);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 571);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 710);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(1105, 22);
             this.pnlBottom.TabIndex = 8;
@@ -416,11 +295,210 @@ namespace iOTClient
             this.label7.Size = new System.Drawing.Size(0, 13);
             this.label7.TabIndex = 3;
             // 
+            // btnClearPath
+            // 
+            this.btnClearPath.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnClearPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearPath.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnClearPath.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnClearPath.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPath.Image")));
+            this.btnClearPath.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearPath.Location = new System.Drawing.Point(196, 8);
+            this.btnClearPath.Name = "btnClearPath";
+            this.btnClearPath.Size = new System.Drawing.Size(114, 48);
+            this.btnClearPath.TabIndex = 5;
+            this.btnClearPath.Text = "Clear Path";
+            this.btnClearPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClearPath.UseVisualStyleBackColor = false;
+            this.btnClearPath.Click += new System.EventHandler(this.btnClearPath_Click);
+            // 
+            // btnMotionPlan
+            // 
+            this.btnMotionPlan.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnMotionPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMotionPlan.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnMotionPlan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnMotionPlan.Image = ((System.Drawing.Image)(resources.GetObject("btnMotionPlan.Image")));
+            this.btnMotionPlan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMotionPlan.Location = new System.Drawing.Point(12, 30);
+            this.btnMotionPlan.Name = "btnMotionPlan";
+            this.btnMotionPlan.Size = new System.Drawing.Size(180, 27);
+            this.btnMotionPlan.TabIndex = 5;
+            this.btnMotionPlan.Text = "      Plan Motion";
+            this.btnMotionPlan.UseVisualStyleBackColor = false;
+            this.btnMotionPlan.Click += new System.EventHandler(this.btnMotionPlan_Click);
+            // 
+            // btnGridCreate
+            // 
+            this.btnGridCreate.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnGridCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGridCreate.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnGridCreate.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnGridCreate.Image = ((System.Drawing.Image)(resources.GetObject("btnGridCreate.Image")));
+            this.btnGridCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGridCreate.Location = new System.Drawing.Point(73, 9);
+            this.btnGridCreate.Name = "btnGridCreate";
+            this.btnGridCreate.Size = new System.Drawing.Size(124, 48);
+            this.btnGridCreate.TabIndex = 5;
+            this.btnGridCreate.Text = "Create Map";
+            this.btnGridCreate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnGridCreate.UseVisualStyleBackColor = false;
+            this.btnGridCreate.Click += new System.EventHandler(this.btnGridCreate_Click);
+            // 
+            // btnClearPanel
+            // 
+            this.btnClearPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnClearPanel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearPanel.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnClearPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnClearPanel.Image = ((System.Drawing.Image)(resources.GetObject("btnClearPanel.Image")));
+            this.btnClearPanel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearPanel.Location = new System.Drawing.Point(202, 9);
+            this.btnClearPanel.Name = "btnClearPanel";
+            this.btnClearPanel.Size = new System.Drawing.Size(114, 48);
+            this.btnClearPanel.TabIndex = 5;
+            this.btnClearPanel.Text = "Clear Map";
+            this.btnClearPanel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClearPanel.UseVisualStyleBackColor = false;
+            this.btnClearPanel.Click += new System.EventHandler(this.btnClearPanel_Click);
+            // 
+            // btnUploadMap
+            // 
+            this.btnUploadMap.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnUploadMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUploadMap.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.btnUploadMap.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnUploadMap.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadMap.Image")));
+            this.btnUploadMap.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUploadMap.Location = new System.Drawing.Point(321, 31);
+            this.btnUploadMap.Name = "btnUploadMap";
+            this.btnUploadMap.Size = new System.Drawing.Size(182, 26);
+            this.btnUploadMap.TabIndex = 5;
+            this.btnUploadMap.Text = "    Upload Map";
+            this.btnUploadMap.UseVisualStyleBackColor = false;
+            this.btnUploadMap.Click += new System.EventHandler(this.btnUploadMap_Click);
+            // 
+            // pWaitingS
+            // 
+            this.pWaitingS.ContextMenuStrip = this.cmObject;
+            this.pWaitingS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pWaitingS.Image = global::iOTClient.Properties.Resources.WaitingStation;
+            this.pWaitingS.Location = new System.Drawing.Point(21, 558);
+            this.pWaitingS.Name = "pWaitingS";
+            this.pWaitingS.Size = new System.Drawing.Size(50, 50);
+            this.pWaitingS.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pWaitingS.TabIndex = 15;
+            this.pWaitingS.TabStop = false;
+            this.pWaitingS.Tag = "W";
+            this.pWaitingS.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pWaitingS.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pWaitingS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pChargeS
+            // 
+            this.pChargeS.ContextMenuStrip = this.cmObject;
+            this.pChargeS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pChargeS.Image = global::iOTClient.Properties.Resources.ChargeSatation;
+            this.pChargeS.Location = new System.Drawing.Point(21, 492);
+            this.pChargeS.Name = "pChargeS";
+            this.pChargeS.Size = new System.Drawing.Size(50, 50);
+            this.pChargeS.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pChargeS.TabIndex = 14;
+            this.pChargeS.TabStop = false;
+            this.pChargeS.Tag = "C";
+            this.pChargeS.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pChargeS.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pChargeS.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pMachine
+            // 
+            this.pMachine.ContextMenuStrip = this.cmObject;
+            this.pMachine.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pMachine.Image = ((System.Drawing.Image)(resources.GetObject("pMachine.Image")));
+            this.pMachine.Location = new System.Drawing.Point(22, 415);
+            this.pMachine.Name = "pMachine";
+            this.pMachine.Size = new System.Drawing.Size(50, 61);
+            this.pMachine.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pMachine.TabIndex = 13;
+            this.pMachine.TabStop = false;
+            this.pMachine.Tag = "M1";
+            this.pMachine.Paint += new System.Windows.Forms.PaintEventHandler(this.pMachine_Paint);
+            this.pMachine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pMachine.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pMachine.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pDok
+            // 
+            this.pDok.ContextMenuStrip = this.cmObject;
+            this.pDok.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pDok.Image = global::iOTClient.Properties.Resources.dokarabasi;
+            this.pDok.Location = new System.Drawing.Point(22, 338);
+            this.pDok.Name = "pDok";
+            this.pDok.Size = new System.Drawing.Size(50, 61);
+            this.pDok.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pDok.TabIndex = 12;
+            this.pDok.TabStop = false;
+            this.pDok.Tag = "D1";
+            this.pDok.Paint += new System.Windows.Forms.PaintEventHandler(this.pDok_Paint);
+            this.pDok.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pDok.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pDok.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pRobot
+            // 
+            this.pRobot.ContextMenuStrip = this.cmObject;
+            this.pRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pRobot.Image = ((System.Drawing.Image)(resources.GetObject("pRobot.Image")));
+            this.pRobot.Location = new System.Drawing.Point(22, 95);
+            this.pRobot.Name = "pRobot";
+            this.pRobot.Size = new System.Drawing.Size(50, 70);
+            this.pRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pRobot.TabIndex = 11;
+            this.pRobot.TabStop = false;
+            this.pRobot.Tag = "R1";
+            this.pRobot.Paint += new System.Windows.Forms.PaintEventHandler(this.pRobot_Paint);
+            this.pRobot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pRobot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pRobot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pGoal
+            // 
+            this.pGoal.ContextMenuStrip = this.cmObject;
+            this.pGoal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pGoal.Image = global::iOTClient.Properties.Resources.goal;
+            this.pGoal.Location = new System.Drawing.Point(22, 261);
+            this.pGoal.Name = "pGoal";
+            this.pGoal.Size = new System.Drawing.Size(50, 61);
+            this.pGoal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pGoal.TabIndex = 2;
+            this.pGoal.TabStop = false;
+            this.pGoal.Tag = "G1";
+            this.pGoal.Paint += new System.Windows.Forms.PaintEventHandler(this.pGoal_Paint);
+            this.pGoal.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pGoal.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pGoal.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
+            // pObstacle
+            // 
+            this.pObstacle.BackColor = System.Drawing.Color.Gray;
+            this.pObstacle.ContextMenuStrip = this.cmObject;
+            this.pObstacle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pObstacle.Location = new System.Drawing.Point(22, 195);
+            this.pObstacle.Name = "pObstacle";
+            this.pObstacle.Size = new System.Drawing.Size(50, 50);
+            this.pObstacle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pObstacle.TabIndex = 2;
+            this.pObstacle.TabStop = false;
+            this.pObstacle.Tag = "O";
+            this.pObstacle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
+            this.pObstacle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
+            this.pObstacle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Object_MouseUp);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1105, 593);
+            this.ClientSize = new System.Drawing.Size(1105, 732);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlCenter);
             this.Controls.Add(this.pnlTop);
@@ -436,10 +514,7 @@ namespace iOTClient
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).EndInit();
             this.cmObject.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).EndInit();
             this.panel1.ResumeLayout(false);
             this.pnlTop.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -447,6 +522,13 @@ namespace iOTClient
             this.panel2.PerformLayout();
             this.pnlBottom.ResumeLayout(false);
             this.pnlBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pWaitingS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pChargeS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pMachine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pDok)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pRobot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pGoal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pObstacle)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -481,6 +563,10 @@ namespace iOTClient
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox pDok;
+        private System.Windows.Forms.PictureBox pMachine;
+        private System.Windows.Forms.PictureBox pChargeS;
+        private System.Windows.Forms.PictureBox pWaitingS;
     }
 }
 

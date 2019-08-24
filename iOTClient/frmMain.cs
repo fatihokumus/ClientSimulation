@@ -17,10 +17,15 @@ namespace iOTClient
 {
     public partial class frmMain : Form
     {
+        bool formCreated = false;
         bool eOlustu = false;
         int gridSize = 0;
         int robotCount = 0;
         int goalCount = 0;
+        int dokCount = 0;
+        int machineCount = 0;
+        int chargeSCount = 0;
+        int waitingSCount = 0;
 
         string wsUserName = "admin";
         string wsPassword = "HamzAsya";
@@ -28,7 +33,15 @@ namespace iOTClient
         List<RobotWebSocket> robotSocketList;
         List<PictureBox> _robotList;
         List<PictureBox> _goalList;
+        List<PictureBox> _dokList;
+        List<PictureBox> _machineList;
+        List<PictureBox> _waitingSList;
+        List<PictureBox> _chargeSList;
         List<GoalPoint> _goalPointList;
+        List<DokPoint> _dokPointList;
+        List<MachinePoint> _machinePointList;
+        List<WaitingStationPoint> _waitingSPointList;
+        List<ChargeStationPoint> _chargeSPointList;
         List<List<Node>> _nodes;
         List<List<GridPiont>> points;
 
@@ -47,10 +60,19 @@ namespace iOTClient
             _nodes = new List<List<Node>>();
             _robotList = new List<PictureBox>();
             _goalList = new List<PictureBox>();
+            _dokList = new List<PictureBox>();
+            _machineList = new List<PictureBox>();
+            _waitingSList = new List<PictureBox>();
+            _chargeSList = new List<PictureBox>();
             _goalPointList = new List<GoalPoint>();
+            _dokPointList = new List<DokPoint>();
+            _machinePointList = new List<MachinePoint>();
+            _waitingSPointList = new List<WaitingStationPoint>();
+            _chargeSPointList = new List<ChargeStationPoint>();
             _map = new GridMap();
             _map.ObstaclePoints = new List<ObstaclePiont>();
             points = new List<List<GridPiont>>();
+
         }
 
         public void DrawGrid(int x)
@@ -75,9 +97,9 @@ namespace iOTClient
                     var pX = (i * x) + (x / 2);
                     var pY = (j * x) + (x / 2);
 
-                    pnl.Size = new Size(5, 5);
+                    pnl.Size = new Size(2, 2);
                     pnl.BorderStyle = BorderStyle.None;
-                    pnl.BackColor = Color.Blue;
+                    pnl.BackColor = Color.Black;
                     pnl.MouseDown += new MouseEventHandler(this.Panel_MouseDown);
                     pnl.Location = new Point(pX, pY);
                     pnl.Tag = "label" + i.ToString() + "_" + j.ToString();
@@ -219,6 +241,14 @@ namespace iOTClient
             pObstacle.BringToFront();
             pGoal.Draggable(true);
             pGoal.BringToFront();
+            pDok.Draggable(true);
+            pDok.BringToFront();
+            pMachine.Draggable(true);
+            pMachine.BringToFront();
+            pWaitingS.Draggable(true);
+            pWaitingS.BringToFront();
+            pChargeS.Draggable(true);
+            pChargeS.BringToFront();
 
             GetMapList();
         }
@@ -269,27 +299,63 @@ namespace iOTClient
                 {
                     PictureBox picture = new PictureBox();
 
-                    if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("Obstacle"))
+                    if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("O"))
                     {
                         picture.BackColor = ((PictureBox)sender).BackColor;
-                        picture.Tag = "Obstacle";
+                        picture.Tag = "O";
                     }
-                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("Robot"))
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("R"))
                     {
                         robotCount++;
-                        ((PictureBox)sender).Tag = "Robot" + robotCount.ToString();
+                        ((PictureBox)sender).Tag = "R" + robotCount.ToString();
                         picture.BackColor = Color.Transparent;
-                        picture.Tag = "Robot";
+                        picture.Tag = "R";
                         picture.Paint += new PaintEventHandler(this.pRobot_Paint);
                     }
-                    else
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("G"))
                     {
                         goalCount++;
-                        ((PictureBox)sender).Tag = "Goal" + goalCount.ToString();
+                        ((PictureBox)sender).Tag = "G" + goalCount.ToString();
                         picture.BackColor = Color.Transparent;
-                        picture.Tag = "Goal";
+                        picture.Tag = "G";
 
                         picture.Paint += new PaintEventHandler(this.pGoal_Paint);
+                    }
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("D"))
+                    {
+                        dokCount++;
+                        ((PictureBox)sender).Tag = "D" + dokCount.ToString();
+                        picture.BackColor = Color.Transparent;
+                        picture.Tag = "D";
+
+                        picture.Paint += new PaintEventHandler(this.pDok_Paint);
+                    }
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("M"))
+                    {
+                        machineCount++;
+                        ((PictureBox)sender).Tag = "M" + machineCount.ToString();
+                        picture.BackColor = Color.Transparent;
+                        picture.Tag = "M";
+
+                        picture.Paint += new PaintEventHandler(this.pMachine_Paint);
+                    }
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("C"))
+                    {
+                        chargeSCount++;
+                        ((PictureBox)sender).Tag = "C" + chargeSCount.ToString();
+                        picture.BackColor = Color.Transparent;
+                        picture.Tag = "C";
+
+                        //picture.Paint += new PaintEventHandler(this.pGoal_Paint);
+                    }
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("W"))
+                    {
+                        waitingSCount++;
+                        ((PictureBox)sender).Tag = "W" + waitingSCount.ToString();
+                        picture.BackColor = Color.Transparent;
+                        picture.Tag = "W";
+
+                        // picture.Paint += new PaintEventHandler(this.pGoal_Paint);
                     }
 
                     picture.BorderStyle = BorderStyle.None;
@@ -334,6 +400,10 @@ namespace iOTClient
                     MessageBox.Show("Please Create Distance", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     robotCount = 0;
                     goalCount = 0;
+                    dokCount = 0;
+                    machineCount = 0;
+                    chargeSCount = 0;
+                    waitingSCount = 0;
                     obj.Dispose();
                 }
                 else
@@ -348,14 +418,30 @@ namespace iOTClient
 
                     if (leftPos < 0 || topPos < 0)
                     {
-                        if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
+                        if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
                         {
                             robotCount--;
                             obj.Dispose();
                         }
-                        else if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("G"))
                         {
                             goalCount--;
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
+                        {
+                            dokCount--;
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
+                        {
+                            machineCount--;
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
+                        {
+                            waitingSCount--;
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
+                        {
+                            chargeSCount--;
                         }
 
                         obj.Dispose();
@@ -364,25 +450,30 @@ namespace iOTClient
                     {
                         obj.Location = new Point(leftPos, topPos);
 
-                        if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
+                        if (obj.Tag != null && obj.Tag.ToString().Contains("O"))
                         {
                             obj.Size = new Size(gridSize, gridSize);
                         }
-                        else if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
                         {
+                            obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
+                            obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, x);
+                            obj.Size = new Size(x, Convert.ToInt32(x*1.7));
 
                             WebSocket ws = null;
 
                             _robotList.Add(obj);
                             WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
                         }
-                        else
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("G"))
                         {
                             _goalList.Add(obj);
+                            obj.Paint -= new PaintEventHandler(this.pGoal_Paint);
+                            //obj.Image = null;
+                            obj.Image = global::iOTClient.Properties.Resources.goal_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, x);
+                            obj.Size = new Size(x, Convert.ToInt32(x * 1.4));
                             _goalPointList.Add(
                                 new GoalPoint()
                                 {
@@ -395,6 +486,84 @@ namespace iOTClient
                                 );
                             SendGoalToServer();
                             WsConnectLoadGoals();
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
+                        {
+                            _dokList.Add(obj);
+                            obj.Paint -= new PaintEventHandler(this.pDok_Paint);
+                            obj.Image = global::iOTClient.Properties.Resources.dokarabasi_free;
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
+                            _dokPointList.Add(
+                                new DokPoint()
+                                {
+                                    Code = obj.Tag.ToString(),
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top
+                                }
+                                );
+                            //SendGoalToServer();
+                            //WsConnectLoadGoals();
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
+                        {
+                            _machineList.Add(obj);
+                            obj.Paint -= new PaintEventHandler(this.pMachine_Paint);
+                            obj.Image = global::iOTClient.Properties.Resources.machine_free;
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, x);
+                            _machinePointList.Add(
+                                new MachinePoint()
+                                {
+                                    Code = obj.Tag.ToString(),
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top
+                                }
+                                );
+                            //SendGoalToServer();
+                            //WsConnectLoadGoals();
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
+                        {
+                            _chargeSList.Add(obj);
+                            obj.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, x);
+                            _chargeSPointList.Add(
+                                new ChargeStationPoint()
+                                {
+                                    Code = obj.Tag.ToString(),
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top
+                                }
+                                );
+                            //SendGoalToServer();
+                            //WsConnectLoadGoals();
+                        }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
+                        {
+                            _waitingSList.Add(obj);
+                            obj.Image = global::iOTClient.Properties.Resources.WaitingStationFree;
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, x);
+                            _waitingSPointList.Add(
+                                new WaitingStationPoint()
+                                {
+                                    Code = obj.Tag.ToString(),
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top
+                                }
+                                );
+                            //SendGoalToServer();
+                            //WsConnectLoadGoals();
                         }
 
 
@@ -500,20 +669,19 @@ namespace iOTClient
                 obj.Location = new Point(leftPos, topPos);
 
 
-                if (obj.Tag != null && obj.Tag.ToString().Contains("Robot"))
+                if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
                 {
                     var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First()._ws;
 
                     string textKonum = "{\"message\":\"Son Konumum: x:" + obj.Location.X + "; y:" + obj.Location.Y + "\"}";
                     ws.SendAsync(textKonum, delegate (bool completed) { });
                 }
-
-                if (obj.Tag != null && obj.Tag.ToString().Contains("Goal"))
+                else if (obj.Tag != null && obj.Tag.ToString().Contains("G"))
                 {
                     _goalPointList.Clear();
                     foreach (var item in pnlCenter.Controls)
                     {
-                        if (item.GetType() == typeof(PictureBox) && ((PictureBox)item).Tag.ToString().Contains("Goal"))
+                        if (item.GetType() == typeof(PictureBox) && ((PictureBox)item).Tag.ToString().Contains("G"))
                         {
                             _goalPointList.Add(
                                 new GoalPoint()
@@ -606,7 +774,7 @@ namespace iOTClient
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
                 var text = ((PictureBox)sender).Tag.ToString();
-                e.Graphics.DrawString(text, font, Brushes.Red, 0, -2);
+                e.Graphics.DrawString(text, font, Brushes.Black, 0, -2);
             }
         }
 
@@ -640,6 +808,10 @@ namespace iOTClient
             gridSize = 0;
             robotCount = 0;
             goalCount = 0;
+            dokCount = 0;
+            machineCount = 0;
+            chargeSCount = 0;
+            waitingSCount = 0;
         }
 
         private void btnMotionPlan_Click(object sender, EventArgs e)
@@ -916,6 +1088,43 @@ namespace iOTClient
 
         }
 
+        public void SendDokToServer()
+        {
+            try
+            {
+                MapGoals mapGoals = new MapGoals();
+                mapGoals.MapId = Convert.ToInt32(((ComboboxItem)cbMap.SelectedItem).Value);
+                mapGoals.GoalPoints = _goalPointList;
+
+                string json = JsonConvert.SerializeObject(mapGoals);
+                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/goallist/");
+                req.Method = "POST";
+                req.ContentType = "application/json";
+                req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(wsUserName + ":" + wsPassword));
+                byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                req.ContentLength = byteArray.Length;
+
+                using (System.IO.Stream requestStream = req.GetRequestStream())
+                {
+                    requestStream.Write(byteArray, 0, byteArray.Length);
+                }
+
+                using (WebResponse response = req.GetResponse())
+                {
+                    using (System.IO.Stream responseStream = response.GetResponseStream())
+                    {
+                        System.IO.StreamReader rdr = new System.IO.StreamReader(responseStream, Encoding.UTF8);
+                        string Json = rdr.ReadToEnd(); // response from server
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
         private void WsConnectLoadGoals()
         {
             try
@@ -1146,6 +1355,24 @@ namespace iOTClient
             }
         }
 
+        private void pDok_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font font = new Font("Arial", 9, FontStyle.Bold))
+            {
+                e.Graphics.DrawString("DOK", font, Brushes.Black, 0, -2);
+            }
+        }
+
+        private void pMachine_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font font = new Font("Arial", 9, FontStyle.Bold))
+            {
+                e.Graphics.DrawString("Machine", font, Brushes.Black, 0, -2);
+            }
+        }
+
+
+
         private void cbMap_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnClearPanel.PerformClick();
@@ -1249,6 +1476,50 @@ namespace iOTClient
         public int Right { get; set; }
         public int Top { get; set; }
         public int Bottom { get; set; }
+    }
+
+    public class DokPoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+    }
+
+    public class MachinePoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+    }
+
+    public class WaitingStationPoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+    }
+
+    public class ChargeStationPoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
     }
 
     public class MapGoals
