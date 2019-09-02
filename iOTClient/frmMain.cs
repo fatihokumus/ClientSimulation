@@ -22,8 +22,8 @@ namespace iOTClient
         int gridSize = 0;
         int robotCount = 0;
         int goalCount = 0;
-        int dokCount = 0;
-        int machineCount = 0;
+        int transferredObjectCount = 0;
+        int workStationCount = 0;
         int chargeSCount = 0;
         int waitingSCount = 0;
 
@@ -33,13 +33,13 @@ namespace iOTClient
         List<RobotWebSocket> robotSocketList;
         List<PictureBox> _robotList;
         List<PictureBox> _goalList;
-        List<PictureBox> _dokList;
-        List<PictureBox> _machineList;
+        List<PictureBox> _transferredObjectList;
+        List<PictureBox> _workStationList;
         List<PictureBox> _waitingSList;
         List<PictureBox> _chargeSList;
         List<GoalPoint> _goalPointList;
-        List<DokPoint> _dokPointList;
-        List<MachinePoint> _machinePointList;
+        List<TransferredObjectPoint> _transferredObjectPointList;
+        List<WorkStationPoint> _workStationPointList;
         List<WaitingStationPoint> _waitingSPointList;
         List<ChargeStationPoint> _chargeSPointList;
         List<List<Node>> _nodes;
@@ -60,17 +60,20 @@ namespace iOTClient
             _nodes = new List<List<Node>>();
             _robotList = new List<PictureBox>();
             _goalList = new List<PictureBox>();
-            _dokList = new List<PictureBox>();
-            _machineList = new List<PictureBox>();
+            _transferredObjectList = new List<PictureBox>();
+            _workStationList = new List<PictureBox>();
             _waitingSList = new List<PictureBox>();
             _chargeSList = new List<PictureBox>();
             _goalPointList = new List<GoalPoint>();
-            _dokPointList = new List<DokPoint>();
-            _machinePointList = new List<MachinePoint>();
+            _transferredObjectPointList = new List<TransferredObjectPoint>();
+            _workStationPointList = new List<WorkStationPoint>();
             _waitingSPointList = new List<WaitingStationPoint>();
             _chargeSPointList = new List<ChargeStationPoint>();
             _map = new GridMap();
             _map.ObstaclePoints = new List<ObstaclePiont>();
+            _map.WorkStationPoints = new List<WorkStationPoint>();
+            _map.ChargeStationPoints = new List<ChargeStationPoint>();
+            _map.WaitingStationPoints = new List<WaitingStationPoint>();
             points = new List<List<GridPiont>>();
 
         }
@@ -241,10 +244,10 @@ namespace iOTClient
             pObstacle.BringToFront();
             pGoal.Draggable(true);
             pGoal.BringToFront();
-            pDok.Draggable(true);
-            pDok.BringToFront();
-            pMachine.Draggable(true);
-            pMachine.BringToFront();
+            pTransferredObject.Draggable(true);
+            pTransferredObject.BringToFront();
+            pWorkStation.Draggable(true);
+            pWorkStation.BringToFront();
             pWaitingS.Draggable(true);
             pWaitingS.BringToFront();
             pChargeS.Draggable(true);
@@ -323,21 +326,21 @@ namespace iOTClient
                     }
                     else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("D"))
                     {
-                        dokCount++;
-                        ((PictureBox)sender).Tag = "D" + dokCount.ToString();
+                        transferredObjectCount++;
+                        ((PictureBox)sender).Tag = "D" + transferredObjectCount.ToString();
                         picture.BackColor = Color.Transparent;
                         picture.Tag = "D";
 
-                        picture.Paint += new PaintEventHandler(this.pDok_Paint);
+                        picture.Paint += new PaintEventHandler(this.pTransferredObject_Paint);
                     }
                     else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("M"))
                     {
-                        machineCount++;
-                        ((PictureBox)sender).Tag = "M" + machineCount.ToString();
+                        workStationCount++;
+                        ((PictureBox)sender).Tag = "M" + workStationCount.ToString();
                         picture.BackColor = Color.Transparent;
                         picture.Tag = "M";
 
-                        picture.Paint += new PaintEventHandler(this.pMachine_Paint);
+                        picture.Paint += new PaintEventHandler(this.pWorkStation_Paint);
                     }
                     else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("C"))
                     {
@@ -400,8 +403,8 @@ namespace iOTClient
                     MessageBox.Show("Please Create Distance", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     robotCount = 0;
                     goalCount = 0;
-                    dokCount = 0;
-                    machineCount = 0;
+                    transferredObjectCount = 0;
+                    workStationCount = 0;
                     chargeSCount = 0;
                     waitingSCount = 0;
                     obj.Dispose();
@@ -429,11 +432,11 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
                         {
-                            dokCount--;
+                            transferredObjectCount--;
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
                         {
-                            machineCount--;
+                            workStationCount--;
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
                         {
@@ -489,13 +492,13 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
                         {
-                            _dokList.Add(obj);
-                            obj.Paint -= new PaintEventHandler(this.pDok_Paint);
+                            _transferredObjectList.Add(obj);
+                            obj.Paint -= new PaintEventHandler(this.pTransferredObject_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.dokarabasi_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
                             obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
-                            _dokPointList.Add(
-                                new DokPoint()
+                            _transferredObjectPointList.Add(
+                                new TransferredObjectPoint()
                                 {
                                     Code = obj.Tag.ToString(),
                                     Left = obj.Left,
@@ -509,21 +512,35 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
                         {
-                            _machineList.Add(obj);
-                            obj.Paint -= new PaintEventHandler(this.pMachine_Paint);
+                            _workStationList.Add(obj);
+                            obj.Paint -= new PaintEventHandler(this.pWorkStation_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.machine_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
                             obj.Size = new Size(x, x);
-                            _machinePointList.Add(
-                                new MachinePoint()
+
+                            frmWorkStation frm = new frmWorkStation();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                _workStationPointList.Add(
+                                new WorkStationPoint()
                                 {
-                                    Code = obj.Tag.ToString(),
-                                    Left = obj.Left,
-                                    Bottom = obj.Bottom,
-                                    Right = obj.Right,
-                                    Top = obj.Top
+                                    Code = frm._code,
+                                    Name = frm._name,
+                                    isActive = true,
+                                    EnterPosX = obj.Left,
+                                    EnterPosY = obj.Top,
+                                    ExitPosX = obj.Left,
+                                    ExitPosY = obj.Bottom,
+                                   // Position = obj.Location.Offset.
                                 }
                                 );
+                            }
+                            else
+                            {
+                                obj.Dispose();
+                            }
+
+                            
                             //SendGoalToServer();
                             //WsConnectLoadGoals();
                         }
@@ -808,8 +825,8 @@ namespace iOTClient
             gridSize = 0;
             robotCount = 0;
             goalCount = 0;
-            dokCount = 0;
-            machineCount = 0;
+            transferredObjectCount = 0;
+            workStationCount = 0;
             chargeSCount = 0;
             waitingSCount = 0;
         }
@@ -853,15 +870,16 @@ namespace iOTClient
         {
             _map.ObstaclePoints.Clear();
 
+            _map.WorkStationPoints = _workStationPointList;
 
             foreach (var item in pnlCenter.Controls)
             {
                 if (item.GetType() == typeof(PictureBox))
                 {
                     var obj = (PictureBox)item;
-                    if (obj.Tag != null && obj.Tag.ToString().Contains("Obstacle"))
+                    int dist = Convert.ToInt32(txtX.Text);
+                    if (obj.Tag != null && obj.Tag.ToString().Contains("O"))
                     {
-                        int dist = Convert.ToInt32(txtX.Text);
                         _map.ObstaclePoints.Add(new ObstaclePiont()
                         {
                             Left = obj.Left,
@@ -898,6 +916,33 @@ namespace iOTClient
                         {
                             _nodes[j][b - 1].isWall = true;
                         }
+
+                    }
+                    
+                    else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
+                    {
+                        _map.WaitingStationPoints.Add(new WaitingStationPoint()
+                        {
+                            Left = obj.Left,
+                            Right = obj.Right,
+                            Bottom = obj.Bottom,
+                            Top = obj.Top,
+                            CenterX = obj.Left / dist,
+                            CenterY = obj.Top / dist
+                        });
+
+                    }
+                    else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
+                    {
+                        _map.ChargeStationPoints.Add(new ChargeStationPoint()
+                        {
+                            Left = obj.Left,
+                            Right = obj.Right,
+                            Bottom = obj.Bottom,
+                            Top = obj.Top,
+                            CenterX = obj.Left / dist,
+                            CenterY = obj.Top / dist
+                        });
 
                     }
 
@@ -1088,7 +1133,7 @@ namespace iOTClient
 
         }
 
-        public void SendDokToServer()
+        public void SendTransferredObjectToServer()
         {
             try
             {
@@ -1355,19 +1400,19 @@ namespace iOTClient
             }
         }
 
-        private void pDok_Paint(object sender, PaintEventArgs e)
+        private void pTransferredObject_Paint(object sender, PaintEventArgs e)
         {
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
-                e.Graphics.DrawString("DOK", font, Brushes.Black, 0, -2);
+                e.Graphics.DrawString("Dok", font, Brushes.Black, 0, -2);
             }
         }
 
-        private void pMachine_Paint(object sender, PaintEventArgs e)
+        private void pWorkStation_Paint(object sender, PaintEventArgs e)
         {
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
-                e.Graphics.DrawString("Machine", font, Brushes.Black, 0, -2);
+                e.Graphics.DrawString("WorkStation", font, Brushes.Black, 0, -2);
             }
         }
 
@@ -1478,7 +1523,7 @@ namespace iOTClient
         public int Bottom { get; set; }
     }
 
-    public class DokPoint
+    public class TransferredObjectPoint
     {
         public string Code { get; set; }
         public int Left { get; set; }
@@ -1489,15 +1534,16 @@ namespace iOTClient
         public int CenterY { get; set; }
     }
 
-    public class MachinePoint
+    public class WorkStationPoint
     {
         public string Code { get; set; }
-        public int Left { get; set; }
-        public int Right { get; set; }
-        public int Top { get; set; }
-        public int Bottom { get; set; }
-        public int CenterX { get; set; }
-        public int CenterY { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public string Position { get; set; }
+        public int EnterPosX { get; set; }
+        public int EnterPosY { get; set; }
+        public int ExitPosX { get; set; }
+        public int ExitPosY { get; set; }
     }
 
     public class WaitingStationPoint
@@ -1531,6 +1577,9 @@ namespace iOTClient
     public class GridMap
     {
         public List<ObstaclePiont> ObstaclePoints { get; set; }
+        public List<WorkStationPoint> WorkStationPoints { get; set; }
+        public List<ChargeStationPoint> ChargeStationPoints { get; set; }
+        public List<WaitingStationPoint> WaitingStationPoints { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int MapId { get; set; }
