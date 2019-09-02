@@ -419,7 +419,7 @@ namespace iOTClient
                     int leftPos = (obj.Left - pnlLeft.Width) > (carpanLeft * x + x / 2) ? x * (carpanLeft + 1) : x * carpanLeft;
                     int topPos = (obj.Top - pnlTop.Height) > (carpanTop * x + x / 2) ? x * (carpanTop + 1) : x * carpanTop;
 
-                    if (leftPos < 0 || topPos < 0)
+                    if (leftPos < 0 || topPos < 0) // harita içinde deðilse sil
                     {
                         if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
                         {
@@ -531,7 +531,11 @@ namespace iOTClient
                                     EnterPosY = obj.Top,
                                     ExitPosX = obj.Left,
                                     ExitPosY = obj.Bottom,
-                                   // Position = obj.Location.Offset.
+                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
+                                 
                                 }
                                 );
                             }
@@ -550,16 +554,31 @@ namespace iOTClient
                             obj.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
                             obj.Paint += new PaintEventHandler(picture_Paint);
                             obj.Size = new Size(x, x);
-                            _chargeSPointList.Add(
+
+                            frmWorkStation frm = new frmWorkStation();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                _chargeSPointList.Add(
                                 new ChargeStationPoint()
                                 {
-                                    Code = obj.Tag.ToString(),
-                                    Left = obj.Left,
-                                    Bottom = obj.Bottom,
-                                    Right = obj.Right,
-                                    Top = obj.Top
+                                    Code = frm._code,
+                                    Name = frm._name,
+                                    isActive = true,
+                                    isFull = false,
+                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
+                                    CenterX = obj.Right - (x / 2),
+                                    CenterY = obj.Bottom - (x / 2)
                                 }
                                 );
+                            }
+                            else
+                            {
+                                obj.Dispose();
+                            }
+
                             //SendGoalToServer();
                             //WsConnectLoadGoals();
                         }
@@ -569,16 +588,32 @@ namespace iOTClient
                             obj.Image = global::iOTClient.Properties.Resources.WaitingStationFree;
                             obj.Paint += new PaintEventHandler(picture_Paint);
                             obj.Size = new Size(x, x);
-                            _waitingSPointList.Add(
+
+                            frmWorkStation frm = new frmWorkStation();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                _waitingSPointList.Add(
                                 new WaitingStationPoint()
                                 {
-                                    Code = obj.Tag.ToString(),
-                                    Left = obj.Left,
-                                    Bottom = obj.Bottom,
-                                    Right = obj.Right,
-                                    Top = obj.Top
+                                    Code = frm._code,
+                                    Name = frm._name,
+                                    isActive = true,
+                                    isFull = false,
+                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
+                                    CenterX = obj.Right - (x / 2),
+                                    CenterY = obj.Bottom - (x / 2)
                                 }
                                 );
+                            }
+                            else
+                            {
+                                obj.Dispose();
+                            }
+
+                            
                             //SendGoalToServer();
                             //WsConnectLoadGoals();
                         }
@@ -872,6 +907,8 @@ namespace iOTClient
 
             _map.WorkStationPoints = _workStationPointList;
 
+            _map.ChargeStationPoints = _chargeSPointList;
+
             foreach (var item in pnlCenter.Controls)
             {
                 if (item.GetType() == typeof(PictureBox))
@@ -919,33 +956,6 @@ namespace iOTClient
 
                     }
                     
-                    else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
-                    {
-                        _map.WaitingStationPoints.Add(new WaitingStationPoint()
-                        {
-                            Left = obj.Left,
-                            Right = obj.Right,
-                            Bottom = obj.Bottom,
-                            Top = obj.Top,
-                            CenterX = obj.Left / dist,
-                            CenterY = obj.Top / dist
-                        });
-
-                    }
-                    else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
-                    {
-                        _map.ChargeStationPoints.Add(new ChargeStationPoint()
-                        {
-                            Left = obj.Left,
-                            Right = obj.Right,
-                            Bottom = obj.Bottom,
-                            Top = obj.Top,
-                            CenterX = obj.Left / dist,
-                            CenterY = obj.Top / dist
-                        });
-
-                    }
-
                 }
 
             }
@@ -1549,10 +1559,10 @@ namespace iOTClient
     public class WaitingStationPoint
     {
         public string Code { get; set; }
-        public int Left { get; set; }
-        public int Right { get; set; }
-        public int Top { get; set; }
-        public int Bottom { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public string Position { get; set; }
+        public bool isFull { get; set; }
         public int CenterX { get; set; }
         public int CenterY { get; set; }
     }
@@ -1560,12 +1570,13 @@ namespace iOTClient
     public class ChargeStationPoint
     {
         public string Code { get; set; }
-        public int Left { get; set; }
-        public int Right { get; set; }
-        public int Top { get; set; }
-        public int Bottom { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public string Position { get; set; }
+        public bool isFull { get; set; }
         public int CenterX { get; set; }
         public int CenterY { get; set; }
+       
     }
 
     public class MapGoals
