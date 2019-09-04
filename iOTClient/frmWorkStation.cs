@@ -14,6 +14,8 @@ namespace iOTClient
     {
         public string _code;
         public string _name;
+        public int _width;
+        public int _height;
 
         public frmWorkStation()
         {
@@ -24,6 +26,8 @@ namespace iOTClient
         {
             _code = txtCode.Text;
             _name = txtName.Text;
+            _width = Convert.ToInt32(txtWidth.Text);
+            _height = Convert.ToInt32(txtHeigth.Text);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

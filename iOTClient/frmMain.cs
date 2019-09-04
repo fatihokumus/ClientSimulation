@@ -462,7 +462,7 @@ namespace iOTClient
                             obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, Convert.ToInt32(x*1.7));
+                            obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
 
                             WebSocket ws = null;
 
@@ -515,36 +515,50 @@ namespace iOTClient
                             _workStationList.Add(obj);
                             obj.Paint -= new PaintEventHandler(this.pWorkStation_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.machine_free;
+                            obj.SizeMode = PictureBoxSizeMode.CenterImage;
+                            obj.BackColor = Color.LightGray;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, x);
+                            
 
                             frmWorkStation frm = new frmWorkStation();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
-                                _workStationPointList.Add(
-                                new WorkStationPoint()
+                                obj.Size = new Size(x * frm._width, x * frm._height);
+                                if (_workStationPointList.Where(w => w.Code == ("M" + frm._code)).Count() > 1)
                                 {
-                                    Code = frm._code,
-                                    Name = frm._name,
-                                    isActive = true,
-                                    EnterPosX = obj.Left,
-                                    EnterPosY = obj.Top,
-                                    ExitPosX = obj.Left,
-                                    ExitPosY = obj.Bottom,
-                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
-                                 
+                                    MessageBox.Show("There is another object with same code. Please try again.");
+                                    obj.Dispose();
                                 }
-                                );
+                                else
+                                {
+                                    _workStationPointList.Add(
+                                    new WorkStationPoint()
+                                    {
+                                        Code = frm._code,
+                                        Name = frm._name,
+                                        isActive = true,
+                                        EnterPosX = obj.Left,
+                                        EnterPosY = obj.Top,
+                                        ExitPosX = obj.Left,
+                                        ExitPosY = obj.Bottom,
+                                        Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]",
+
+                                    }
+                                    );
+
+                                    obj.Name = "M" + frm._code;
+                                }
                             }
                             else
                             {
                                 obj.Dispose();
                             }
 
-                            
+
                             //SendGoalToServer();
                             //WsConnectLoadGoals();
                         }
@@ -553,26 +567,38 @@ namespace iOTClient
                             _chargeSList.Add(obj);
                             obj.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, x);
+                            
 
                             frmWorkStation frm = new frmWorkStation();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
-                                _chargeSPointList.Add(
-                                new ChargeStationPoint()
+                                obj.Size = new Size(x * frm._width, x * frm._height);
+                                if (_chargeSPointList.Where(w => w.Code == ("C" + frm._code)).Count() > 1)
                                 {
-                                    Code = frm._code,
-                                    Name = frm._name,
-                                    isActive = true,
-                                    isFull = false,
-                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
-                                    CenterX = obj.Right - (x / 2),
-                                    CenterY = obj.Bottom - (x / 2)
+                                    MessageBox.Show("There is another object with same code. Please try again.");
+                                    obj.Dispose();
                                 }
-                                );
+                                else
+                                {
+                                    _chargeSPointList.Add(
+                                    new ChargeStationPoint()
+                                    {
+                                        Code = frm._code,
+                                        Name = frm._name,
+                                        isActive = true,
+                                        isFull = false,
+                                        Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]",
+                                        CenterX = obj.Right - (x / 2),
+                                        CenterY = obj.Bottom - (x / 2)
+                                    }
+                                    );
+
+                                    obj.Name = "C" + frm._code;
+                                }
                             }
                             else
                             {
@@ -587,33 +613,46 @@ namespace iOTClient
                             _waitingSList.Add(obj);
                             obj.Image = global::iOTClient.Properties.Resources.WaitingStationFree;
                             obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, x);
+                            
+
 
                             frmWorkStation frm = new frmWorkStation();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
-                                _waitingSPointList.Add(
-                                new WaitingStationPoint()
+                                obj.Size = new Size(x * frm._width, x * frm._height);
+                                if (_waitingSPointList.Where(w => w.Code == ("W" + frm._code)).Count() > 1)
                                 {
-                                    Code = frm._code,
-                                    Name = frm._name,
-                                    isActive = true,
-                                    isFull = false,
-                                    Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                              + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                              + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},",
-                                    CenterX = obj.Right - (x / 2),
-                                    CenterY = obj.Bottom - (x / 2)
+                                    MessageBox.Show("There is another object with same code. Please try again.");
+                                    obj.Dispose();
                                 }
-                                );
+                                else
+                                {
+                                    _waitingSPointList.Add(
+                                    new WaitingStationPoint()
+                                    {
+                                        Code = frm._code,
+                                        Name = frm._name,
+                                        isActive = true,
+                                        isFull = false,
+                                        Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                  + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                  + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                  + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]",
+                                        CenterX = obj.Right - (x / 2),
+                                        CenterY = obj.Bottom - (x / 2)
+                                    }
+                                    );
+
+                                    obj.Name = "W" + frm._code;
+                                }
                             }
                             else
                             {
                                 obj.Dispose();
                             }
 
-                            
+
                             //SendGoalToServer();
                             //WsConnectLoadGoals();
                         }
@@ -749,6 +788,33 @@ namespace iOTClient
                     }
                     SendGoalToServer();
                     WsConnectLoadGoals();
+                }
+                else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
+                {
+                    string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]";
+                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M","")).ToList().ForEach(f => f.Position = pos);
+                }
+                else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
+                {
+                    string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]";
+                    _waitingSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
+                }
+                else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
+                {
+                    string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "]";
+                    _chargeSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
                 }
             }
 
@@ -909,6 +975,8 @@ namespace iOTClient
 
             _map.ChargeStationPoints = _chargeSPointList;
 
+            _map.WaitingStationPoints = _waitingSPointList;
+
             foreach (var item in pnlCenter.Controls)
             {
                 if (item.GetType() == typeof(PictureBox))
@@ -955,7 +1023,7 @@ namespace iOTClient
                         }
 
                     }
-                    
+
                 }
 
             }
@@ -1576,7 +1644,7 @@ namespace iOTClient
         public bool isFull { get; set; }
         public int CenterX { get; set; }
         public int CenterY { get; set; }
-       
+
     }
 
     public class MapGoals
