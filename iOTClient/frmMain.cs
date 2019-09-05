@@ -517,8 +517,8 @@ namespace iOTClient
                             obj.Image = global::iOTClient.Properties.Resources.machine_free;
                             obj.SizeMode = PictureBoxSizeMode.CenterImage;
                             obj.BackColor = Color.LightGray;
-                            obj.Paint += new PaintEventHandler(picture_Paint);
                             
+
 
                             frmWorkStation frm = new frmWorkStation();
                             if (frm.ShowDialog() == DialogResult.OK)
@@ -531,6 +531,7 @@ namespace iOTClient
                                 }
                                 else
                                 {
+                                    obj.Tag = "M" + frm._code;
                                     _workStationPointList.Add(
                                     new WorkStationPoint()
                                     {
@@ -543,14 +544,16 @@ namespace iOTClient
                                         ExitPosY = obj.Bottom,
                                         Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
                                                     + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                                     + "]",
 
                                     }
                                     );
 
                                     obj.Name = "M" + frm._code;
+
+                                    obj.Paint += new PaintEventHandler(picture_Paint);
                                 }
                             }
                             else
@@ -566,8 +569,7 @@ namespace iOTClient
                         {
                             _chargeSList.Add(obj);
                             obj.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
-                            obj.Paint += new PaintEventHandler(picture_Paint);
-                            
+
 
                             frmWorkStation frm = new frmWorkStation();
                             if (frm.ShowDialog() == DialogResult.OK)
@@ -580,6 +582,7 @@ namespace iOTClient
                                 }
                                 else
                                 {
+                                    obj.Tag = "C" + frm._code;
                                     _chargeSPointList.Add(
                                     new ChargeStationPoint()
                                     {
@@ -589,8 +592,8 @@ namespace iOTClient
                                         isFull = false,
                                         Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
                                                     + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
+                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
+                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                                     + "]",
                                         CenterX = obj.Right - (x / 2),
                                         CenterY = obj.Bottom - (x / 2)
@@ -598,6 +601,8 @@ namespace iOTClient
                                     );
 
                                     obj.Name = "C" + frm._code;
+
+                                    obj.Paint += new PaintEventHandler(picture_Paint);
                                 }
                             }
                             else
@@ -612,8 +617,7 @@ namespace iOTClient
                         {
                             _waitingSList.Add(obj);
                             obj.Image = global::iOTClient.Properties.Resources.WaitingStationFree;
-                            obj.Paint += new PaintEventHandler(picture_Paint);
-                            
+
 
 
                             frmWorkStation frm = new frmWorkStation();
@@ -627,6 +631,7 @@ namespace iOTClient
                                 }
                                 else
                                 {
+                                    obj.Tag = "W" + frm._code;
                                     _waitingSPointList.Add(
                                     new WaitingStationPoint()
                                     {
@@ -636,8 +641,8 @@ namespace iOTClient
                                         isFull = false,
                                         Position = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
                                                   + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                                  + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
                                                   + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                  + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
                                                     + "]",
                                         CenterX = obj.Right - (x / 2),
                                         CenterY = obj.Bottom - (x / 2)
@@ -645,6 +650,8 @@ namespace iOTClient
                                     );
 
                                     obj.Name = "W" + frm._code;
+
+                                    obj.Paint += new PaintEventHandler(picture_Paint);
                                 }
                             }
                             else
@@ -792,28 +799,28 @@ namespace iOTClient
                 else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
                 {
                     string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
-                                                    + "]";
-                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M","")).ToList().ForEach(f => f.Position = pos);
+                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
+                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
+                                    + "]";
+                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M", "")).ToList().ForEach(f => f.Position = pos);
                 }
                 else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
                 {
                     string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
-                                                    + "]";
+                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
+                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
+                                    + "]";
                     _waitingSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
                 }
                 else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
                 {
                     string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
-                                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "},"
-                                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "}"
-                                                    + "]";
+                                    + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
+                                    + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
+                                    + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
+                                    + "]";
                     _chargeSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
                 }
             }
@@ -1517,50 +1524,421 @@ namespace iOTClient
                 System.IO.StreamReader sr = new System.IO.StreamReader(newStream);
                 var result = sr.ReadToEnd();
 
-                var mspS = JsonConvert.DeserializeObject<string>(result);
+                var ms = JsonConvert.DeserializeObject<ServerMapEnvironments>(result);
 
-                var mspList = JsonConvert.DeserializeObject<List<ServerMapObstacle>>(mspS);
 
-                if (mspList.Count > 0)
+                /// Load obstacles
+                
+                if(ms.obstacle != "[]" && ms.obstacle != "")
                 {
-                    PictureBox pObstacle = null;
-
-                    foreach (var ctrl in pnlLeft.Controls)
+                    //var obstacleS = JsonConvert.DeserializeObject<string>(ms.obstacle);
+                    var obstacleList = JsonConvert.DeserializeObject<List<ServerMapObstacle>>(ms.obstacle);
+                    if (obstacleList.Count > 0)
                     {
-                        if (ctrl.GetType() == typeof(PictureBox))
+                        PictureBox pObstacle = null;
+
+                        foreach (var ctrl in pnlLeft.Controls)
                         {
-                            if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("Obstacle"))
+                            if (ctrl.GetType() == typeof(PictureBox))
                             {
-                                pObstacle = ((PictureBox)ctrl);
+                                if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("O"))
+                                {
+                                    pObstacle = ((PictureBox)ctrl);
+                                }
                             }
                         }
+
+                        foreach (var item in obstacleList)
+                        {
+                            PictureBox picture = new PictureBox();
+
+                            picture.BackColor = pObstacle.BackColor;
+                            picture.Tag = pObstacle.Tag;
+
+                            picture.BorderStyle = BorderStyle.None;
+                            picture.Location = new Point(item.fields.Left, item.fields.Top);
+
+                            picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
+                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
+                            pnlCenter.SendToBack();
+
+                            picture.BringToFront();
+                            pnlCenter.Controls.Add(picture);
+                            picture.BringToFront();
+                            picture.Draggable(true);
+                        }
+
+                        //SetNodes();
                     }
-
-                    foreach (var item in mspList)
-                    {
-                        PictureBox picture = new PictureBox();
-
-                        picture.BackColor = pObstacle.BackColor;
-                        picture.Tag = pObstacle.Tag;
-
-                        picture.BorderStyle = BorderStyle.None;
-                        picture.Location = new Point(item.fields.Left, item.fields.Top);
-
-                        picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
-                        picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
-                        picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
-                        picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
-                        picture.ContextMenuStrip = cmObject;
-                        pnlCenter.SendToBack();
-
-                        picture.BringToFront();
-                        pnlCenter.Controls.Add(picture);
-                        picture.BringToFront();
-                        picture.Draggable(true);
-                    }
-
-                    //SetNodes();
                 }
+
+
+                /// Load workstations
+                if(ms.workstation != "[]" && ms.workstation != "")
+                {
+                    _workStationPointList.Clear();
+                    //var workstationS = JsonConvert.DeserializeObject<string>(ms.workstation);
+                    var workstationList = JsonConvert.DeserializeObject<List<ServerMapWorkStation>>(ms.workstation);
+                    if (workstationList.Count > 0)
+                    {
+                        PictureBox pWorkstation = null;
+
+                        foreach (var ctrl in pnlLeft.Controls)
+                        {
+                            if (ctrl.GetType() == typeof(PictureBox))
+                            {
+                                if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("M"))
+                                {
+                                    pWorkstation = ((PictureBox)ctrl);
+                                }
+                            }
+                        }
+
+                        foreach (var item in workstationList)
+                        {
+                            _workStationPointList.Add(
+                                   new WorkStationPoint()
+                                   {
+                                       Code = item.fields.Code,
+                                       Name = item.fields.Name,
+                                       isActive = item.fields.isActive,
+                                       Position = item.fields.Position,
+                                       EnterPosX = item.fields.EnterPosX,
+                                       EnterPosY = item.fields.EnterPosY,
+                                       ExitPosX = item.fields.ExitPosX,
+                                       ExitPosY = item.fields.ExitPosY,
+                                   }
+                                   );
+
+                            PictureBox picture = new PictureBox();
+
+                            picture.BackColor = pWorkstation.BackColor;
+                            picture.Tag = "M" + item.fields.Code;
+                            picture.Image = global::iOTClient.Properties.Resources.machine_free;
+                            picture.SizeMode = PictureBoxSizeMode.CenterImage;
+                            picture.BackColor = Color.LightGray;
+                            picture.BorderStyle = BorderStyle.None;
+                            picture.Paint += new PaintEventHandler(picture_Paint);
+                            picture.Name = item.fields.Code;
+
+                            string position = item.fields.Position;
+                            position = position.Replace("[", "").Replace("]", "").Replace("},", " ").Replace("{", "").Replace("}", "");
+
+                            var posList = position.Split(' ');
+                            int left = 0;
+                            int top = 0;
+                            int right = 0;
+                            int bottom = 0;
+                            for (int i = 0; i < posList.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    var points = posList[i].Split(',');
+                                    left = Convert.ToInt32(points[0]);
+                                    top = Convert.ToInt32(points[1]);
+                                }
+                                else if (i == 2)
+                                {
+                                    var points = posList[i].Split(',');
+                                    right = Convert.ToInt32(points[0]);
+                                    bottom = Convert.ToInt32(points[1]);
+                                }
+
+                            }
+
+                            picture.Location = new Point(left, top);
+
+                            picture.Size = new Size(right - left, bottom - top);
+                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
+                            pnlCenter.SendToBack();
+
+                            picture.BringToFront();
+                            pnlCenter.Controls.Add(picture);
+                            picture.BringToFront();
+                            picture.Draggable(true);
+                        }
+
+                        //SetNodes();
+                    }
+                }
+
+                /// Load waitingstations
+                if (ms.waitingstation != "[]" && ms.waitingstation != "")
+                {
+                    _waitingSPointList.Clear();
+                    var waitingstationList = JsonConvert.DeserializeObject<List<ServerMapWaitingStation>>(ms.waitingstation);
+                    if (waitingstationList.Count > 0)
+                    {
+                        PictureBox pwaitingstation = null;
+
+                        foreach (var ctrl in pnlLeft.Controls)
+                        {
+                            if (ctrl.GetType() == typeof(PictureBox))
+                            {
+                                if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("W"))
+                                {
+                                    pwaitingstation = ((PictureBox)ctrl);
+                                }
+                            }
+                        }
+
+                        foreach (var item in waitingstationList)
+                        {
+                            _waitingSPointList.Add(
+                                   new WaitingStationPoint()
+                                   {
+                                       Code = item.fields.Code,
+                                       Name = item.fields.Name,
+                                       isActive = item.fields.isActive,
+                                       isFull = item.fields.isFull,
+                                       Position = item.fields.Position,
+                                       CenterX = item.fields.CenterX,
+                                       CenterY = item.fields.CenterY
+                                   }
+                                   );
+
+                            PictureBox picture = new PictureBox();
+
+                            picture.BackColor = pwaitingstation.BackColor;
+                            picture.Tag = "W" + item.fields.Code;
+                            picture.Image = global::iOTClient.Properties.Resources.WaitingStationFree;
+                            picture.SizeMode = PictureBoxSizeMode.CenterImage;
+                            picture.BackColor = Color.LightGray;
+                            picture.BorderStyle = BorderStyle.None;
+                            picture.Paint += new PaintEventHandler(picture_Paint);
+                            picture.Name = item.fields.Code;
+
+                            string position = item.fields.Position;
+                            position = position.Replace("[", "").Replace("]", "").Replace("},", " ").Replace("{", "").Replace("}", "");
+
+                            var posList = position.Split(' ');
+                            int left = 0;
+                            int top = 0;
+                            int right = 0;
+                            int bottom = 0;
+                            for (int i = 0; i < posList.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    var points = posList[i].Split(',');
+                                    left = Convert.ToInt32(points[0]);
+                                    top = Convert.ToInt32(points[1]);
+                                }
+                                else if (i == 2)
+                                {
+                                    var points = posList[i].Split(',');
+                                    right = Convert.ToInt32(points[0]);
+                                    bottom = Convert.ToInt32(points[1]);
+                                }
+
+                            }
+
+                            picture.Location = new Point(left, top);
+
+                            picture.Size = new Size(right - left, bottom - top);
+                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
+                            pnlCenter.SendToBack();
+
+                            picture.BringToFront();
+                            pnlCenter.Controls.Add(picture);
+                            picture.BringToFront();
+                            picture.Draggable(true);
+                        }
+
+                        //SetNodes();
+                    }
+                }
+
+
+                /// Load chargingstations
+                if (ms.chargingstation != "[]" && ms.chargingstation != "")
+                {
+                    _chargeSPointList.Clear();
+                    var chargingstationList = JsonConvert.DeserializeObject<List<ServerMapChargingStation>>(ms.chargingstation);
+                    if (chargingstationList.Count > 0)
+                    {
+                        PictureBox pchargingstation = null;
+
+                        foreach (var ctrl in pnlLeft.Controls)
+                        {
+                            if (ctrl.GetType() == typeof(PictureBox))
+                            {
+                                if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("C"))
+                                {
+                                    pchargingstation = ((PictureBox)ctrl);
+                                }
+                            }
+                        }
+
+                        foreach (var item in chargingstationList)
+                        {
+                            _chargeSPointList.Add(
+                                    new ChargeStationPoint()
+                                    {
+                                        Code = item.fields.Code,
+                                        Name = item.fields.Name,
+                                        isActive = item.fields.isActive,
+                                        isFull = item.fields.isFull,
+                                        Position = item.fields.Position,
+                                        CenterX = item.fields.CenterX,
+                                        CenterY = item.fields.CenterY
+                                    }
+                                    );
+
+                            
+
+                            PictureBox picture = new PictureBox();
+
+                            picture.BackColor = pchargingstation.BackColor;
+                            picture.Tag = "C" + item.fields.Code;
+                            picture.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
+                            picture.SizeMode = PictureBoxSizeMode.CenterImage;
+                            picture.BackColor = Color.LightGray;
+                            picture.BorderStyle = BorderStyle.None;
+                            picture.Paint += new PaintEventHandler(picture_Paint);
+                            picture.Name = item.fields.Code;
+
+                            string position = item.fields.Position;
+                            position = position.Replace("[", "").Replace("]", "").Replace("},", " ").Replace("{", "").Replace("}", "");
+
+                            var posList = position.Split(' ');
+                            int left = 0;
+                            int top = 0;
+                            int right = 0;
+                            int bottom = 0;
+                            for (int i = 0; i < posList.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    var points = posList[i].Split(',');
+                                    left = Convert.ToInt32(points[0]);
+                                    top = Convert.ToInt32(points[1]);
+                                }
+                                else if (i == 2)
+                                {
+                                    var points = posList[i].Split(',');
+                                    right = Convert.ToInt32(points[0]);
+                                    bottom = Convert.ToInt32(points[1]);
+                                }
+
+                            }
+
+                            picture.Location = new Point(left, top);
+
+                            picture.Size = new Size(right - left, bottom - top);
+                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
+                            pnlCenter.SendToBack();
+
+                            picture.BringToFront();
+                            pnlCenter.Controls.Add(picture);
+                            picture.BringToFront();
+                            picture.Draggable(true);
+                        }
+
+                        //SetNodes();
+                    }
+                }
+
+                /// Load waitingstation
+                //var waitingstationS = JsonConvert.DeserializeObject<string>(ms.waitingstation);
+                //var waitingstationList = JsonConvert.DeserializeObject<List<ServerMapWaitingStation>>(waitingstationS);
+                //if (waitingstationList.Count > 0)
+                //{
+                //    PictureBox pObstacle = null;
+
+                //    foreach (var ctrl in pnlLeft.Controls)
+                //    {
+                //        if (ctrl.GetType() == typeof(PictureBox))
+                //        {
+                //            if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("Obstacle"))
+                //            {
+                //                pObstacle = ((PictureBox)ctrl);
+                //            }
+                //        }
+                //    }
+
+                //    foreach (var item in waitingstationList)
+                //    {
+                //        PictureBox picture = new PictureBox();
+
+                //        picture.BackColor = pObstacle.BackColor;
+                //        picture.Tag = pObstacle.Tag;
+
+                //        picture.BorderStyle = BorderStyle.None;
+                //        picture.Location = new Point(item.fields.Left, item.fields.Top);
+
+                //        picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
+                //        picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                //        picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                //        picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                //        picture.ContextMenuStrip = cmObject;
+                //        pnlCenter.SendToBack();
+
+                //        picture.BringToFront();
+                //        pnlCenter.Controls.Add(picture);
+                //        picture.BringToFront();
+                //        picture.Draggable(true);
+                //    }
+
+                //}
+
+                ///// Load chargingstation
+                //var chargingstationS = JsonConvert.DeserializeObject<string>(ms.chargingstation);
+                //var chargingstationList = JsonConvert.DeserializeObject<List<ServerMapChargingStation>>(chargingstationS);
+                //if (chargingstationList.Count > 0)
+                //{
+                //    PictureBox pObstacle = null;
+
+                //    foreach (var ctrl in pnlLeft.Controls)
+                //    {
+                //        if (ctrl.GetType() == typeof(PictureBox))
+                //        {
+                //            if (((PictureBox)ctrl).Tag != null && ((PictureBox)ctrl).Tag.ToString().Contains("Obstacle"))
+                //            {
+                //                pObstacle = ((PictureBox)ctrl);
+                //            }
+                //        }
+                //    }
+
+                //    foreach (var item in chargingstationList)
+                //    {
+                //        PictureBox picture = new PictureBox();
+
+                //        picture.BackColor = pObstacle.BackColor;
+                //        picture.Tag = pObstacle.Tag;
+
+                //        picture.BorderStyle = BorderStyle.None;
+                //        picture.Location = new Point(item.fields.Left, item.fields.Top);
+
+                //        picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
+                //        picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+                //        picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+                //        picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                //        picture.ContextMenuStrip = cmObject;
+                //        pnlCenter.SendToBack();
+
+                //        picture.BringToFront();
+                //        pnlCenter.Controls.Add(picture);
+                //        picture.BringToFront();
+                //        picture.Draggable(true);
+                //    }
+
+                //    //SetNodes();
+                //}
+
+
             }
         }
 
@@ -1681,6 +2059,14 @@ namespace iOTClient
         public int? Distance { get; set; }
     }
 
+    public class ServerMapEnvironments
+    {
+        public string obstacle { get; set; }
+        public string workstation { get; set; }
+        public string waitingstation { get; set; }
+        public string chargingstation { get; set; }
+    }
+
     public class ServerMapObstacle
     {
         public string model { get; set; }
@@ -1698,6 +2084,67 @@ namespace iOTClient
         public int CenterY { get; set; }
         public int Map { get; set; }
     }
+
+    public class ServerMapWorkStation
+    {
+        public string model { get; set; }
+        public int pk { get; set; }
+        public ServerMapWorkStationFields fields { get; set; }
+    }
+
+    public class ServerMapWorkStationFields
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public string Position { get; set; }
+        public int EnterPosX { get; set; }
+        public int EnterPosY { get; set; }
+        public int ExitPosX { get; set; }
+        public int ExitPosY { get; set; }
+        public int Map { get; set; }
+    }
+
+    public class ServerMapWaitingStation
+    {
+        public string model { get; set; }
+        public int pk { get; set; }
+        public ServerMapWaitingStationFields fields { get; set; }
+    }
+
+    public class ServerMapWaitingStationFields
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public bool isFull { get; set; }
+        public string Position { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+        public int Map { get; set; }
+    }
+
+
+    public class ServerMapChargingStation
+    {
+        public string model { get; set; }
+        public int pk { get; set; }
+        public ServerMapChargingStationFields fields { get; set; }
+    }
+
+    public class ServerMapChargingStationFields
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public bool isActive { get; set; }
+        public bool isFull { get; set; }
+        public string Position { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+        public int Map { get; set; }
+    }
+
+
 
     public class ServerMessage
     {
