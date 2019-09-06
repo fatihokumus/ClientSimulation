@@ -1559,9 +1559,13 @@ namespace iOTClient
                             picture.Location = new Point(item.fields.Left, item.fields.Top);
 
                             picture.Size = new Size(item.fields.Right - item.fields.Left, item.fields.Bottom - item.fields.Top);
-                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
-                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
-                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
+
+
                             picture.ContextMenuStrip = cmObject;
                             pnlCenter.SendToBack();
 
@@ -1652,9 +1656,10 @@ namespace iOTClient
                             picture.Location = new Point(left, top);
 
                             picture.Size = new Size(right - left, bottom - top);
-                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
-                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
-                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
                             picture.ContextMenuStrip = cmObject;
                             pnlCenter.SendToBack();
 
@@ -1742,9 +1747,10 @@ namespace iOTClient
                             picture.Location = new Point(left, top);
 
                             picture.Size = new Size(right - left, bottom - top);
-                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
-                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
-                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
                             picture.ContextMenuStrip = cmObject;
                             pnlCenter.SendToBack();
 
@@ -1835,9 +1841,11 @@ namespace iOTClient
                             picture.Location = new Point(left, top);
 
                             picture.Size = new Size(right - left, bottom - top);
-                            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
-                            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
-                            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+                            picture.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+                            picture.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+                            picture.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+                            picture.ContextMenuStrip = cmObject;
                             picture.ContextMenuStrip = cmObject;
                             pnlCenter.SendToBack();
 
