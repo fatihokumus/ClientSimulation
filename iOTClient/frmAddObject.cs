@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace iOTClient
 {
-    public partial class frmWorkStation : Form
+    public partial class frmAddObject : Form
     {
         public string _code;
         public string _name;
         public int _width;
         public int _height;
 
-        public frmWorkStation()
+        public frmAddObject()
         {
             InitializeComponent();
         }

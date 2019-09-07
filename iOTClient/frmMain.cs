@@ -459,15 +459,23 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
                         {
-                            obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
-                            obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
-                            obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
+                            frmAddObject frm = new frmAddObject();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
+                                obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
+                                obj.Paint += new PaintEventHandler(picture_Paint);
+                                obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
+                                obj.Tag = "R" + frm._code;
+                                WebSocket ws = null;
 
-                            WebSocket ws = null;
+                                _robotList.Add(obj);
 
-                            _robotList.Add(obj);
-                            WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                                WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                            }
+                            else
+                                obj.Dispose();
+                               
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("G"))
                         {
@@ -520,7 +528,7 @@ namespace iOTClient
                             
 
 
-                            frmWorkStation frm = new frmWorkStation();
+                            frmAddObject frm = new frmAddObject();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Size = new Size(x * frm._width, x * frm._height);
@@ -571,7 +579,7 @@ namespace iOTClient
                             obj.Image = global::iOTClient.Properties.Resources.ChargeSatationFree;
 
 
-                            frmWorkStation frm = new frmWorkStation();
+                            frmAddObject frm = new frmAddObject();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Size = new Size(x * frm._width, x * frm._height);
@@ -620,7 +628,7 @@ namespace iOTClient
 
 
 
-                            frmWorkStation frm = new frmWorkStation();
+                            frmAddObject frm = new frmAddObject();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Size = new Size(x * frm._width, x * frm._height);
@@ -803,25 +811,30 @@ namespace iOTClient
                                     + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
                                     + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                     + "]";
-                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M", "")).ToList().ForEach(f => f.Position = pos);
+                    
+                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M", "")).ToList().ForEach(f =>  { f.Position = pos; f.EnterPosX = obj.Left; f.EnterPosY = obj.Top; f.ExitPosX = obj.Left; f.ExitPosY = obj.Bottom; });
                 }
                 else if (obj.Tag != null && obj.Tag.ToString().Contains("W"))
                 {
+                    var centerX = obj.Right - (x / 2);
+                    var centerY = obj.Bottom - (x / 2);
                     string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
                                     + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
                                     + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
                                     + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                     + "]";
-                    _waitingSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
+                    _waitingSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => { f.Position = pos; f.CenterX = centerX; f.CenterY = centerY; });
                 }
                 else if (obj.Tag != null && obj.Tag.ToString().Contains("C"))
                 {
+                    var centerX = obj.Right - (x / 2);
+                    var centerY = obj.Bottom - (x / 2);
                     string pos = "[{" + obj.Left.ToString() + "," + obj.Top.ToString() + "},"
                                     + "{" + obj.Right.ToString() + "," + obj.Top.ToString() + "},"
                                     + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
                                     + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                     + "]";
-                    _chargeSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => f.Position = pos);
+                    _chargeSPointList.Where(w => w.Code == obj.Name).ToList().ForEach(f => { f.Position = pos; f.CenterX = centerX; f.CenterY = centerY; });
                 }
             }
 
@@ -1163,7 +1176,8 @@ namespace iOTClient
                             if (completed2)
                             {
                                 string textKonum = "{\"message\":\"Son Konumum: x:" + p.X + "; y:" + p.Y + "\"}";
-                                ws.SendAsync(textKonum, delegate (bool completed3) { });
+                                ws.SendAsync(textKonum, delegate (bool completed3) {
+                                });
                             }
                         });
                     }

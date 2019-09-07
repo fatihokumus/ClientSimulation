@@ -76,11 +76,11 @@
     <Compile Include="frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmWorkStation.cs">
+    <Compile Include="frmAddObject.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmWorkStation.Designer.cs">
-      <DependentUpon>frmWorkStation.cs</DependentUpon>
+    <Compile Include="frmAddObject.Designer.cs">
+      <DependentUpon>frmAddObject.cs</DependentUpon>
     </Compile>
     <Compile Include="iotRobot.cs">
       <SubType>UserControl</SubType>
@@ -96,8 +96,8 @@
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmWorkStation.resx">
-      <DependentUpon>frmWorkStation.cs</DependentUpon>
+    <EmbeddedResource Include="frmAddObject.resx">
+      <DependentUpon>frmAddObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="iotRobot.resx">
       <DependentUpon>iotRobot.cs</DependentUpon>

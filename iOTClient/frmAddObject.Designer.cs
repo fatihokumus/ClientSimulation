@@ -1,6 +1,6 @@
 ﻿namespace iOTClient
 {
-    partial class frmWorkStation
+    partial class frmAddObject
     {
         /// <summary>
         /// Required designer variable.
