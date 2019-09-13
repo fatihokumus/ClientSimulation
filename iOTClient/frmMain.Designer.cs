@@ -458,7 +458,7 @@ namespace iOTClient
             this.pnlCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlCenter.Location = new System.Drawing.Point(91, 79);
             this.pnlCenter.Name = "pnlCenter";
-            this.pnlCenter.Size = new System.Drawing.Size(1012, 631);
+            this.pnlCenter.Size = new System.Drawing.Size(1100, 800);
             this.pnlCenter.TabIndex = 7;
             // 
             // bgMotionPlan

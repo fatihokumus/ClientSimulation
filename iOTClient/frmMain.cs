@@ -236,8 +236,8 @@ namespace iOTClient
 
             pnlLeft.Height = this.Height;
             pnlTop.Width = this.Width - pnlLeft.Width;
-            pnlCenter.Width = this.Width - pnlLeft.Width - 17;
-            pnlCenter.Height = this.Height - pnlTop.Height - pnlBottom.Height - 35;
+            //pnlCenter.Width = this.Width - pnlLeft.Width - 17;
+            //pnlCenter.Height = this.Height - pnlTop.Height - pnlBottom.Height - 35;
             pRobot.Draggable(true);
             pRobot.BringToFront();
             pObstacle.Draggable(true);
@@ -1182,17 +1182,11 @@ namespace iOTClient
                         });
                     }
                 });
-
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.InnerException == null ? ex.Message : ex.InnerException.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-
         }
 
         public void SendGoalToServer()
