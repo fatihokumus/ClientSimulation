@@ -324,12 +324,12 @@ namespace iOTClient
 
                         picture.Paint += new PaintEventHandler(this.pGoal_Paint);
                     }
-                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("D"))
+                    else if (((PictureBox)sender).Tag != null && ((PictureBox)sender).Tag.ToString().Contains("T"))
                     {
                         transferredObjectCount++;
-                        ((PictureBox)sender).Tag = "D" + transferredObjectCount.ToString();
+                        ((PictureBox)sender).Tag = "T" + transferredObjectCount.ToString();
                         picture.BackColor = Color.Transparent;
-                        picture.Tag = "D";
+                        picture.Tag = "T";
 
                         picture.Paint += new PaintEventHandler(this.pTransferredObject_Paint);
                     }
@@ -430,7 +430,7 @@ namespace iOTClient
                         {
                             goalCount--;
                         }
-                        else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("T"))
                         {
                             transferredObjectCount--;
                         }
@@ -479,12 +479,13 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("G"))
                         {
-                            _goalList.Add(obj);
                             obj.Paint -= new PaintEventHandler(this.pGoal_Paint);
                             //obj.Image = null;
                             obj.Image = global::iOTClient.Properties.Resources.goal_free;
                             obj.Paint += new PaintEventHandler(picture_Paint);
                             obj.Size = new Size(x, Convert.ToInt32(x * 1.4));
+                            _goalList.Add(obj);
+
                             _goalPointList.Add(
                                 new GoalPoint()
                                 {
@@ -498,25 +499,36 @@ namespace iOTClient
                             SendGoalToServer();
                             WsConnectLoadGoals();
                         }
-                        else if (obj.Tag != null && obj.Tag.ToString().Contains("D"))
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("T"))
                         {
-                            _transferredObjectList.Add(obj);
-                            obj.Paint -= new PaintEventHandler(this.pTransferredObject_Paint);
-                            obj.Image = global::iOTClient.Properties.Resources.dokarabasi_free;
-                            obj.Paint += new PaintEventHandler(picture_Paint);
-                            obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
-                            _transferredObjectPointList.Add(
-                                new TransferredObjectPoint()
-                                {
-                                    Code = obj.Tag.ToString(),
-                                    Left = obj.Left,
-                                    Bottom = obj.Bottom,
-                                    Right = obj.Right,
-                                    Top = obj.Top
-                                }
-                                );
-                            //SendGoalToServer();
-                            //WsConnectLoadGoals();
+                            frmAddObject frm = new frmAddObject();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                obj.Paint -= new PaintEventHandler(this.pTransferredObject_Paint);
+                                obj.Image = global::iOTClient.Properties.Resources.dokarabasi_free;
+                                obj.Paint += new PaintEventHandler(picture_Paint);
+                                obj.Size = new Size(x, Convert.ToInt32(x * 1.7));
+                                obj.Tag = "T" + frm._code;
+
+                                _transferredObjectList.Add(obj);
+
+                                WebSocket ws = null;
+
+                                _transferredObjectPointList.Add(
+                                 new TransferredObjectPoint()
+                                 {
+                                     Code = obj.Tag.ToString(),
+                                     Left = obj.Left,
+                                     Bottom = obj.Bottom,
+                                     Right = obj.Right,
+                                     Top = obj.Top
+                                 }
+                                 );
+
+                                WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                            }
+                            else
+                                obj.Dispose();
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
                         {
@@ -775,7 +787,7 @@ namespace iOTClient
                 obj.Location = new Point(leftPos, topPos);
 
 
-                if (obj.Tag != null && obj.Tag.ToString().Contains("R"))
+                if (obj.Tag != null && ( obj.Tag.ToString().Contains("R") || obj.Tag.ToString().Contains("T")))
                 {
                     var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First()._ws;
 
@@ -1497,7 +1509,7 @@ namespace iOTClient
         {
             using (Font font = new Font("Arial", 9, FontStyle.Bold))
             {
-                e.Graphics.DrawString("Dok", font, Brushes.Black, 0, -2);
+                e.Graphics.DrawString("TrObj", font, Brushes.Black, 0, -2);
             }
         }
 

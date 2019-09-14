@@ -173,7 +173,7 @@ namespace iOTClient
             this.pTransferredObject.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pTransferredObject.TabIndex = 12;
             this.pTransferredObject.TabStop = false;
-            this.pTransferredObject.Tag = "D1";
+            this.pTransferredObject.Tag = "T1";
             this.pTransferredObject.Paint += new System.Windows.Forms.PaintEventHandler(this.pTransferredObject_Paint);
             this.pTransferredObject.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Object_MouseDown);
             this.pTransferredObject.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Object_MouseMove);
