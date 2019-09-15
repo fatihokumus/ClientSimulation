@@ -34,7 +34,7 @@ namespace iOTClient
         List<PictureBox> _robotList;
         List<PictureBox> _goalList;
         List<PictureBox> _transferredObjectList;
-        List<PictureBox> _workStationList;
+        public static List<PictureBox> _workStationList;
         List<PictureBox> _waitingSList;
         List<PictureBox> _chargeSList;
         List<GoalPoint> _goalPointList;
@@ -501,7 +501,7 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("T"))
                         {
-                            frmAddObject frm = new frmAddObject();
+                            frmAddTransferredObject frm = new frmAddTransferredObject();
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Paint -= new PaintEventHandler(this.pTransferredObject_Paint);
@@ -532,7 +532,7 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("M"))
                         {
-                            _workStationList.Add(obj);
+                            
                             obj.Paint -= new PaintEventHandler(this.pWorkStation_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.machine_free;
                             obj.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -544,6 +544,8 @@ namespace iOTClient
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Size = new Size(x * frm._width, x * frm._height);
+                                _workStationList.Add(obj);
+
                                 if (_workStationPointList.Where(w => w.Code == ("M" + frm._code)).Count() > 1)
                                 {
                                     MessageBox.Show("There is another object with same code. Please try again.");
@@ -1687,6 +1689,8 @@ namespace iOTClient
                             pnlCenter.Controls.Add(picture);
                             picture.BringToFront();
                             picture.Draggable(true);
+
+                            _workStationList.Add(picture);
                         }
 
                         //SetNodes();
@@ -1778,6 +1782,8 @@ namespace iOTClient
                             pnlCenter.Controls.Add(picture);
                             picture.BringToFront();
                             picture.Draggable(true);
+
+                            _waitingSList.Add(picture);
                         }
 
                         //SetNodes();
@@ -1873,6 +1879,8 @@ namespace iOTClient
                             pnlCenter.Controls.Add(picture);
                             picture.BringToFront();
                             picture.Draggable(true);
+
+                            _chargeSList.Add(picture);
                         }
 
                         //SetNodes();
