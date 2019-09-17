@@ -521,7 +521,8 @@ namespace iOTClient
                                      Left = obj.Left,
                                      Bottom = obj.Bottom,
                                      Right = obj.Right,
-                                     Top = obj.Top
+                                     Top = obj.Top,
+                                     TaskOrder = frm._taskorder
                                  }
                                  );
 
@@ -2024,6 +2025,7 @@ namespace iOTClient
         public int Bottom { get; set; }
         public int CenterX { get; set; }
         public int CenterY { get; set; }
+        public string TaskOrder { get; set; }
     }
 
     public class WorkStationPoint

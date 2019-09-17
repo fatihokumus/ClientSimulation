@@ -16,6 +16,7 @@ namespace iOTClient
         public string _name;
         public int _width;
         public int _height;
+        public string _taskorder;
 
         public frmAddTransferredObject()
         {
@@ -28,6 +29,17 @@ namespace iOTClient
             _name = txtName.Text;
             _width = Convert.ToInt32(txtWidth.Text);
             _height = Convert.ToInt32(txtHeigth.Text);
+
+            _taskorder = "";
+            for (int i = 0; i < lbTaskOrder.Items.Count; i++)
+            {
+                if (i < lbTaskOrder.Items.Count - 1)
+                    _taskorder += lbTaskOrder.Items[i].ToString() + ",";
+                else
+                    _taskorder += lbTaskOrder.Items[i].ToString();
+
+            }
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
