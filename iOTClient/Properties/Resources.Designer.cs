@@ -133,6 +133,16 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FinishStation {
+            get {
+                object obj = ResourceManager.GetObject("FinishStation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap goal {
             get {
                 object obj = ResourceManager.GetObject("goal", resourceCulture);
@@ -166,6 +176,16 @@ namespace iOTClient.Properties {
         internal static System.Drawing.Bitmap machine_free {
             get {
                 object obj = ResourceManager.GetObject("machine_free", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StartStation {
+            get {
+                object obj = ResourceManager.GetObject("StartStation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
