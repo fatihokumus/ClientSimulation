@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,8 +16,6 @@ namespace iOTClient
     {
         public string _code;
         public string _name;
-        public int _width;
-        public int _height;
         public string _taskorder;
 
         public frmAddTransferredObject()
@@ -27,8 +27,6 @@ namespace iOTClient
         {
             _code = txtCode.Text;
             _name = txtName.Text;
-            _width = Convert.ToInt32(txtWidth.Text);
-            _height = Convert.ToInt32(txtHeigth.Text);
 
             _taskorder = "";
             for (int i = 0; i < lbTaskOrder.Items.Count; i++)
@@ -56,6 +54,67 @@ namespace iOTClient
             {
                 lbWorkStation.Items.Add(item.Tag.ToString());
             }
+
+            GetTransferVehicles();
+            GetStartStations();
+        }
+
+        public void GetTransferVehicles()
+        {
+            WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/gettransfervehiclelist/" + frmMain._mapId);
+            req.Method = "GET";
+            req.ContentType = "application/json";
+            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(Program._wsUserName + ":" + Program._wsPassword));
+
+            var getResponse = (HttpWebResponse)req.GetResponse();
+            System.IO.Stream newStream = getResponse.GetResponseStream();
+            System.IO.StreamReader sr = new System.IO.StreamReader(newStream);
+            var result = sr.ReadToEnd();
+
+            var transferVehicleS = JsonConvert.DeserializeObject<string>(result);
+
+            var transferVehicleList = JsonConvert.DeserializeObject<List<ServerTransferVehicle>>(transferVehicleS);
+
+            cmbTransferVehicle.Items.Clear();
+
+            foreach (var item in transferVehicleList)
+            {
+                ComboboxItem cmb = new ComboboxItem();
+                cmb.Text = item.fields.Barcode.ToString();
+                cmb.Value = item.pk;
+
+                cmbTransferVehicle.Items.Add(cmb);
+            }
+            cmbTransferVehicle.SelectedIndex = 0;
+        }
+
+        public void GetStartStations()
+        {
+            WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/getstartstationlist/" + frmMain._mapId);
+            req.Method = "GET";
+            req.ContentType = "application/json";
+            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(Program._wsUserName + ":" + Program._wsPassword));
+
+            var getResponse = (HttpWebResponse)req.GetResponse();
+            System.IO.Stream newStream = getResponse.GetResponseStream();
+            System.IO.StreamReader sr = new System.IO.StreamReader(newStream);
+            var result = sr.ReadToEnd();
+
+            var startStationS = JsonConvert.DeserializeObject<string>(result);
+
+            var startStationList = JsonConvert.DeserializeObject<List<ServerStartStation>>(startStationS);
+
+            cmbStartStation.Items.Clear();
+
+            foreach (var item in startStationList)
+            {
+                ComboboxItem cmb = new ComboboxItem();
+                cmb.Text = "S" + item.fields.Code.ToString();
+                cmb.Value = item.pk;
+
+                cmbStartStation.Items.Add(cmb);
+            }
+            cmbStartStation.SelectedIndex = 0;
         }
 
         private void btnToTaskOrder_Click(object sender, EventArgs e)

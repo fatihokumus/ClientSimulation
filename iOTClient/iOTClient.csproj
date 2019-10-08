@@ -112,7 +112,7 @@
       <DependentUpon>iotRobot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -160,6 +160,7 @@
     <None Include="Resources\bos.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\StartStationFree.png" />
     <None Include="Resources\StartStation.png" />
     <None Include="Resources\turtlebot_2_lg_free.png" />
     <None Include="Resources\machine11.png" />
@@ -178,6 +179,8 @@
     <None Include="Resources\dokarabasi_free.png" />
     <None Include="Resources\archer-clipart-archery-bullseye-151.png" />
     <None Include="Resources\FinishStation.png" />
+    <None Include="Resources\FinishStationFree.png" />
+    <None Include="Resources\bos_dok_arabasi.png" />
     <Content Include="Resources\goal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

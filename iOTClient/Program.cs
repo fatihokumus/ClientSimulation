@@ -20,5 +20,9 @@ namespace iOTClient
         }
 
         public static string _wslink = "localhost";
+
+        public static string _wsUserName = "admin";
+        public static string _wsPassword = "HamzAsya";
     }
+    
 }

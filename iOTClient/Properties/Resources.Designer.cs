@@ -22,7 +22,7 @@ namespace iOTClient.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace iOTClient.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("iOTClient.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace iOTClient.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bos {
+        public static System.Drawing.Bitmap bos {
             get {
                 object obj = ResourceManager.GetObject("bos", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,17 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ChargeSatation {
+        public static System.Drawing.Bitmap bos_dok_arabasi {
+            get {
+                object obj = ResourceManager.GetObject("bos_dok_arabasi", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ChargeSatation {
             get {
                 object obj = ResourceManager.GetObject("ChargeSatation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +93,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ChargeSatationFree {
+        public static System.Drawing.Bitmap ChargeSatationFree {
             get {
                 object obj = ResourceManager.GetObject("ChargeSatationFree", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +103,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap close {
+        public static System.Drawing.Bitmap close {
             get {
                 object obj = ResourceManager.GetObject("close", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +113,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap close2 {
+        public static System.Drawing.Bitmap close2 {
             get {
                 object obj = ResourceManager.GetObject("close2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +123,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dokarabasi {
+        public static System.Drawing.Bitmap dokarabasi {
             get {
                 object obj = ResourceManager.GetObject("dokarabasi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +133,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dokarabasi_free {
+        public static System.Drawing.Bitmap dokarabasi_free {
             get {
                 object obj = ResourceManager.GetObject("dokarabasi_free", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +143,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FinishStation {
+        public static System.Drawing.Bitmap FinishStation {
             get {
                 object obj = ResourceManager.GetObject("FinishStation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +153,17 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap goal {
+        public static System.Drawing.Bitmap FinishStationFree {
+            get {
+                object obj = ResourceManager.GetObject("FinishStationFree", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap goal {
             get {
                 object obj = ResourceManager.GetObject("goal", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +173,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap goal_free {
+        public static System.Drawing.Bitmap goal_free {
             get {
                 object obj = ResourceManager.GetObject("goal_free", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +183,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap machine {
+        public static System.Drawing.Bitmap machine {
             get {
                 object obj = ResourceManager.GetObject("machine", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +193,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap machine_free {
+        public static System.Drawing.Bitmap machine_free {
             get {
                 object obj = ResourceManager.GetObject("machine_free", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +203,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap StartStation {
+        public static System.Drawing.Bitmap StartStation {
             get {
                 object obj = ResourceManager.GetObject("StartStation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -193,7 +213,17 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap target1 {
+        public static System.Drawing.Bitmap StartStationFree {
+            get {
+                object obj = ResourceManager.GetObject("StartStationFree", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap target1 {
             get {
                 object obj = ResourceManager.GetObject("target1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -203,7 +233,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap turtlebot_2_lg {
+        public static System.Drawing.Bitmap turtlebot_2_lg {
             get {
                 object obj = ResourceManager.GetObject("turtlebot_2_lg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -213,7 +243,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap turtlebot_2_lg_free {
+        public static System.Drawing.Bitmap turtlebot_2_lg_free {
             get {
                 object obj = ResourceManager.GetObject("turtlebot_2_lg_free", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -223,7 +253,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap turtlebot_urdf {
+        public static System.Drawing.Bitmap turtlebot_urdf {
             get {
                 object obj = ResourceManager.GetObject("turtlebot_urdf", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -233,7 +263,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap WaitingStation {
+        public static System.Drawing.Bitmap WaitingStation {
             get {
                 object obj = ResourceManager.GetObject("WaitingStation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -243,7 +273,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap WaitingStationFree {
+        public static System.Drawing.Bitmap WaitingStationFree {
             get {
                 object obj = ResourceManager.GetObject("WaitingStationFree", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -253,7 +283,7 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap WorkSatation {
+        public static System.Drawing.Bitmap WorkSatation {
             get {
                 object obj = ResourceManager.GetObject("WorkSatation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
