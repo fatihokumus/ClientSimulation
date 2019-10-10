@@ -17,6 +17,11 @@ namespace iOTClient
         public string _code;
         public string _name;
         public string _taskorder;
+        public int _startStationId;
+        public int _transferVehicleId;
+        public int _centerX;
+        public int _centerY;
+
 
         public frmAddTransferredObject()
         {
@@ -27,6 +32,10 @@ namespace iOTClient
         {
             _code = txtCode.Text;
             _name = txtName.Text;
+            _startStationId = (int)((ComboboxItem)cmbStartStation.SelectedItem).Value;
+            _transferVehicleId = (int)((ComboboxItem)cmbTransferVehicle.SelectedItem).Value;
+            _centerX = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterX;
+            _centerY = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterY;
 
             _taskorder = "";
             for (int i = 0; i < lbTaskOrder.Items.Count; i++)
@@ -111,6 +120,8 @@ namespace iOTClient
                 ComboboxItem cmb = new ComboboxItem();
                 cmb.Text = "S" + item.fields.Code.ToString();
                 cmb.Value = item.pk;
+                cmb.CenterX = item.fields.CenterX;
+                cmb.CenterY = item.fields.CenterY;
 
                 cmbStartStation.Items.Add(cmb);
             }

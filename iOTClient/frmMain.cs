@@ -571,8 +571,35 @@ namespace iOTClient
 
                                 // Send TransferObject to Server
 
-                                string json = JsonConvert.SerializeObject(_map);
-                                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/maplist/");
+                                var entity = new TransferObject()
+                                {
+                                    Barcode = frm._code,
+                                    LastPosX = frm._centerX,
+                                    LastPosY = frm._centerY,
+                                    MapId = Convert.ToInt32(_mapId),
+                                    StartStationId = frm._startStationId,
+                                    TransferVehicleId = frm._transferVehicleId,
+                                    TaskHistories = new List<TaskHistory>()
+                                };
+
+                                obj.Location = new Point(frm._centerX, frm._centerY);
+
+                                var workOrders = frm._taskorder.Split(',');
+
+                                int _order = 1;
+                                foreach (var item in workOrders)
+                                {
+                                    var history = new TaskHistory()
+                                    {
+                                        WorkOrder = _order,
+                                        WorkStationCode = item.Replace("M","")
+                                    };
+                                    entity.TaskHistories.Add(history);
+                                    _order++;
+                                }
+
+                                string json = JsonConvert.SerializeObject(entity);
+                                WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/addtransferobject/");
                                 req.Method = "POST";
                                 req.ContentType = "application/json";
                                 req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(Program._wsUserName + ":" + Program._wsPassword));
@@ -1823,6 +1850,7 @@ namespace iOTClient
                             _workStationPointList.Add(
                                    new WorkStationPoint()
                                    {
+                                       pk = item.pk,
                                        Code = item.fields.Code,
                                        Name = item.fields.Name,
                                        isActive = item.fields.isActive,
@@ -2418,6 +2446,7 @@ namespace iOTClient
 
     public class WorkStationPoint
     {
+        public int pk { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public bool isActive { get; set; }
@@ -2685,11 +2714,32 @@ namespace iOTClient
         public string Text { get; set; }
         public object Value { get; set; }
         public object Distance { get; set; }
+        public object CenterX { get; set; }
+        public object CenterY { get; set; }
 
         public override string ToString()
         {
             return Text;
         }
+
+
+    }
+
+    public class TransferObject
+    {
+        public List<TaskHistory> TaskHistories { get; set; }
+        public int MapId { get; set; }
+        public int StartStationId { get; set; }
+        public int TransferVehicleId { get; set; }
+        public string Barcode { get; set; }
+        public int LastPosX { get; set; }
+        public int LastPosY { get; set; }
+    }
+
+    public class TaskHistory
+    {
+        public int WorkOrder { get; set; }
+        public string WorkStationCode { get; set; }
     }
 
     public class RobotPath
