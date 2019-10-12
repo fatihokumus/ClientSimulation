@@ -22,6 +22,7 @@ namespace iOTClient
         int gridSize = 0;
         int robotCount = 0;
         int goalCount = 0;
+        int vehicleCount = 0;
         int transferredObjectCount = 0;
         int workStationCount = 0;
         int chargeSCount = 0;
@@ -34,6 +35,7 @@ namespace iOTClient
         List<RobotWebSocket> robotSocketList;
         List<PictureBox> _robotList;
         List<PictureBox> _goalList;
+        List<PictureBox> _vehicleList;
         List<PictureBox> _transferredObjectList;
         public static List<PictureBox> _workStationList;
         List<PictureBox> _waitingSList;
@@ -41,6 +43,7 @@ namespace iOTClient
         List<PictureBox> _finishSList;
         List<PictureBox> _chargeSList;
         List<GoalPoint> _goalPointList;
+        List<VehiclePoint> _vehiclePointList;
         List<TransferredObjectPoint> _transferredObjectPointList;
         List<WorkStationPoint> _workStationPointList;
         List<WaitingStationPoint> _waitingSPointList;
@@ -488,6 +491,10 @@ namespace iOTClient
                         {
                             finishSCount--;
                         }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("V"))
+                        {
+                            vehicleCount--;
+                        }
 
                         obj.Dispose();
                     }
@@ -542,6 +549,43 @@ namespace iOTClient
                             SendGoalToServer();
                             WsConnectLoadGoals();
                         }
+                        else if (obj.Tag != null && obj.Tag.ToString().Contains("V"))
+                        {
+                            obj.Paint -= new PaintEventHandler(this.pVehicle_Paint);
+                            //obj.Image = null;
+                            obj.Image = global::iOTClient.Properties.Resources.bos_dok_arabasi;
+                            obj.Paint += new PaintEventHandler(picture_Paint);
+                            obj.Size = new Size(x, Convert.ToInt32(x * 1.4));
+                            _vehicleList.Add(obj);
+
+                            frmAddVehicle frm = new frmAddVehicle();
+                            if (frm.ShowDialog() == DialogResult.OK)
+                            {
+                                _vehiclePointList.Add(
+                                new VehiclePoint()
+                                {
+                                    Code = frm._code,
+                                    Left = obj.Left,
+                                    Bottom = obj.Bottom,
+                                    Right = obj.Right,
+                                    Top = obj.Top,
+                                    CenterX = obj.Right - (x / 2),
+                                    CenterY = obj.Bottom - (x / 2)
+                                }
+                                );
+
+                                obj.Tag = "V" + frm._code;
+                                WebSocket ws = null;
+
+                                WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+                            }
+                            else
+                            {
+                                obj.Dispose();
+                            }
+                                
+                           
+                        }
                         else if (obj.Tag != null && obj.Tag.ToString().Contains("T"))
                         {
                             frmAddTransferredObject frm = new frmAddTransferredObject();
@@ -577,6 +621,7 @@ namespace iOTClient
                                     LastPosX = frm._centerX,
                                     LastPosY = frm._centerY,
                                     MapId = Convert.ToInt32(_mapId),
+                                    Length = frm._length,
                                     StartStationId = frm._startStationId,
                                     TransferVehicleId = frm._transferVehicleId,
                                     TaskHistories = new List<TaskHistory>()
@@ -1745,6 +1790,14 @@ namespace iOTClient
             }
         }
 
+        private void pVehicle_Paint(object sender, PaintEventArgs e)
+        {
+            using (Font font = new Font("Arial", 9, FontStyle.Bold))
+            {
+                e.Graphics.DrawString("Vehicle", font, Brushes.Black, 0, -2);
+            }
+        }
+
 
 
         private void cbMap_SelectedIndexChanged(object sender, EventArgs e)
@@ -2432,6 +2485,18 @@ namespace iOTClient
         public int Bottom { get; set; }
     }
 
+
+    public class VehiclePoint
+    {
+        public string Code { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int CenterX { get; set; }
+        public int CenterY { get; set; }
+    }
+
     public class TransferredObjectPoint
     {
         public string Code { get; set; }
@@ -2734,6 +2799,7 @@ namespace iOTClient
         public string Barcode { get; set; }
         public int LastPosX { get; set; }
         public int LastPosY { get; set; }
+        public int Length { get; set; }
     }
 
     public class TaskHistory

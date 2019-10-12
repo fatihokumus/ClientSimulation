@@ -15,12 +15,12 @@ namespace iOTClient
     public partial class frmAddTransferredObject : Form
     {
         public string _code;
-        public string _name;
         public string _taskorder;
         public int _startStationId;
         public int _transferVehicleId;
         public int _centerX;
         public int _centerY;
+        public int _length;
 
 
         public frmAddTransferredObject()
@@ -31,11 +31,11 @@ namespace iOTClient
         private void btnOk_Click(object sender, EventArgs e)
         {
             _code = txtCode.Text;
-            _name = txtName.Text;
             _startStationId = (int)((ComboboxItem)cmbStartStation.SelectedItem).Value;
             _transferVehicleId = (int)((ComboboxItem)cmbTransferVehicle.SelectedItem).Value;
             _centerX = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterX;
             _centerY = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterY;
+            _length = Convert.ToInt32(txtLength.Text);
 
             _taskorder = "";
             for (int i = 0; i < lbTaskOrder.Items.Count; i++)

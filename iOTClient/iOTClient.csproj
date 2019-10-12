@@ -64,6 +64,12 @@
     <Compile Include="ExtendedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="frmAddVehicle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddVehicle.Designer.cs">
+      <DependentUpon>frmAddVehicle.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmAddTransferredObject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmAddVehicle.resx">
+      <DependentUpon>frmAddVehicle.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAddTransferredObject.resx">
       <DependentUpon>frmAddTransferredObject.cs</DependentUpon>
     </EmbeddedResource>

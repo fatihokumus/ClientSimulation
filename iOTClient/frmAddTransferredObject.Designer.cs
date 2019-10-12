@@ -30,8 +30,6 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.txtCode = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -44,12 +42,14 @@
             this.cmbStartStation = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbTransferVehicle = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtLength = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(60, 28);
+            this.label1.Location = new System.Drawing.Point(60, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 0;
@@ -57,26 +57,10 @@
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(93, 25);
+            this.txtCode.Location = new System.Drawing.Point(93, 47);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(245, 20);
             this.txtCode.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(57, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Name";
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(93, 56);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(245, 20);
-            this.txtName.TabIndex = 1;
             // 
             // btnCancel
             // 
@@ -140,7 +124,7 @@
             // 
             this.lbWorkStation.FormattingEnabled = true;
             this.lbWorkStation.Location = new System.Drawing.Point(388, 47);
-            this.lbWorkStation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lbWorkStation.Margin = new System.Windows.Forms.Padding(2);
             this.lbWorkStation.Name = "lbWorkStation";
             this.lbWorkStation.Size = new System.Drawing.Size(135, 199);
             this.lbWorkStation.TabIndex = 10;
@@ -149,7 +133,7 @@
             // 
             this.lbTaskOrder.FormattingEnabled = true;
             this.lbTaskOrder.Location = new System.Drawing.Point(572, 47);
-            this.lbTaskOrder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lbTaskOrder.Margin = new System.Windows.Forms.Padding(2);
             this.lbTaskOrder.Name = "lbTaskOrder";
             this.lbTaskOrder.Size = new System.Drawing.Size(135, 199);
             this.lbTaskOrder.TabIndex = 11;
@@ -157,7 +141,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(24, 92);
+            this.label7.Location = new System.Drawing.Point(24, 113);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(68, 13);
             this.label7.TabIndex = 0;
@@ -166,7 +150,7 @@
             // cmbStartStation
             // 
             this.cmbStartStation.FormattingEnabled = true;
-            this.cmbStartStation.Location = new System.Drawing.Point(93, 88);
+            this.cmbStartStation.Location = new System.Drawing.Point(93, 109);
             this.cmbStartStation.Name = "cmbStartStation";
             this.cmbStartStation.Size = new System.Drawing.Size(245, 21);
             this.cmbStartStation.TabIndex = 12;
@@ -174,7 +158,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 124);
+            this.label8.Location = new System.Drawing.Point(8, 145);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(84, 13);
             this.label8.TabIndex = 0;
@@ -183,16 +167,37 @@
             // cmbTransferVehicle
             // 
             this.cmbTransferVehicle.FormattingEnabled = true;
-            this.cmbTransferVehicle.Location = new System.Drawing.Point(93, 120);
+            this.cmbTransferVehicle.Location = new System.Drawing.Point(93, 141);
             this.cmbTransferVehicle.Name = "cmbTransferVehicle";
             this.cmbTransferVehicle.Size = new System.Drawing.Size(245, 21);
             this.cmbTransferVehicle.TabIndex = 12;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(35, 81);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(57, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Length (m)";
+            // 
+            // txtLength
+            // 
+            this.txtLength.Location = new System.Drawing.Point(93, 78);
+            this.txtLength.Mask = "00000";
+            this.txtLength.Name = "txtLength";
+            this.txtLength.Size = new System.Drawing.Size(245, 20);
+            this.txtLength.TabIndex = 14;
+            this.txtLength.Text = "1";
+            this.txtLength.ValidatingType = typeof(int);
             // 
             // frmAddTransferredObject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(737, 261);
+            this.Controls.Add(this.txtLength);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbTransferVehicle);
             this.Controls.Add(this.cmbStartStation);
             this.Controls.Add(this.lbTaskOrder);
@@ -203,8 +208,6 @@
             this.Controls.Add(this.btnToTaskOrder);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtCode);
@@ -221,8 +224,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCode;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Label label5;
@@ -235,5 +236,7 @@
         private System.Windows.Forms.ComboBox cmbStartStation;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox cmbTransferVehicle;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.MaskedTextBox txtLength;
     }
 }
