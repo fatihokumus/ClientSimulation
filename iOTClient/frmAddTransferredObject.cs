@@ -17,7 +17,6 @@ namespace iOTClient
         public string _code;
         public string _taskorder;
         public int _startStationId;
-        public int _transferVehicleId;
         public int _centerX;
         public int _centerY;
         public int _length;
@@ -32,23 +31,31 @@ namespace iOTClient
         {
             _code = txtCode.Text;
             _startStationId = (int)((ComboboxItem)cmbStartStation.SelectedItem).Value;
-            _transferVehicleId = (int)((ComboboxItem)cmbTransferVehicle.SelectedItem).Value;
             _centerX = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterX;
             _centerY = (int)((ComboboxItem)cmbStartStation.SelectedItem).CenterY;
             _length = Convert.ToInt32(txtLength.Text);
 
             _taskorder = "";
-            for (int i = 0; i < lbTaskOrder.Items.Count; i++)
+
+            if (lbTaskOrder.Items.Count > 0)
             {
-                if (i < lbTaskOrder.Items.Count - 1)
-                    _taskorder += lbTaskOrder.Items[i].ToString() + ",";
-                else
-                    _taskorder += lbTaskOrder.Items[i].ToString();
+                for (int i = 0; i < lbTaskOrder.Items.Count; i++)
+                {
+                    if (i < lbTaskOrder.Items.Count - 1)
+                        _taskorder += lbTaskOrder.Items[i].ToString() + ",";
+                    else
+                        _taskorder += lbTaskOrder.Items[i].ToString();
 
+                }
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            else
+            {
+                MessageBox.Show("Please choose task order", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -82,19 +89,7 @@ namespace iOTClient
 
             var transferVehicleS = JsonConvert.DeserializeObject<string>(result);
 
-            var transferVehicleList = JsonConvert.DeserializeObject<List<ServerTransferVehicle>>(transferVehicleS);
-
-            cmbTransferVehicle.Items.Clear();
-
-            foreach (var item in transferVehicleList)
-            {
-                ComboboxItem cmb = new ComboboxItem();
-                cmb.Text = item.fields.Barcode.ToString();
-                cmb.Value = item.pk;
-
-                cmbTransferVehicle.Items.Add(cmb);
-            }
-            cmbTransferVehicle.SelectedIndex = 0;
+            
         }
 
         public void GetStartStations()

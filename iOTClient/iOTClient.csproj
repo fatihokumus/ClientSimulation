@@ -64,6 +64,12 @@
     <Compile Include="ExtendedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="frmAddRobot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddRobot.Designer.cs">
+      <DependentUpon>frmAddRobot.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmAddVehicle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmAddRobot.resx">
+      <DependentUpon>frmAddRobot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAddVehicle.resx">
       <DependentUpon>frmAddVehicle.cs</DependentUpon>
     </EmbeddedResource>
@@ -169,6 +178,7 @@
     <None Include="Resources\bos.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\kumas.png" />
     <None Include="Resources\StartStationFree.png" />
     <None Include="Resources\StartStation.png" />
     <None Include="Resources\turtlebot_2_lg_free.png" />

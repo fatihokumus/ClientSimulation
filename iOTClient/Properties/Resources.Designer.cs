@@ -183,6 +183,16 @@ namespace iOTClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap kumas {
+            get {
+                object obj = ResourceManager.GetObject("kumas", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap machine {
             get {
                 object obj = ResourceManager.GetObject("machine", resourceCulture);
