@@ -635,6 +635,7 @@ namespace iOTClient
                                     LastPosX = frm._centerX,
                                     LastPosY = frm._centerY,
                                     MapId = Convert.ToInt32(_mapId),
+                                    isNewObject = true,
                                     Length = frm._length,
                                     StartStationId = frm._startStationId,
                                     TaskHistories = new List<TaskHistory>()
@@ -2875,6 +2876,7 @@ namespace iOTClient
         public int MapId { get; set; }
         public int StartStationId { get; set; }
         public int TransferVehicleId { get; set; }
+        public bool isNewObject { get; set; }
         public string Barcode { get; set; }
         public int LastPosX { get; set; }
         public int LastPosY { get; set; }
