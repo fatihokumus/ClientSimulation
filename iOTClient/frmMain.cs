@@ -632,8 +632,8 @@ namespace iOTClient
                                 var entity = new TransferObject()
                                 {
                                     Barcode = frm._code,
-                                    LastPosX = frm._centerX,
-                                    LastPosY = frm._centerY,
+                                    LastPosX = frm._centerX - (x / 2),
+                                    LastPosY = frm._centerY - (x / 2),
                                     MapId = Convert.ToInt32(_mapId),
                                     isNewObject = true,
                                     Length = frm._length,
@@ -641,7 +641,7 @@ namespace iOTClient
                                     TaskHistories = new List<TaskHistory>()
                                 };
 
-                                obj.Location = new Point(frm._centerX, frm._centerY);
+                                obj.Location = new Point(entity.LastPosX, entity.LastPosY);
 
                                 var workOrders = frm._taskorder.Split(',');
 
