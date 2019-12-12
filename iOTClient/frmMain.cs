@@ -277,7 +277,7 @@ namespace iOTClient
 
             GetMapList();
 
-            
+
         }
         public void GetMapList()
         {
@@ -528,11 +528,11 @@ namespace iOTClient
                             if (frm.ShowDialog() == DialogResult.OK)
                             {
                                 obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
-                                
+
                                 obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
                                 obj.Paint += new PaintEventHandler(picture_Paint);
                                 obj.Size = new Size(x, Convert.ToInt32(x * 1.2));
-                                obj.Tag = frm._code.StartsWith("R")? frm._code : ("R" + frm._code);
+                                obj.Tag = frm._code.StartsWith("R") ? frm._code : ("R" + frm._code);
                                 WebSocket ws = null;
 
                                 _robotList.Add(obj);
@@ -541,7 +541,7 @@ namespace iOTClient
                             }
                             else
                                 obj.Dispose();
-                               
+
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().StartsWith("G"))
                         {
@@ -599,8 +599,8 @@ namespace iOTClient
                             {
                                 obj.Dispose();
                             }
-                                
-                           
+
+
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().StartsWith("T"))
                         {
@@ -635,7 +635,6 @@ namespace iOTClient
                                     LastPosX = frm._centerX - (x / 2),
                                     LastPosY = frm._centerY - (x / 2),
                                     MapId = Convert.ToInt32(_mapId),
-                                    isNewObject = true,
                                     Length = frm._length,
                                     StartStationId = frm._startStationId,
                                     TaskHistories = new List<TaskHistory>()
@@ -651,7 +650,7 @@ namespace iOTClient
                                     var history = new TaskHistory()
                                     {
                                         WorkOrder = _order,
-                                        WorkStationCode = item.Replace("M","")
+                                        WorkStationCode = item.Replace("M", "")
                                     };
                                     entity.TaskHistories.Add(history);
                                     _order++;
@@ -690,12 +689,11 @@ namespace iOTClient
                         }
                         else if (obj.Tag != null && obj.Tag.ToString().StartsWith("M"))
                         {
-                            
+
                             obj.Paint -= new PaintEventHandler(this.pWorkStation_Paint);
                             obj.Image = global::iOTClient.Properties.Resources.machine_free;
                             obj.SizeMode = PictureBoxSizeMode.CenterImage;
                             obj.BackColor = Color.LightGray;
-                            
 
 
                             frmAddObject frm = new frmAddObject();
@@ -1047,7 +1045,7 @@ namespace iOTClient
                 obj.Location = new Point(leftPos, topPos);
 
 
-                if (obj.Tag != null && ( obj.Tag.ToString().StartsWith("R") || obj.Tag.ToString().StartsWith("V")))
+                if (obj.Tag != null && (obj.Tag.ToString().StartsWith("R") || obj.Tag.ToString().StartsWith("V")))
                 {
                     var ws = robotSocketList.Where(w => w.name == obj.Tag.ToString()).First()._ws;
 
@@ -1105,8 +1103,8 @@ namespace iOTClient
                                     + "{" + obj.Right.ToString() + "," + obj.Bottom.ToString() + "},"
                                     + "{" + obj.Left.ToString() + "," + obj.Bottom.ToString() + "}"
                                     + "]";
-                    
-                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M", "")).ToList().ForEach(f =>  { f.Position = pos; f.EnterPosX = obj.Left; f.EnterPosY = obj.Top; f.ExitPosX = obj.Left; f.ExitPosY = obj.Bottom; });
+
+                    _workStationPointList.Where(w => w.Code == obj.Name.Replace("M", "")).ToList().ForEach(f => { f.Position = pos; f.EnterPosX = obj.Left; f.EnterPosY = obj.Top; f.ExitPosX = obj.Left; f.ExitPosY = obj.Bottom; });
                 }
                 else if (obj.Tag != null && obj.Tag.ToString().StartsWith("W"))
                 {
@@ -1497,7 +1495,8 @@ namespace iOTClient
                             if (completed2)
                             {
                                 string textKonum = "{\"message\":\"Son Konumum: x:" + p.X + "; y:" + p.Y + "\"}";
-                                ws.SendAsync(textKonum, delegate (bool completed3) {
+                                ws.SendAsync(textKonum, delegate (bool completed3)
+                                {
                                 });
                             }
                         });
@@ -1888,8 +1887,8 @@ namespace iOTClient
 
 
                 /// Load obstacles
-                
-                if(ms.obstacle != "[]" && ms.obstacle != "")
+
+                if (ms.obstacle != "[]" && ms.obstacle != "")
                 {
                     //var obstacleS = JsonConvert.DeserializeObject<string>(ms.obstacle);
                     var obstacleList = JsonConvert.DeserializeObject<List<ServerMapObstacle>>(ms.obstacle);
@@ -1941,7 +1940,7 @@ namespace iOTClient
 
 
                 /// Load workstations
-                if(ms.workstation != "[]" && ms.workstation != "")
+                if (ms.workstation != "[]" && ms.workstation != "")
                 {
                     _workStationPointList.Clear();
                     //var workstationS = JsonConvert.DeserializeObject<string>(ms.workstation);
@@ -2165,7 +2164,7 @@ namespace iOTClient
                                     }
                                     );
 
-                            
+
 
                             PictureBox picture = new PictureBox();
 
@@ -2876,7 +2875,6 @@ namespace iOTClient
         public int MapId { get; set; }
         public int StartStationId { get; set; }
         public int TransferVehicleId { get; set; }
-        public bool isNewObject { get; set; }
         public string Barcode { get; set; }
         public int LastPosX { get; set; }
         public int LastPosY { get; set; }
