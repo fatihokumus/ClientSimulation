@@ -1693,7 +1693,10 @@ namespace iOTClient
             {
                 BackgroundWorker bcg = new BackgroundWorker();
                 bcg.DoWork += new DoWorkEventHandler(bcmessage_DoWork);
-                bcg.RunWorkerAsync(argument: e.Data);
+                WebSocketRequest req = new WebSocketRequest();
+                req.message = e.Data;
+                req._ws = (WebSocket)sender;
+                bcg.RunWorkerAsync(argument: req);
 
                 //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
             }
@@ -1702,7 +1705,8 @@ namespace iOTClient
 
         private void bcmessage_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var data = JsonConvert.DeserializeObject<ServerMessage>((string)e.Argument);
+            var param = (WebSocketRequest)e.Argument;
+            var data = JsonConvert.DeserializeObject<ServerMessage>(param.message);
             var datastring = data.message.Replace("Rota:", "");
             var mData = datastring.Split(':');
             var algo = mData[0];
@@ -1711,9 +1715,9 @@ namespace iOTClient
             var list = rota.Split(',');
 
             var pList = new List<GridPiont>();
-            for (int i = 0; i < list.Length; i += 2)
+            for (int i = list.Length-2; i > 0; i -= 2)
             {
-                pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i]), YPoint = Convert.ToInt32(list[i + 1]) });
+                pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i + 1]), YPoint = Convert.ToInt32(list[i]) });
             }
 
             int x = Convert.ToInt32(txtX.Text);
@@ -1795,6 +1799,10 @@ namespace iOTClient
                             ctrl.Location = currentRP.Point;
                             ctrl.BringToFront();
                         }));
+                        string textKonum = "{\"message\":\"Son Konumum: x:" + currentRP.Point.X + "; y:" + currentRP.Point.Y + "\"}";
+                        param._ws.SendAsync(textKonum, delegate (bool completed3)
+                        {
+                        });
                         Thread.Sleep(500);
                     }
                 }
@@ -2892,5 +2900,11 @@ namespace iOTClient
     {
         public PictureBox Robot { get; set; }
         public Point Point { get; set; }
+    }
+
+    public class WebSocketRequest
+    {
+        public WebSocket _ws { get; set; }
+        public string message { get; set; }
     }
 }
