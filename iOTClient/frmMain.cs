@@ -1799,11 +1799,22 @@ namespace iOTClient
                             ctrl.Location = currentRP.Point;
                             ctrl.BringToFront();
                         }));
+
+                        // Konumu gönder
                         string textKonum = "{\"message\":\"Son Konumum: x:" + currentRP.Point.X + "; y:" + currentRP.Point.Y + "\"}";
                         param._ws.SendAsync(textKonum, delegate (bool completed3)
                         {
                         });
                         Thread.Sleep(500);
+
+                        //Eðer görev bittiyse ilet
+                        if (h == 0)
+                        {
+                            string textbilgi = "{\"message\":\"Görev bitti\"}";
+                            param._ws.SendAsync(textKonum, delegate (bool completed3)
+                            {
+                            });
+                        }
                     }
                 }
 
