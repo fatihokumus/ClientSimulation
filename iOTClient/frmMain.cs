@@ -1811,8 +1811,9 @@ namespace iOTClient
                         if (h == 0)
                         {
                             string textbilgi = "{\"message\":\"Görev bitti\"}";
-                            param._ws.SendAsync(textKonum, delegate (bool completed3)
+                            param._ws.SendAsync(textbilgi, delegate (bool completed4)
                             {
+
                             });
                         }
                     }
