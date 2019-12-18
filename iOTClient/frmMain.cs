@@ -1689,6 +1689,16 @@ namespace iOTClient
             {
                 points.Clear();
             }
+            else if (e.Data.Contains("Konum Deðiþtir"))
+            {
+                //Buradayýz
+                BackgroundWorker bcg = new BackgroundWorker();
+                bcg.DoWork += new DoWorkEventHandler(bcmessage_two_DoWork);
+                WebSocketRequest req = new WebSocketRequest();
+                req.message = e.Data;
+                req._ws = (WebSocket)sender;
+                bcg.RunWorkerAsync(argument: req);
+            }
             else if (e.Data.Contains("Rota"))
             {
                 BackgroundWorker bcg = new BackgroundWorker();
@@ -1804,6 +1814,7 @@ namespace iOTClient
                         string textKonum = "{\"message\":\"Son Konumum: x:" + currentRP.Point.X + "; y:" + currentRP.Point.Y + "\"}";
                         param._ws.SendAsync(textKonum, delegate (bool completed3)
                         {
+
                         });
                         Thread.Sleep(500);
 
@@ -1823,6 +1834,62 @@ namespace iOTClient
 
         }
 
+
+        private void bcmessage_two_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var param = (WebSocketRequest)e.Argument;
+            var data = JsonConvert.DeserializeObject<ServerMessage>(param.message);
+            var datastring = data.message.Replace("Konum Deðiþtir:", "");
+            var mData = datastring.Split(':');
+            var objectName = mData[0].ToString();
+            var xPos = Convert.ToInt32(mData[1]);
+            var yPos = Convert.ToInt32(mData[2]);
+
+            
+
+            int x = Convert.ToInt32(txtX.Text);
+
+            PictureBox ctrl = null;
+
+            foreach (var item in pnlCenter.Controls)
+            {
+                if (item.GetType() == typeof(ExtendedPanel))
+                {
+
+                    ((ExtendedPanel)item).Invoke(new Action(() =>
+                    {
+                        ((ExtendedPanel)item).SendToBack();
+                    }));
+
+                }
+                else if (item.GetType() == typeof(PictureBox))
+                {
+                    if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[0])
+                    {
+                        ctrl = ((PictureBox)item);
+                    }
+                }
+
+            }
+            var pnlPath = new ExtendedPanel(points, x);
+            pnlPath.Size = pnlCenter.Size;
+            pnlPath.Location = new Point(0, 0);
+
+            pnlCenter.Invoke(new Action(() =>
+            {
+                pnlCenter.Controls.Add(pnlPath);
+                pnlPath.BringToFront();
+            }));
+
+            var point = new Point((xPos * x), (yPos * x));
+            ctrl.Invoke(new Action(() =>
+            {
+                ctrl.Location = point;
+                ctrl.BringToFront();
+            }));
+            
+
+        }
 
         private void bcg_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
