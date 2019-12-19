@@ -19,7 +19,7 @@ namespace iOTClient
             Application.Run(new frmSettings());
         }
 
-        public static string _wslink = "localhost";
+        public static string _wslink = "localhost:8000";
 
         public static string _wsUserName = "admin";
         public static string _wsPassword = "HamzAsya";

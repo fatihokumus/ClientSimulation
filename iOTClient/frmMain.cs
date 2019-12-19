@@ -443,6 +443,287 @@ namespace iOTClient
             //lblY.Text = ((PictureBox)sender).Top.ToString();
         }
 
+        PictureBox sampleTObject;
+        public void AddTranferObjectManually(string code, int sid, string mlist, int xxx, int yyy)
+        {
+            
+            PictureBox picture = new PictureBox();
+            transferredObjectCount++;
+            sampleTObject.Tag = "T" + transferredObjectCount.ToString();
+            picture.BackColor = Color.Transparent;
+            picture.Tag = "T";
+
+            picture.Paint += new PaintEventHandler(this.pTransferredObject_Paint);
+
+
+            picture.BorderStyle = BorderStyle.None;
+
+            picture.Location = sampleTObject.Location;
+            picture.Size = sampleTObject.Size;
+            picture.Image = sampleTObject.Image;
+            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+            picture.ContextMenuStrip = cmObject;
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            picture.BringToFront();
+            pnlCenter.SendToBack();
+            pnlLeft.SendToBack();
+
+            pnlLeft.Controls.Add(picture);
+            picture.BringToFront();
+            this.Controls.Add(sampleTObject);
+            sampleTObject.BringToFront();
+            picture.Draggable(true);
+
+            int x = Convert.ToInt32(txtX.Text);
+
+            PictureBox obj = sampleTObject;
+            obj.Paint -= new PaintEventHandler(this.pTransferredObject_Paint);
+            obj.Image = global::iOTClient.Properties.Resources.kumas;
+            obj.Paint += new PaintEventHandler(picture_Paint);
+            obj.Size = new Size(x, Convert.ToInt32(x * 1.2));
+            obj.Tag = "T" + code;
+
+            _transferredObjectList.Add(obj);
+
+            _transferredObjectPointList.Add(
+             new TransferredObjectPoint()
+             {
+                 Code = obj.Tag.ToString(),
+                 Left = obj.Left,
+                 Bottom = obj.Bottom,
+                 Right = obj.Right,
+                 Top = obj.Top,
+                 //TaskOrder = frm._taskorder
+             }
+             );
+
+            var entity = new TransferObject()
+            {
+                Barcode = code,
+                LastPosX = xxx - (x / 2),
+                LastPosY = yyy - (x / 2),
+                MapId = Convert.ToInt32(_mapId),
+                Length = 1,
+                StartStationId = sid,
+                TaskHistories = new List<TaskHistory>()
+            };
+
+            obj.Location = new Point(entity.LastPosX, entity.LastPosY);
+            var _taskorder = mlist;
+            var workOrders = _taskorder.Split(',');
+
+            int _order = 1;
+            foreach (var item in workOrders)
+            {
+                var history = new TaskHistory()
+                {
+                    WorkOrder = _order,
+                    WorkStationCode = item.Replace("M", "")
+                };
+                entity.TaskHistories.Add(history);
+                _order++;
+            }
+
+            string json = JsonConvert.SerializeObject(entity);
+            WebRequest req = WebRequest.Create("http://" + Program._wslink + "/robots/addtransferobject/");
+            req.Method = "POST";
+            req.ContentType = "application/json";
+            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(Program._wsUserName + ":" + Program._wsPassword));
+            byte[] byteArray = Encoding.UTF8.GetBytes(json);
+            req.ContentLength = byteArray.Length;
+
+            using (System.IO.Stream requestStream = req.GetRequestStream())
+            {
+                requestStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            using (WebResponse response = req.GetResponse())
+            {
+                using (System.IO.Stream responseStream = response.GetResponseStream())
+                {
+                    System.IO.StreamReader rdr = new System.IO.StreamReader(responseStream, Encoding.UTF8);
+                    string Json = rdr.ReadToEnd(); // response from server
+                }
+            }
+
+            WsConnectLoadTransferObjects();
+
+            obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+            obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+            obj.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+            obj.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+
+            pnlCenter.Controls.Add(obj);
+            obj.BringToFront();
+
+            SetNodes();
+
+            sampleTObject = picture;
+        }
+
+        PictureBox sampleVehicle;
+        public void AddVehicle(string code, int xxx, int yyy)
+        {
+            PictureBox picture = new PictureBox();
+            vehicleCount++;
+            sampleVehicle.Tag = "V" + vehicleCount.ToString();
+            picture.BackColor = Color.Transparent;
+            picture.Tag = "V";
+
+            picture.Paint += new PaintEventHandler(this.pVehicle_Paint);
+
+
+            picture.BorderStyle = BorderStyle.None;
+
+            picture.Location = sampleVehicle.Location;
+            picture.Size = sampleVehicle.Size;
+            picture.Image = sampleVehicle.Image;
+            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+            picture.ContextMenuStrip = cmObject;
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            picture.BringToFront();
+            pnlCenter.SendToBack();
+            pnlLeft.SendToBack();
+
+            pnlLeft.Controls.Add(picture);
+            picture.BringToFront();
+            this.Controls.Add(sampleVehicle);
+            sampleVehicle.BringToFront();
+            picture.Draggable(true);
+
+
+            int x = Convert.ToInt32(txtX.Text);
+
+            PictureBox obj = sampleVehicle;
+
+            obj.Paint -= new PaintEventHandler(this.pVehicle_Paint);
+            //obj.Image = null;
+            obj.Image = global::iOTClient.Properties.Resources.bos_dok_arabasi;
+            obj.Paint += new PaintEventHandler(picture_Paint);
+            obj.Size = new Size(x, x);
+            obj.Location = new Point(xxx, yyy);
+            _vehicleList.Add(obj);
+
+            _vehiclePointList.Add(
+                               new VehiclePoint()
+                               {
+                                   Code = code,
+                                   Left = obj.Left,
+                                   Bottom = obj.Bottom,
+                                   Right = obj.Right,
+                                   Top = obj.Top,
+                                   CenterX = obj.Right - (x / 2),
+                                   CenterY = obj.Bottom - (x / 2)
+                               }
+                               );
+
+            obj.Tag = code;
+            WebSocket ws = null;
+
+            WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+
+            obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+            obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+            obj.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+            obj.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+
+            pnlCenter.Controls.Add(obj);
+            obj.BringToFront();
+
+            SetNodes();
+
+            sampleVehicle = picture;
+        }
+
+        PictureBox sampleRobot;
+        public void AddRobot(string code, int xxx, int yyy)
+        {
+            PictureBox picture = new PictureBox();
+           
+            robotCount++;
+            sampleRobot.Tag = "R" + robotCount.ToString();
+            picture.BackColor = Color.Transparent;
+            picture.Tag = "R";
+            picture.Paint += new PaintEventHandler(this.pRobot_Paint);
+            
+
+            picture.BorderStyle = BorderStyle.None;
+
+            picture.Location = sampleRobot.Location;
+            picture.Size = sampleRobot.Size;
+            picture.Image = sampleRobot.Image;
+            picture.MouseDown += new MouseEventHandler(this.Object_MouseDown);
+            picture.MouseMove += new MouseEventHandler(this.Object_MouseMove);
+            picture.MouseUp += new MouseEventHandler(this.Object_MouseUp);
+            picture.ContextMenuStrip = cmObject;
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            picture.BringToFront();
+            pnlCenter.SendToBack();
+            pnlLeft.SendToBack();
+
+            pnlLeft.Controls.Add(picture);
+            picture.BringToFront();
+            this.Controls.Add(sampleRobot);
+            sampleRobot.BringToFront();
+            picture.Draggable(true);
+
+
+            int x = Convert.ToInt32(txtX.Text);
+
+            PictureBox obj = sampleRobot;
+
+            obj.Paint -= new PaintEventHandler(this.pRobot_Paint);
+
+            obj.Image = global::iOTClient.Properties.Resources.turtlebot_2_lg_free;
+            obj.Paint += new PaintEventHandler(picture_Paint);
+            obj.Size = new Size(x, Convert.ToInt32(x * 1.2));
+            obj.Tag = code.StartsWith("R") ? code : ("R" + code);
+            obj.Location = new Point(xxx, yyy);
+
+            WebSocket ws = null;
+
+            _robotList.Add(obj);
+
+            WsConnectSayHi(ws, obj.Tag.ToString(), obj.Location);
+
+            obj.MouseDown -= new MouseEventHandler(this.Object_MouseDown);
+            obj.MouseMove -= new MouseEventHandler(this.Object_MouseMove);
+            obj.MouseUp -= new MouseEventHandler(this.Object_MouseUp);
+            obj.MouseUp += new MouseEventHandler(this.ObjectonMap_MouseUp);
+
+            pnlCenter.Controls.Add(obj);
+            obj.BringToFront();
+
+            SetNodes();
+
+            sampleRobot = picture;
+        }
+
+        private void btnSampleSimulation_Click(object sender, EventArgs e)
+        {
+            sampleTObject = pTransferredObject;
+            AddTranferObjectManually("001", 11, "M01,M03,M04",15,15);
+            AddTranferObjectManually("002", 12, "M02,M05,M08",45,15);
+
+            sampleVehicle = pVehicle;
+            AddVehicle("V101", 180,60);
+            AddVehicle("V104", 300, 60);
+            AddVehicle("V110", 360, 60);
+            AddVehicle("V108", 420, 60);
+
+
+            sampleRobot = pRobot;
+            AddRobot("R101", 300, 240);
+            AddRobot("R102", 450, 300);
+            AddRobot("R103", 600, 360);
+            AddRobot("R104", 450, 600);
+
+        }
+
         private void Object_MouseUp(object sender, MouseEventArgs e)
         {
             if (sender.GetType() == typeof(PictureBox))
@@ -2600,6 +2881,25 @@ namespace iOTClient
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            sampleTObject = pTransferredObject;
+            AddTranferObjectManually("001", 11, "M01,M03,M04", 15, 15);
+
+            sampleVehicle = pVehicle;
+            AddVehicle("V101", 180, 60);
+            AddVehicle("V104", 300, 60);
+            AddVehicle("V110", 360, 60);
+            AddVehicle("V108", 420, 60);
+
+
+            sampleRobot = pRobot;
+            AddRobot("R101", 300, 240);
+            AddRobot("R102", 450, 300);
+            AddRobot("R103", 600, 360);
+            AddRobot("R104", 450, 600);
         }
     }
 
