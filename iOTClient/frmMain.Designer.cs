@@ -33,6 +33,7 @@ namespace iOTClient
             this.cmObject = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsSil = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlTop = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnSampleSimulation = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnClearPath = new System.Windows.Forms.Button();
@@ -67,7 +68,7 @@ namespace iOTClient
             this.pObstacle = new System.Windows.Forms.PictureBox();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.pnlCenterParent = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.cmObject.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -113,6 +114,23 @@ namespace iOTClient
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1012, 80);
             this.pnlTop.TabIndex = 5;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
+            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(641, 24);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(114, 48);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Sample 2";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnSampleSimulation
             // 
@@ -295,14 +313,14 @@ namespace iOTClient
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 710);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(1105, 22);
+            this.pnlBottom.Size = new System.Drawing.Size(1432, 22);
             this.pnlBottom.TabIndex = 8;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1065, 0);
+            this.label6.Location = new System.Drawing.Point(1392, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(0, 13);
             this.label6.TabIndex = 3;
@@ -311,7 +329,7 @@ namespace iOTClient
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1065, -16);
+            this.label7.Location = new System.Drawing.Point(1392, -16);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(0, 13);
             this.label7.TabIndex = 3;
@@ -557,34 +575,26 @@ namespace iOTClient
             // pnlCenterParent
             // 
             this.pnlCenterParent.AutoScroll = true;
+            this.pnlCenterParent.Controls.Add(this.richTextBox1);
             this.pnlCenterParent.Controls.Add(this.pnlCenter);
             this.pnlCenterParent.Location = new System.Drawing.Point(91, 79);
             this.pnlCenterParent.Name = "pnlCenterParent";
-            this.pnlCenterParent.Size = new System.Drawing.Size(1100, 800);
+            this.pnlCenterParent.Size = new System.Drawing.Size(1341, 800);
             this.pnlCenterParent.TabIndex = 7;
             // 
-            // button1
+            // richTextBox1
             // 
-            this.button1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft YaHei", 9F);
-            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(641, 24);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(114, 48);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Sample 2";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.richTextBox1.Location = new System.Drawing.Point(1106, 6);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(232, 622);
+            this.richTextBox1.TabIndex = 8;
+            this.richTextBox1.Text = "";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1105, 732);
+            this.ClientSize = new System.Drawing.Size(1432, 732);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlCenterParent);
             this.Controls.Add(this.pnlTop);
@@ -661,6 +671,7 @@ namespace iOTClient
         private System.Windows.Forms.Panel pnlCenterParent;
         private System.Windows.Forms.Button btnSampleSimulation;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

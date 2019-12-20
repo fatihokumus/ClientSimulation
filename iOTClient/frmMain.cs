@@ -708,12 +708,15 @@ namespace iOTClient
             sampleTObject = pTransferredObject;
             AddTranferObjectManually("001", 11, "M01,M03,M04",15,15);
             AddTranferObjectManually("002", 12, "M02,M05,M08",45,15);
+            AddTranferObjectManually("003", 13, "M03,M06,M09", 75, 15);
 
             sampleVehicle = pVehicle;
-            AddVehicle("V101", 180,60);
-            AddVehicle("V104", 300, 60);
-            AddVehicle("V110", 360, 60);
-            AddVehicle("V108", 420, 60);
+            AddVehicle("V101", 180, 30);
+            AddVehicle("V104", 300, 30);
+            AddVehicle("V110", 360, 30);
+            AddVehicle("V106", 420, 30);
+            AddVehicle("V108", 480, 30);
+            AddVehicle("V109", 540, 30);
 
 
             sampleRobot = pRobot;
@@ -721,6 +724,8 @@ namespace iOTClient
             AddRobot("R102", 450, 300);
             AddRobot("R103", 600, 360);
             AddRobot("R104", 450, 600);
+            AddRobot("R105", 60, 600);
+            AddRobot("R106", 270, 720);
 
         }
 
@@ -1961,6 +1966,11 @@ namespace iOTClient
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
+            this.Invoke(new Action(() =>
+            {
+                richTextBox1.Text = richTextBox1.Text + e.Data + "\n";
+            }));
+
             if (e.Data == "{\"message\": \"Orada misin?\"}")
             {
                 string textKonum = "{\"message\":\"Evet\"}";
@@ -1982,22 +1992,18 @@ namespace iOTClient
             }
             else if (e.Data.Contains("Rota"))
             {
-                BackgroundWorker bcg = new BackgroundWorker();
-                bcg.DoWork += new DoWorkEventHandler(bcmessage_DoWork);
                 WebSocketRequest req = new WebSocketRequest();
                 req.message = e.Data;
                 req._ws = (WebSocket)sender;
-                bcg.RunWorkerAsync(argument: req);
-
-                //[[5,4],[4,4],[3,5],[2,6],[1,5],[0,4]]
+                bcmessage_DoWork(req);
             }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
         }
 
-        private void bcmessage_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bcmessage_DoWork(WebSocketRequest req)
         {
-            var param = (WebSocketRequest)e.Argument;
-            var data = JsonConvert.DeserializeObject<ServerMessage>(param.message);
+            
+            var data = JsonConvert.DeserializeObject<ServerMessage>(req.message);
             var datastring = data.message.Replace("Rota:", "");
             var mData = datastring.Split(':');
             var algo = mData[0];
@@ -2074,6 +2080,15 @@ namespace iOTClient
                 }
                 else
                 {
+                    //Robot görev ile ayný konumdaysa pList.count = 0 olacaktýr. Bu durumda Görev Bitti mesajý gönderilir.
+                    if (pList.Count == 0)
+                    {
+                        string textbilgi = "{\"message\":\"Görev bitti\"}";
+                        req._ws.SendAsync(textbilgi, delegate (bool completed4)
+                        {
+
+                        });
+                    }
                     for (int h = pList.Count - 1; h >= 0; h--)
                     {
                         var currentRP = new RobotPath()
@@ -2093,7 +2108,7 @@ namespace iOTClient
 
                         // Konumu gönder
                         string textKonum = "{\"message\":\"Son Konumum: x:" + currentRP.Point.X + "; y:" + currentRP.Point.Y + "\"}";
-                        param._ws.SendAsync(textKonum, delegate (bool completed3)
+                        req._ws.SendAsync(textKonum, delegate (bool completed3)
                         {
 
                         });
@@ -2103,7 +2118,7 @@ namespace iOTClient
                         if (h == 0)
                         {
                             string textbilgi = "{\"message\":\"Görev bitti\"}";
-                            param._ws.SendAsync(textbilgi, delegate (bool completed4)
+                            req._ws.SendAsync(textbilgi, delegate (bool completed4)
                             {
 
                             });
