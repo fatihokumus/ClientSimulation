@@ -446,7 +446,7 @@ namespace iOTClient
         PictureBox sampleTObject;
         public void AddTranferObjectManually(string code, int sid, string mlist, int xxx, int yyy)
         {
-            
+
             PictureBox picture = new PictureBox();
             transferredObjectCount++;
             sampleTObject.Tag = "T" + transferredObjectCount.ToString();
@@ -643,13 +643,13 @@ namespace iOTClient
         public void AddRobot(string code, int xxx, int yyy)
         {
             PictureBox picture = new PictureBox();
-           
+
             robotCount++;
             sampleRobot.Tag = "R" + robotCount.ToString();
             picture.BackColor = Color.Transparent;
             picture.Tag = "R";
             picture.Paint += new PaintEventHandler(this.pRobot_Paint);
-            
+
 
             picture.BorderStyle = BorderStyle.None;
 
@@ -706,17 +706,17 @@ namespace iOTClient
         private void btnSampleSimulation_Click(object sender, EventArgs e)
         {
             sampleTObject = pTransferredObject;
-            AddTranferObjectManually("001", 11, "M01,M03,M04",15,15);
-            AddTranferObjectManually("002", 12, "M02,M05,M08",45,15);
-            AddTranferObjectManually("003", 13, "M03,M06,M09", 75, 15);
+            AddTranferObjectManually("001", 11, "M01,M03,M04", 15, 15);
+            AddTranferObjectManually("002", 12, "M04,M05,M08", 45, 15);
+            AddTranferObjectManually("003", 13, "M08,M06,M09", 75, 15);
 
             sampleVehicle = pVehicle;
-            AddVehicle("V101", 180, 30);
-            AddVehicle("V104", 300, 30);
-            AddVehicle("V110", 360, 30);
-            AddVehicle("V106", 420, 30);
-            AddVehicle("V108", 480, 30);
-            AddVehicle("V109", 540, 30);
+            AddVehicle("V101", 180, 60);
+            AddVehicle("V104", 300, 60);
+            AddVehicle("V110", 360, 60);
+            AddVehicle("V106", 420, 60);
+            AddVehicle("V108", 480, 60);
+            AddVehicle("V109", 540, 60);
 
 
             sampleRobot = pRobot;
@@ -1995,6 +1995,7 @@ namespace iOTClient
                 WebSocketRequest req = new WebSocketRequest();
                 req.message = e.Data;
                 req._ws = (WebSocket)sender;
+
                 bcmessage_DoWork(req);
             }
             //TODO: Mesaj geldiðinde ve göndedrildiðinde burasý çalýþacak
@@ -2002,7 +2003,7 @@ namespace iOTClient
 
         private void bcmessage_DoWork(WebSocketRequest req)
         {
-            
+
             var data = JsonConvert.DeserializeObject<ServerMessage>(req.message);
             var datastring = data.message.Replace("Rota:", "");
             var mData = datastring.Split(':');
@@ -2012,7 +2013,7 @@ namespace iOTClient
             var list = rota.Split(',');
 
             var pList = new List<GridPiont>();
-            for (int i = list.Length-2; i > 0; i -= 2)
+            for (int i = list.Length - 2; i > 0; i -= 2)
             {
                 pList.Add(new GridPiont() { XPoint = Convert.ToInt32(list[i + 1]), YPoint = Convert.ToInt32(list[i]) });
             }
@@ -2021,26 +2022,14 @@ namespace iOTClient
 
             PictureBox ctrl = null;
 
-            foreach (var item in pnlCenter.Controls)
+            foreach (var item in _robotList)
             {
-                if (item.GetType() == typeof(ExtendedPanel))
+                if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[1])
                 {
-
-                    ((ExtendedPanel)item).Invoke(new Action(() =>
-                    {
-                        ((ExtendedPanel)item).SendToBack();
-                    }));
-
+                    ctrl = ((PictureBox)item);
                 }
-                else if (item.GetType() == typeof(PictureBox))
-                {
-                    if (((PictureBox)item).Tag != null && ((PictureBox)item).Tag.ToString() == mData[1])
-                    {
-                        ctrl = ((PictureBox)item);
-                    }
-                }
-
             }
+
             points.Add(pList);
             var pnlPath = new ExtendedPanel(points, x);
             pnlPath.Size = pnlCenter.Size;
@@ -2112,7 +2101,7 @@ namespace iOTClient
                         {
 
                         });
-                        Thread.Sleep(500);
+                        Thread.Sleep(1000);
 
                         //Eðer görev bittiyse ilet
                         if (h == 0)
@@ -2141,7 +2130,7 @@ namespace iOTClient
             var xPos = Convert.ToInt32(mData[1]);
             var yPos = Convert.ToInt32(mData[2]);
 
-            
+
 
             int x = Convert.ToInt32(txtX.Text);
 
@@ -2183,7 +2172,7 @@ namespace iOTClient
                 ctrl.Location = point;
                 ctrl.BringToFront();
             }));
-            
+
 
         }
 
