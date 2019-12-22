@@ -1966,11 +1966,7 @@ namespace iOTClient
 
         private void Ws_OnMessage(object sender, MessageEventArgs e)
         {
-            this.Invoke(new Action(() =>
-            {
-                richTextBox1.Text = richTextBox1.Text + e.Data + "\n";
-            }));
-
+           
             if (e.Data == "{\"message\": \"Orada misin?\"}")
             {
                 string textKonum = "{\"message\":\"Evet\"}";
@@ -2042,8 +2038,6 @@ namespace iOTClient
             }));
 
 
-
-
             if (ctrl != null)
             {
                 if (algo.ToLower() == "dijkstra")
@@ -2080,28 +2074,27 @@ namespace iOTClient
                     }
                     for (int h = pList.Count - 1; h >= 0; h--)
                     {
-                        var currentRP = new RobotPath()
-                        {
-                            Robot = ctrl,
-                            Point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x))
-                        };
+
+                        var point = new Point((pList[h].XPoint * x), (pList[h].YPoint * x));
                         //BackgroundWorker bcg = new BackgroundWorker();
                         //bcg.DoWork += new DoWorkEventHandler(bcg_DoWork);
                         //bcg.RunWorkerAsync(argument: currentRP);
 
                         ctrl.Invoke(new Action(() =>
                         {
-                            ctrl.Location = currentRP.Point;
+                            ctrl.Location = point;
                             ctrl.BringToFront();
                         }));
 
                         // Konumu gönder
-                        string textKonum = "{\"message\":\"Son Konumum: x:" + currentRP.Point.X + "; y:" + currentRP.Point.Y + "\"}";
+                        string textKonum = "{\"message\":\"Son Konumum: x:" + point.X + "; y:" + point.Y + "\"}";
                         req._ws.SendAsync(textKonum, delegate (bool completed3)
                         {
 
                         });
-                        Thread.Sleep(1000);
+                        //Biraz bekledikten sonra diðer adýmý at.
+                        Thread.Sleep(1500);
+
 
                         //Eðer görev bittiyse ilet
                         if (h == 0)
@@ -2111,7 +2104,9 @@ namespace iOTClient
                             {
 
                             });
+                            Thread.Sleep(1500);
                         }
+                        
                     }
                 }
 

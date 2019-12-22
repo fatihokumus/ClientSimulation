@@ -68,7 +68,6 @@ namespace iOTClient
             this.pObstacle = new System.Windows.Forms.PictureBox();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.pnlCenterParent = new System.Windows.Forms.Panel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.cmObject.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -575,20 +574,11 @@ namespace iOTClient
             // pnlCenterParent
             // 
             this.pnlCenterParent.AutoScroll = true;
-            this.pnlCenterParent.Controls.Add(this.richTextBox1);
             this.pnlCenterParent.Controls.Add(this.pnlCenter);
             this.pnlCenterParent.Location = new System.Drawing.Point(91, 79);
             this.pnlCenterParent.Name = "pnlCenterParent";
             this.pnlCenterParent.Size = new System.Drawing.Size(1341, 800);
             this.pnlCenterParent.TabIndex = 7;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(1106, 6);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(232, 622);
-            this.richTextBox1.TabIndex = 8;
-            this.richTextBox1.Text = "";
             // 
             // frmMain
             // 
@@ -671,7 +661,6 @@ namespace iOTClient
         private System.Windows.Forms.Panel pnlCenterParent;
         private System.Windows.Forms.Button btnSampleSimulation;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
