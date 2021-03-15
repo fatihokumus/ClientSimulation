@@ -2900,6 +2900,13 @@ namespace iOTClient
             AddRobot("R103", 600, 360);
             AddRobot("R104", 450, 600);
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            WebSocket ws = null;
+            WsConnectSayHi(ws, "deneme", new Point(5,5));
+        }
     }
 
     public class RobotWebSocket

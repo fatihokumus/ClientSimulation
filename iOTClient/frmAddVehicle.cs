@@ -65,7 +65,8 @@ namespace iOTClient
 
                 cmbTransferVehicle.Items.Add(cmb);
             }
-            cmbTransferVehicle.SelectedIndex = 0;
+            if (transferVehicleList.Count() > 0)
+                cmbTransferVehicle.SelectedIndex = 0;
         }
 
     }

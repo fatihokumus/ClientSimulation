@@ -68,6 +68,7 @@ namespace iOTClient
             this.pObstacle = new System.Windows.Forms.PictureBox();
             this.pnlCenter = new System.Windows.Forms.Panel();
             this.pnlCenterParent = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.cmObject.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -105,13 +106,14 @@ namespace iOTClient
             // pnlTop
             // 
             this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(84)))), ((int)(((byte)(115)))));
+            this.pnlTop.Controls.Add(this.button2);
             this.pnlTop.Controls.Add(this.button1);
             this.pnlTop.Controls.Add(this.btnSampleSimulation);
             this.pnlTop.Controls.Add(this.panel3);
             this.pnlTop.Controls.Add(this.panel2);
             this.pnlTop.Location = new System.Drawing.Point(91, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1012, 80);
+            this.pnlTop.Size = new System.Drawing.Size(1106, 80);
             this.pnlTop.TabIndex = 5;
             // 
             // button1
@@ -310,16 +312,16 @@ namespace iOTClient
             this.pnlBottom.Controls.Add(this.label6);
             this.pnlBottom.Controls.Add(this.label7);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 710);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 888);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(1432, 22);
+            this.pnlBottom.Size = new System.Drawing.Size(1211, 22);
             this.pnlBottom.TabIndex = 8;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1392, 0);
+            this.label6.Location = new System.Drawing.Point(1171, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(0, 13);
             this.label6.TabIndex = 3;
@@ -328,7 +330,7 @@ namespace iOTClient
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1392, -16);
+            this.label7.Location = new System.Drawing.Point(1171, -16);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(0, 13);
             this.label7.TabIndex = 3;
@@ -580,11 +582,21 @@ namespace iOTClient
             this.pnlCenterParent.Size = new System.Drawing.Size(1341, 800);
             this.pnlCenterParent.TabIndex = 7;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(588, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1432, 732);
+            this.ClientSize = new System.Drawing.Size(1211, 910);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlCenterParent);
             this.Controls.Add(this.pnlTop);
@@ -661,6 +673,7 @@ namespace iOTClient
         private System.Windows.Forms.Panel pnlCenterParent;
         private System.Windows.Forms.Button btnSampleSimulation;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
